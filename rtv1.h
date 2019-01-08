@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/08 15:00:52 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/08 17:49:22 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 
 # define RES_H 1280
 # define RES_V 720
+# define NEAR_PLANE 0.0001
+# define FAR_PLANE 500.
 
 struct s_env;
 
@@ -38,15 +40,29 @@ struct s_vec3;
 struct s_vec2;
 struct s_int2;
 
+/*
+**	'BASIC' DATATYPES
+*/
 
-typedef struct	s_env
+typedef struct	s_vec3
 {
-	struct s_mlx	*mlx;
-	struct s_disp	disp;
-	struct s_ray	camera;
-	int				max_step;
-	long			keys_presed; // C'est pour utliser des operatioons binaires, sinon on peut utiliser un char[..]
-}				t_env;
+	float			x;
+	float			y;
+	float			z;
+}				t_vec3;
+
+typedef struct	s_vec2
+{
+	float			x;
+	float			y;
+}				t_vec2;
+
+typedef struct	s_int2
+{
+	int				x;
+	int				y;
+}				t_int2;
+
 
 /*
 **	RAY TRACING STRUCTS
@@ -97,28 +113,44 @@ typedef struct	s_mlx
 	struct s_img	img;
 }				t_mlx;
 
+
+
 /*
-**	'BASIC' DATATYPES
+**	OBJECTS
+**	Reading the function pointer is not problem as it is the common first member
+**	of all the structs, it's part of the C standard :)
 */
-
-typedef struct	s_vec3
+union			u_object
 {
-	float			x;
-	float			y;
-	float			z;
-}				t_vec3;
+	struct s_sphere
+	{
+		int				(*intersect)(union u_object obj);
+		struct s_vec3	orig;
+		float			radius;
+	}				sphere;
+	struct s_plane
+	{
+		int				(*intersect)(union u_object obj);
+		struct s_vec3	orig;
+		struct s_vec3	norm;
+	}				plane;
+};
 
-typedef struct	s_vec2
+typedef struct	s_objs_lst
 {
-	float			x;
-	float			y;
-}				t_vec2;
+	int				len;
+	union u_object	objs[];
+}				t_objs_lst;
 
-typedef struct	s_int2
+
+typedef struct	s_env
 {
-	int				x;
-	int				y;
-}				t_int2;
+	struct s_mlx	*mlx;
+	struct s_disp	disp;
+	struct s_ray	camera;
+	int				max_step;
+	long			keys_presed; // C'est pour utliser des operatioons binaires, sinon on peut utiliser un char[..]
+}				t_env;
 
 
 
@@ -142,6 +174,6 @@ t_vec3		*vec3_multf(t_vec3 *restrict a, const float b);
 t_vec3		*vec3_div(t_vec3 *restrict a, const t_vec3 *restrict b);
 float		vec3_dot(const t_vec3 *restrict a, const t_vec3 *restrict b);
 float		vec3_mod(const t_vec3 *restrict a);
-t_vec3		*vec3_normalise(t_vec3 *restrict a)
+t_vec3		*vec3_normalize(t_vec3 *restrict a);
 
 #endif

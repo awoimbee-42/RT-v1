@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 14:14:19 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/08 14:37:29 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/08 16:06:14 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ float		vec3_mod(const t_vec3 *restrict a) //calculating the square root is slooo
 	return sqrtf(vec3_dot(a, a));
 }
 
-t_vec3		*vec3_normalise(t_vec3 *restrict a)
+t_vec3		*vec3_normalize(t_vec3 *restrict a)
 {
 	float length = vec3_mod(a);
 	return (vec3_multf(a, 1.0 / length));

@@ -6,11 +6,29 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/08 15:44:44 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/08 16:35:03 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
+
+t_vec3			cast_ray(const t_env *env, const t_vec3 *ray_dir)
+{
+	float		frwrd_; // je sais pas comme l'appeler
+	int			step;
+	t_vec3		pos;
+
+	frwrd_ = NEAR_PLANE; // as far as i know, objects cannot be closer than this
+	step = 0;
+	while (step++ < 500 )//env->max_step)
+	{
+		// c'est pas opti de recalculer a partir de 0 a chaque fois mais avec l'imprecision des floats c'est fifficile de faire autrement
+		pos = *ray_dir;
+		(void)vec3_add(vec3_multf(&pos, frwrd_), &env->camera.org);
+
+
+	}
+}
 
 /*
 **	raytrace() shoots the rays from the 'camera' onto the 'lens'
@@ -21,7 +39,7 @@
 union u_color	raytrace(const int x, const int y, const t_env *env)
 {
 	t_vec3		screen_point;
-
+	t_vec3		intersec_point;
 
 	screen_point = (t_vec3) //ray direction / point on the 'screen' in world coords
 	{
@@ -29,12 +47,10 @@ union u_color	raytrace(const int x, const int y, const t_env *env)
 		(1.0 - 2.0 * (y + 0.5) / (float)env->disp.res.y) * sin(env->disp.fov.y / 2.0),
 		1.0
 	};
-	(void)vec3_normalise(&screen_point);
+	(void)vec3_normalize(&screen_point);
 
-	if (screen_point.y < 0)
-	{
-
-	}
+	intersec_point = cast_ray(env, &screen_point);
+return /*gammaCorrect(*/colour(point, ro, rd, t, 0);//, 1.0/2.2);
 }
 
 union u_color	render(t_env *env)
