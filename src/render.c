@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/08 17:50:17 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/08 22:57:00 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ t_vec3			cast_ray(const t_env *env, const t_vec3 *ray_dir)
 
 union u_color	raytrace(const int x, const int y, const t_env *env)
 {
-	t_vec3		screen_point;
-	t_vec3		hit_point;
+	t_vec3			screen_point;
+	union u_color	rgb;
 
 	screen_point = (t_vec3) //ray direction / point on the 'screen' in world coords
 	{
@@ -49,9 +49,9 @@ union u_color	raytrace(const int x, const int y, const t_env *env)
 	};
 	(void)vec3_normalize(&screen_point);
 
+	
 
-
-	intersec_point = cast_ray(env, &screen_point);
+	// intersec_point = cast_ray(env, &screen_point);
 }
 
 union u_color	render(t_env *env)

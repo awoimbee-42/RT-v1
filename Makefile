@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/01/08 12:15:28 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/01/08 22:48:32 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,10 @@ SRC_PATH =	src
 OBJ_PATH =	obj
 
 SRC_NAME =	main.c				\
-			init_argv.c
+			init_argv.c			\
+			render.c			\
+			intersection.c		\
+			vec3_op0.c
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 
@@ -90,6 +93,8 @@ sfclean :
 	@rmdir $(OBJ_PATH) 2> /dev/null || true
 
 sre: sfclean $(NAME)
+
+.PHONY: all clear re fclean sfclean sre
 
 RED = \033[1;31m
 GRN = \033[1;32m

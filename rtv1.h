@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/08 17:49:22 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/08 22:52:18 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ typedef union	u_color
 		char	g;
 		char	b;
 		char	a;
-	}				rgb;
-	unsigned int	col;
+	}				charc;
+	unsigned int	intc;
 }				t_color;
 
 typedef struct	s_ray
@@ -120,41 +120,45 @@ typedef struct	s_mlx
 **	Reading the function pointer is not problem as it is the common first member
 **	of all the structs, it's part of the C standard :)
 */
+
 union			u_object
 {
 	struct s_sphere
 	{
-		int				(*intersect)(union u_object obj);
+		float				(*intersect)(const union u_object *obj, t_ray ray); //maybe should be renamed...
 		struct s_vec3	orig;
 		float			radius;
 	}				sphere;
 	struct s_plane
 	{
-		int				(*intersect)(union u_object obj);
+		float				(*intersect)(const union u_object *obj, t_ray ray);
 		struct s_vec3	orig;
 		struct s_vec3	norm;
 	}				plane;
 };
 
-typedef struct	s_objs_lst
+typedef struct	s_objs
 {
 	int				len;
 	union u_object	objs[];
-}				t_objs_lst;
+}				t_objs;
 
+/*
+**	ENV
+*/
 
 typedef struct	s_env
 {
 	struct s_mlx	*mlx;
 	struct s_disp	disp;
 	struct s_ray	camera;
-	int				max_step;
+	struct s_objs	*objects;
 	long			keys_presed; // C'est pour utliser des operatioons binaires, sinon on peut utiliser un char[..]
 }				t_env;
 
 
 
-
+union u_color	render(t_env *env);
 void			error(int	err_nb);
 
 /*
@@ -175,5 +179,10 @@ t_vec3		*vec3_div(t_vec3 *restrict a, const t_vec3 *restrict b);
 float		vec3_dot(const t_vec3 *restrict a, const t_vec3 *restrict b);
 float		vec3_mod(const t_vec3 *restrict a);
 t_vec3		*vec3_normalize(t_vec3 *restrict a);
+
+/*
+**	intersection.c
+*/
+float		hit_distance_sphere(const union u_object *obj, t_ray ray);
 
 #endif
