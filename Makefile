@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/01/08 10:33:56 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/01/08 12:15:28 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,8 @@ CFLAGS	=	-Wall -Wextra -g3 #-Werror
 SRC_PATH =	src
 OBJ_PATH =	obj
 
-SRC_NAME =	main.c
+SRC_NAME =	main.c				\
+			init_argv.c
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 
