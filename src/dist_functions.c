@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   intersection.c                                     :+:      :+:    :+:   */
+/*   dist_functions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 22:02:07 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/09 20:21:26 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/09 22:57:16 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,17 @@ float		dist_sphere(const union u_object *obj, const t_ray ray)
 	float		a;
 	float		b;
 	float		c;
-	float		discriminant;
+	float		delta;
 
 	oc = vec3_sub(ray.org, obj->sphere.orig);
 	a = vec3_dot(ray.dir, ray.dir);
 	b = 2.0 * vec3_dot(oc, ray.dir);
 	c = vec3_dot(oc, oc) - obj->sphere.radius * obj->sphere.radius;
-	discriminant = b * b - 4 * a * c;
-	if(discriminant < 0)
+	delta = b * b - 4 * a * c;
+	if(delta < 0)
 		return (-1.0);
 	else
-		return (-b - sqrt(discriminant) / (2.0 * a));
+		return (-b - sqrt(delta) / (2.0 * a));
 }
 
 float		dist_plane(const union u_object *obj, const t_ray ray)

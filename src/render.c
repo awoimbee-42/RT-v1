@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/09 19:38:50 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/09 23:04:03 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ union u_color	raytrace(const int x, const int y, const t_env *env)
 	float distance;
 	while (i < env->objs_nb)
 	{
-		distance = env->objs_arr[i].this.sphere.intersect(&env->objs_arr[i].this, (t_ray){env->camera.org, screen_point});
+		distance = env->objs_arr[i].this.sphere.distfun(&env->objs_arr[i].this, (t_ray){env->camera.org, screen_point});
 		if (distance > 0)
 			return (env->objs_arr[i].color);
 		++i;

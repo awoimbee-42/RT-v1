@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/09 20:26:37 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/09 23:06:54 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,32 +127,37 @@ typedef enum	e_material
 	GLOSS
 }				t_material;
 
-typedef float(*t_intsect)(const union u_object*, const t_ray);
+typedef float(*t_distfun)(const union u_object*, const t_ray);
+typedef t_vec3(*t_normfun)(const union u_object*, const t_vec3);
 
 union			u_object
 {
 	struct		s_sphere
 	{
-		t_intsect		intersect;
+		t_distfun		distfun;
+		t_normfun		normfun;
 		t_vec3			orig;
 		float			radius;
 	}				sphere;
 	struct		s_plane
 	{
-		t_intsect		intersect;
+		t_distfun		distfun;
+		t_normfun		normfun;
 		t_vec3			orig;
 		t_vec3			norm;
 	}				plane;
 	struct		s_disk
 	{
-		t_intsect		intersect;
+		t_distfun		distfun;
+		t_normfun		normfun;
 		t_vec3			orig;
 		t_vec3			norm;
 		float			radius2;
 	}				disk;
 	struct		s_cone
 	{
-		t_intsect		intersect;
+		t_distfun		distfun;
+		t_normfun		normfun;
 		t_vec3			orig;
 		t_vec3			height; // it's a height vector, which goes from the origin (tip) to the base
 		float			angle;
@@ -203,10 +208,15 @@ float			vec3_mod(const t_vec3 a);
 t_vec3			vec3_normalize(t_vec3 a);
 
 /*
-**	intersection.c
+**	dist_functions.c
 */
 float			dist_sphere(const union u_object *obj, const t_ray ray);
 float			dist_plane(const union u_object *obj, const t_ray ray);
 float			dist_disk(const union u_object *obj, const t_ray ray);
+
+/*
+**	norm_functions.c
+*/
+t_vec3			norm_sphere(const union u_object *obj, const t_vec3 hit);
 
 #endif
