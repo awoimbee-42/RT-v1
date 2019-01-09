@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/08 22:57:00 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/09 16:12:32 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,10 @@ union u_color	raytrace(const int x, const int y, const t_env *env)
 	};
 	(void)vec3_normalize(&screen_point);
 
-	
+	// should the intersection function also return the normal ?
+	// should we pack another function pointer inside the object struct ?
+
+	// normal = point at hit - center of sphere
 
 	// intersec_point = cast_ray(env, &screen_point);
 }
@@ -69,7 +72,7 @@ union u_color	render(t_env *env)
 		while (++j < env->disp.res.y)
 		{
 			color = raytrace(i, j, env);
-			env->mlx->img.data[px_id] = color.col;
+			env->mlx->img.data[px_id] = color.intc;
 			++px_id;
 		}
 	}
