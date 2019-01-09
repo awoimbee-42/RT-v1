@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/09 17:47:09 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/09 20:26:37 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ typedef enum	e_material
 	GLOSS
 }				t_material;
 
-typedef float(*t_intsect)(union u_object*, t_ray);
+typedef float(*t_intsect)(const union u_object*, const t_ray);
 
 union			u_object
 {
@@ -143,6 +143,20 @@ union			u_object
 		t_vec3			orig;
 		t_vec3			norm;
 	}				plane;
+	struct		s_disk
+	{
+		t_intsect		intersect;
+		t_vec3			orig;
+		t_vec3			norm;
+		float			radius2;
+	}				disk;
+	struct		s_cone
+	{
+		t_intsect		intersect;
+		t_vec3			orig;
+		t_vec3			height; // it's a height vector, which goes from the origin (tip) to the base
+		float			angle;
+	}				cone;
 };
 
 typedef struct	s_obj
@@ -179,18 +193,20 @@ void			init(t_env *env, t_mlx *mlx);
 /*
 **	vec3_op.c
 */
-t_vec3			*vec3_add(t_vec3 *restrict a, const t_vec3 *restrict b);
-t_vec3			*vec3_sub(t_vec3 *restrict a, const t_vec3 *restrict b);
-t_vec3			*vec3_multv(t_vec3 *restrict a, const t_vec3 *restrict b);
-t_vec3			*vec3_multf(t_vec3 *restrict a, const float b);
-t_vec3			*vec3_div(t_vec3 *restrict a, const t_vec3 *restrict b);
-float			vec3_dot(const t_vec3 *restrict a, const t_vec3 *restrict b);
-float			vec3_mod(const t_vec3 *restrict a);
-t_vec3			*vec3_normalize(t_vec3 *restrict a);
+t_vec3			vec3_add(t_vec3 a, const t_vec3 b);
+t_vec3			vec3_sub(t_vec3 a, const t_vec3 b);
+t_vec3			vec3_multv(t_vec3 a, const t_vec3 b);
+t_vec3			vec3_multf(t_vec3 a, const float b);
+t_vec3			vec3_div(t_vec3 a, const t_vec3 b);
+float			vec3_dot(const t_vec3 a, const t_vec3 b);
+float			vec3_mod(const t_vec3 a);
+t_vec3			vec3_normalize(t_vec3 a);
 
 /*
 **	intersection.c
 */
-float			hit_distance_sphere(union u_object *obj, t_ray ray);
+float			dist_sphere(const union u_object *obj, const t_ray ray);
+float			dist_plane(const union u_object *obj, const t_ray ray);
+float			dist_disk(const union u_object *obj, const t_ray ray);
 
 #endif

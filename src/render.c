@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/09 17:56:40 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/09 19:38:50 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ union u_color	raytrace(const int x, const int y, const t_env *env)
 		1.0
 	};
 	// multiply by world matrix here <<<
-	(void)vec3_normalize(&screen_point);
+	screen_point = vec3_normalize(screen_point);
 
 	// ft_printf("screen_point: .x=%f\t.y=%f\t.z=%f\n", screen_point.x, screen_point.y, screen_point.z);
 

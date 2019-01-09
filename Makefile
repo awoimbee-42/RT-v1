@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/01/09 15:11:28 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/01/09 18:49:17 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CC = gcc
 
 ECHO = @printf
 
-CFLAGS	=	-Wall -Wextra -g3 #-Werror -O3 -ffast-math
+CFLAGS	=	-Wall -Wextra -g3 -Winline #-Werror -O3 -ffast-math
 
 SRC_PATH =	src
 OBJ_PATH =	obj
@@ -94,7 +94,7 @@ sfclean :
 
 sre: sfclean $(NAME)
 
-.PHONY: all clear re fclean sfclean sre
+.PHONY: all clean re fclean sfclean sre
 
 RED = \033[1;31m
 GRN = \033[1;32m
