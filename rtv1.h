@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/09 15:56:29 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/09 17:47:09 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@
 
 # define RES_H 1280
 # define RES_V 720
-# define NEAR_PLANE 0.0001
-# define FAR_PLANE 500.
 
-struct s_env;
+struct s_vec3;
+struct s_vec2;
+struct s_int2;
 
 union u_color;
 struct s_ray;
@@ -36,9 +36,11 @@ struct s_disp;
 struct s_img;
 struct s_mlx;
 
-struct s_vec3;
-struct s_vec2;
-struct s_int2;
+enum e_material;
+union u_object;
+struct s_obj;
+
+struct s_env;
 
 /*
 **	'BASIC' DATATYPES
@@ -89,7 +91,7 @@ typedef struct	s_disp
 {
 	struct s_int2	res;
 	float			aspect_ratio;
-	struct s_vec2	fov;
+	float			fov;
 }				t_disp;
 
 /*
@@ -125,7 +127,7 @@ typedef enum	e_material
 	GLOSS
 }				t_material;
 
-typedef float(*t_intsect)(const union u_object*, t_ray);
+typedef float(*t_intsect)(union u_object*, t_ray);
 
 union			u_object
 {
@@ -164,7 +166,7 @@ typedef struct	s_env
 	long			keys_presed; // C'est pour utliser des operatioons binaires, sinon on peut utiliser un char[..]
 }				t_env;
 
-union u_color	render(t_env *env);
+void			render(t_env *env);
 void			error(int	err_nb);
 
 /*
@@ -189,6 +191,6 @@ t_vec3			*vec3_normalize(t_vec3 *restrict a);
 /*
 **	intersection.c
 */
-float			hit_distance_sphere(const union u_object *obj, t_ray ray);
+float			hit_distance_sphere(union u_object *obj, t_ray ray);
 
 #endif

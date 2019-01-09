@@ -6,13 +6,13 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 22:02:07 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/09 16:02:44 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/09 16:59:29 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-float		hit_distance_sphere(const union u_object *obj, t_ray ray)
+float		hit_distance_sphere(union u_object *obj, t_ray ray)
 {
 	float		a;
 	float		b;

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:36:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/09 16:01:03 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/09 17:16:07 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int		main(int argc, char **argv)
 	//PLACEHOLDER
 	env.objs_arr = malloc(sizeof(t_obj) * 1);
 	env.objs_arr[0].this.sphere.intersect = &hit_distance_sphere;
-	env.objs_arr[0].this.sphere.orig = (t_vec3){0.5, 0.5, 0.8};
+	env.objs_arr[0].this.sphere.orig = (t_vec3){1.0, 0.5, 5.};
 	env.objs_arr[0].this.sphere.radius = 0.3;
 
 	env.objs_arr[0].color.intc = 0xFFFFFF;

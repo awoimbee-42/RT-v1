@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:12:01 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/08 22:47:13 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/09 17:47:29 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ void	read_argv(t_env *env, char **argv, int argc)
 {
 	int		i;
 
-	i = 1;
+	i = 0;
 	while (++i < argc)
 	{
-		if (ft_strcmp(argv[i], "-res") == 0 && i + 2 < argc)
+		if (ft_strcmp(argv[i], "-res") == 0 && i + 2 < argc)  // need to enforce image width >= image height !
 		{
 			(env->disp.res.x = ft_atoi(argv[++i])) < 10 ?
 			error(1) : 0;
@@ -50,7 +50,7 @@ void	init(t_env *env, t_mlx *mlx)
 	{
 		(t_int2){RES_H, RES_V},
 		(float)RES_H / RES_V,
-		(t_vec2){M_PI, M_PI * (float)RES_H / RES_V}
+		(float)75. / 2. * M_PI / 180.
 	};
 	env->camera = (t_ray)
 	{
