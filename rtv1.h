@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/09 23:06:54 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/10 18:22:32 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdlib.h>
 # include <stdio.h> //perror strerror
 # include <math.h>
+# include <limits.h>
 
 # include "libft.h"
 # include "mlx.h"
@@ -43,7 +44,9 @@ struct s_obj;
 struct s_env;
 
 /*
-**	'BASIC' DATATYPES
+**	###################################
+**	#        'BASIC' DATATYPES        #
+**	###################################
 */
 
 typedef struct	s_vec3
@@ -66,7 +69,9 @@ typedef struct	s_int2
 }				t_int2;
 
 /*
-**	RAY TRACING STRUCTS
+**	#####################################
+**	#        RAY TRACING STRUCTS        #
+**	#####################################
 */
 
 typedef union	u_color
@@ -95,7 +100,9 @@ typedef struct	s_disp
 }				t_disp;
 
 /*
-**	MLX STRUCTS
+**	#############################
+**	#        MLX STRUCTS        #
+**	#############################
 */
 
 typedef struct	s_img
@@ -115,10 +122,9 @@ typedef struct	s_mlx
 }				t_mlx;
 
 /*
-**	OBJECTS
-**	Reading the function pointer is not problem as it is the common first member
-**	of all the structs, it's part of the C standard :)
-**	DON'T TOUCH u_object TOO MUCH, NORMINETTE FREAKS OUT EASILY
+**	##########################################
+**	#        OBJECTS STRUCTS / UNIONS        #
+**	##########################################
 */
 
 typedef enum	e_material
@@ -127,11 +133,23 @@ typedef enum	e_material
 	GLOSS
 }				t_material;
 
+
+/*
+**	Reading the function pointers is not problem as it is the common
+**	 first member of all the structs.
+**	Beware, the norminette doesn't like this.. thing!
+*/
+
 typedef float(*t_distfun)(const union u_object*, const t_ray);
 typedef t_vec3(*t_normfun)(const union u_object*, const t_vec3);
 
 union			u_object
 {
+	struct		s_any
+	{
+		t_distfun		distfun;
+		t_normfun		normfun;
+	}				any;
 	struct		s_sphere
 	{
 		t_distfun		distfun;
@@ -164,15 +182,18 @@ union			u_object
 	}				cone;
 };
 
+
 typedef struct	s_obj
 {
 	enum e_material	material;
-	union u_color	color;
+	union u_color	color_filter;
 	union u_object	this;
 }				t_obj;
 
 /*
-**	ENV
+**	############################
+**	#        ENV STRUCT        #
+**	############################
 */
 
 typedef struct	s_env
@@ -182,8 +203,15 @@ typedef struct	s_env
 	struct s_ray	camera;
 	int				objs_nb;
 	struct s_obj	*objs_arr;
+	union u_color	bckgrnd_col;
 	long			keys_presed; // C'est pour utliser des operatioons binaires, sinon on peut utiliser un char[..]
 }				t_env;
+
+/*
+**	###########################
+**	#        FUNCTIONS        #
+**	###########################
+*/
 
 void			render(t_env *env);
 void			error(int	err_nb);
@@ -218,5 +246,6 @@ float			dist_disk(const union u_object *obj, const t_ray ray);
 **	norm_functions.c
 */
 t_vec3			norm_sphere(const union u_object *obj, const t_vec3 hit);
+t_vec3			norm_plane(const union u_object *obj, const t_vec3 hit);
 
 #endif

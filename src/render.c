@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/09 23:04:03 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/10 18:24:46 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,39 @@
 // 	}
 // }
 
+union u_color	trace_ray(const t_env *env, const t_ray ray, const int bounce)
+{
+	float			dist[2];
+	int				i[2];
+	t_ray			hit_normal;
+	union u_color	emit_col;
+
+	if (bounce == 0)
+		return (env->bckgrnd_col);
+	i[0] = -1;
+	i[1] = -1;
+	dist[1] = __FLT_MAX__;
+	while (++i[0] < env->objs_nb)
+	{
+		dist[0] = env->objs_arr[i[0]].this.any.distfun(&env->objs_arr[i[0]].this, ray);
+		if (dist[0] > 0 && dist[0] < dist[1])
+		{
+			i[1] = i[0];
+			dist[1] = dist[0];
+		}
+	};
+	if (env->objs_arr[i[1]].color_filter.intc < 0) // Yes, I want to modify this to make light reflect on light sources !
+		emit_col = get_light_col(...);
+	else
+	{
+
+	}
+		
+	hit_normal.org = vec3_add(vec3_multf(ray.dir, dist[1]), ray.org);
+	hit_normal.dir = env->objs_arr[i[1]].this.any.normfun(&env->objs_arr[i[1]].this, hit_normal.org);
+
+}
+
 /*
 **	raytrace() shoots the rays from the 'camera' onto the 'lens'
 **	screen_point are the coordinates of the point of the screen that the ray
@@ -51,22 +84,7 @@ union u_color	raytrace(const int x, const int y, const t_env *env)
 
 	// ft_printf("screen_point: .x=%f\t.y=%f\t.z=%f\n", screen_point.x, screen_point.y, screen_point.z);
 
-	int i = 0;
-	float distance;
-	while (i < env->objs_nb)
-	{
-		distance = env->objs_arr[i].this.sphere.distfun(&env->objs_arr[i].this, (t_ray){env->camera.org, screen_point});
-		if (distance > 0)
-			return (env->objs_arr[i].color);
-		++i;
-	}
-	return ((t_color){.intc = 0});
-	// should the intersection function also return the normal ?
-	// should we pack another function pointer inside the object struct ?
-
-	// normal = point at hit - center of sphere
-
-	// intersec_point = cast_ray(env, &screen_point);
+	
 }
 
 void		render(t_env *env)

@@ -1,3 +1,4 @@
 *.a
 *.o
 rtv1
+.vscode
