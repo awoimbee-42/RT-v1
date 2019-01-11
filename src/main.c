@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:36:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/11 01:54:24 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/11 19:38:33 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,22 @@ int		main(int argc, char **argv)
 	env.objs_arr[0].this.sphere.normfun = &norm_sphere;
 	env.objs_arr[0].this.sphere.orig = (t_vec3){0, 0, 5.};
 	env.objs_arr[0].this.sphere.radius = 1;
-	env.objs_arr[0].color_filter.intc = 0xFF00FF;
+	env.objs_arr[0].color = (t_fcolor){0.9, 0, 0.9};
 	env.objs_arr[0].material = MAT;
 
 	env.objs_arr[1].this.sphere.distfun = &dist_sphere;
 	env.objs_arr[1].this.sphere.normfun = &norm_sphere;
 	env.objs_arr[1].this.sphere.orig = (t_vec3){0.8, 0.1, 7.};
-	env.objs_arr[1].this.sphere.radius = 3.;
-	env.objs_arr[1].color_filter.charc = (struct s_charc){-128, -128, -128, 0};
+	env.objs_arr[1].this.sphere.radius = 2.;
+	env.objs_arr[1].color = (t_fcolor){0.2, 0.4, 0.8};
 	env.objs_arr[1].material = MAT;
 
 	env.objs_arr[2].this.disk.distfun = &dist_disk;
 	env.objs_arr[2].this.disk.normfun = &norm_plane;
-	env.objs_arr[2].this.disk.orig = (t_vec3){0.8, 0.1, 17.};
+	env.objs_arr[2].this.disk.orig = (t_vec3){0.8, 0.1, 8.};
 	env.objs_arr[2].this.disk.norm = (t_vec3){0, 0, 1};
-	env.objs_arr[2].this.disk.radius2 = 25.;
-	env.objs_arr[2].color_filter.intc = 0x0000FF;
+	env.objs_arr[2].this.disk.radius2 = 7.;
+	env.objs_arr[2].color = (t_fcolor){0.8, 0.8, 0.8};
 	env.objs_arr[2].material = MAT;
 
 	// env.objs_arr[2].this.plane.distfun = &dist_plane;
@@ -59,6 +59,15 @@ int		main(int argc, char **argv)
 
 	env.objs_nb = 3;
 	//####################
+
+	//######################
+	env.light_arr = malloc(sizeof(t_light) * 1);
+
+	env.light_arr[0].pos = (t_vec3){0.2, 5, 0.5};
+	env.light_arr[0].intensity = (t_fcolor){1, 1, 1};
+
+	env.light_nb = 1;
+	//######################
 
 	render(&env);
 	mlx_loop(mlx.ptr);

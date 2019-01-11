@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/01/09 23:08:10 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/01/11 19:28:30 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ SRC_NAME =	main.c										\
 			init_argv.c									\
 			render.c									\
 			dist_functions.c	norm_functions.c		\
-			vec3_op0.c			vec3_op1.c
+			vec3_op0.c			vec3_op1.c				\
+			color_op.c
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 

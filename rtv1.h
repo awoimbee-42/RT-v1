@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/11 01:53:42 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/11 19:24:30 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,17 @@ struct s_obj;
 
 struct s_env;
 
+/*	###############################
+**	#        FUCKING TRASH        #
+**	###############################
+*/
+
+typedef struct	s_id_dist
+{
+	int				id;
+	float			dist;
+}				t_id_dist;
+
 /*
 **	###################################
 **	#        'BASIC' DATATYPES        #
@@ -74,17 +85,34 @@ typedef struct	s_int2
 **	#####################################
 */
 
-typedef union	u_color
+typedef struct	s_fcolor
 {
-	struct		s_charc
-	{
-		char	r;
-		char	g;
-		char	b;
-		char	a;
-	}				charc;
-	unsigned int	intc;
-}				t_color;
+	float			r;
+	float			g;
+	float			b;
+}				t_fcolor;
+
+// typedef union	u_color
+// {
+// 	struct		s_charc
+// 	{
+// 		unsigned char	r;
+// 		unsigned char	g;
+// 		unsigned char	b;
+// 	}				charc;
+// }				t_color;
+
+
+// typedef union	u_color
+// {
+// 	struct		s_charc
+// 	{
+// 		unsigned char	r;
+// 		unsigned char	g;
+// 		unsigned char	b;
+// 	}				charc;
+// 	unsigned int	intc;
+// }				t_color;
 
 typedef struct	s_ray
 {
@@ -122,6 +150,18 @@ typedef struct	s_mlx
 }				t_mlx;
 
 /*
+**	########################
+**	#        LIGHTS        #
+**	########################
+*/
+
+typedef struct	s_light
+{
+	t_vec3			pos;
+	struct s_fcolor	intensity;
+}				t_light;
+
+/*
 **	##########################################
 **	#        OBJECTS STRUCTS / UNIONS        #
 **	##########################################
@@ -132,7 +172,6 @@ typedef enum	e_material
 	MAT,
 	GLOSS
 }				t_material;
-
 
 /*
 **	Reading the function pointers is not problem as it is the common
@@ -182,11 +221,10 @@ union			u_object
 	}				cone;
 };
 
-
 typedef struct	s_obj
 {
 	enum e_material	material;
-	union u_color	color_filter;
+	struct s_fcolor	color;
 	union u_object	this;
 }				t_obj;
 
@@ -203,7 +241,9 @@ typedef struct	s_env
 	struct s_ray	camera;
 	int				objs_nb;
 	struct s_obj	*objs_arr;
-	union u_color	bckgrnd_col;
+	int				light_nb;
+	struct s_light	*light_arr;
+	struct s_fcolor	bckgrnd_col;
 	long			keys_presed; // C'est pour utliser des operatioons binaires, sinon on peut utiliser un char[..]
 }				t_env;
 
@@ -234,6 +274,7 @@ t_vec3			vec3_div(t_vec3 a, const t_vec3 b);
 float			vec3_dot(const t_vec3 a, const t_vec3 b);
 float			vec3_mod(const t_vec3 a);
 t_vec3			vec3_normalize(t_vec3 a);
+float			points_dist(const t_vec3 p1, const t_vec3 p2);
 
 /*
 **	dist_functions.c
@@ -247,5 +288,13 @@ float			dist_disk(const union u_object *obj, const t_ray ray);
 */
 t_vec3			norm_sphere(const union u_object *obj, const t_vec3 hit);
 t_vec3			norm_plane(const union u_object *obj, const t_vec3 hit);
+
+/*
+**	color_op.c
+*/
+int				srgb(t_fcolor color);
+t_fcolor		light_add(const t_fcolor c1, const t_fcolor c2);
+t_fcolor		light_drop(const t_fcolor light, const float dist);
+t_fcolor		light_filter(const t_fcolor light, const t_fcolor surface);
 
 #endif
