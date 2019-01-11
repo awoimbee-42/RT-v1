@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/11 22:02:33 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/11 22:44:05 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_fcolor			spec_diff(const t_env *env, const t_ray hit_norm) //for the moment it
 	{
 		light_dist = points_dist(env->light_arr[i].pos, hit_norm.org);
 		// printf("light dist: %f	hit_norm.org {x: %f, y: %f, z: %f}\n", light_dist, hit_norm.org.x, hit_norm.org.y, hit_norm.org.z);
-		if (light_dist < nearest_obj(env, hit_norm).dist || 1) // this condition is bad, i'm guessing its because of the imprecision of floats
+		if (light_dist < nearest_obj(env, hit_norm).dist) // this condition is bad, i'm guessing its because of the imprecision of floats OR the sphere dist func sucks
 		{
 			light = light_add(light, light_drop(env->light_arr[i].intensity, light_dist));
 			// printf("light: r=%f g=%f b=%f", )
@@ -99,28 +99,69 @@ t_fcolor	launch_ray(const int x, const int y, const t_env *env)
 
 void		render(t_env *env)
 {
-	int				i;
-	int				j;
+	int				u;
+	int				v;
 	unsigned long	px_id;
-	t_fcolor		px_color;
+	t_fcolor		*img;
 
 	//should mlx calls be protected?
-
+	img = malloc((env->disp.res.x * env->disp.res.y) * sizeof(t_fcolor));
 	env->mlx->img.ptr = mlx_new_image(env->mlx->ptr, env->disp.res.x, env->disp.res.y);
 	env->mlx->img.data = (int *)mlx_get_data_addr(env->mlx->img.ptr, &env->mlx->img.bpp, &env->mlx->img.line_s, &env->mlx->img.endian);
 
 	px_id = 0;
-	i = -1;
-	while (++i < env->disp.res.y)
+	v = -1;
+	while (++v < env->disp.res.y)
 	{
-		j = -1;
-		while (++j < env->disp.res.x)
+		u = -1;
+		while (++u < env->disp.res.x)
 		{
-			px_color = launch_ray(j, i, env);
-			env->mlx->img.data[px_id++] = srgb(px_color);
+			img[px_id++] = launch_ray(u, v, env);
 		}
 	}
 
+
+	{
+		unsigned long i;
+		float max;
+
+		max = 1;
+		i = 0;
+		while (i < px_id)
+		{
+			if (img[i].r > max)
+				max = img[i].r;
+			if (img[i].g > max)
+				max = img[i].g;
+			if (img[i].b > max)
+				max = img[i].b;
+			++i;
+		}
+		i = 0;
+		while (i < px_id)
+		{
+			img[i].r /= max;
+			img[i].g /= max;
+			img[i].b /= max;
+			++i;
+		}
+	}
+
+
+
+	px_id = 0;
+	v = -1;
+	while (++v < env->disp.res.y)
+	{
+		u = -1;
+		while (++u < env->disp.res.x)
+		{
+			env->mlx->img.data[px_id] = srgb(img[px_id]);
+			px_id++;
+		}
+	}
+
+	free(img);
 	mlx_put_image_to_window(env->mlx->ptr, env->mlx->win, env->mlx->img.ptr, 0, 0);
 	mlx_destroy_image(env->mlx->ptr, env->mlx->img.ptr);
 
