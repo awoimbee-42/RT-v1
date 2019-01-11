@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/10 18:24:46 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/11 01:54:36 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,26 @@
 
 // 	}
 // }
+union u_color	trace_ray(const t_env *env, const t_ray ray, const int bounce);
+
+union u_color	rgb_sub(const union u_color a, const union u_color b)
+{
+	return ((t_color)
+	{
+		.charc = (struct s_charc)
+			{
+				a.charc.r - b.charc.r,
+				a.charc.g - b.charc.g,
+				a.charc.b - b.charc.b,
+				0 // nobedy cares about the alpha channel appart from the mlx...
+			} 
+	});
+}
+
+union u_color	reflect_ray(const t_env *env, const t_ray ray, const int bounce)
+{
+	return (trace_ray(env, ray, bounce)); //placeholder
+}
 
 union u_color	trace_ray(const t_env *env, const t_ray ray, const int bounce)
 {
@@ -44,23 +64,23 @@ union u_color	trace_ray(const t_env *env, const t_ray ray, const int bounce)
 	dist[1] = __FLT_MAX__;
 	while (++i[0] < env->objs_nb)
 	{
-		dist[0] = env->objs_arr[i[0]].this.any.distfun(&env->objs_arr[i[0]].this, ray);
+		dist[0] = env->objs_arr[i[0]].this.any
+						.distfun(&env->objs_arr[i[0]].this, ray);
 		if (dist[0] > 0 && dist[0] < dist[1])
 		{
 			i[1] = i[0];
 			dist[1] = dist[0];
 		}
 	};
-	if (env->objs_arr[i[1]].color_filter.intc < 0) // Yes, I want to modify this to make light reflect on light sources !
-		emit_col = get_light_col(...);
-	else
-	{
-
-	}
-		
+	if (i[1] == -1)
+		return (env->bckgrnd_col);
+	// printf("dist: %f\n", dist[1]);
 	hit_normal.org = vec3_add(vec3_multf(ray.dir, dist[1]), ray.org);
-	hit_normal.dir = env->objs_arr[i[1]].this.any.normfun(&env->objs_arr[i[1]].this, hit_normal.org);
-
+	hit_normal.dir = env->objs_arr[i[1]].this.any
+						.normfun(&env->objs_arr[i[1]].this, hit_normal.org);
+	emit_col = rgb_sub(reflect_ray(env, hit_normal, bounce - 1),
+									env->objs_arr[i[1]].color_filter);
+	return (emit_col);
 }
 
 /*
@@ -69,7 +89,7 @@ union u_color	trace_ray(const t_env *env, const t_ray ray, const int bounce)
 **		points to
 */
 
-union u_color	raytrace(const int x, const int y, const t_env *env)
+union u_color	launch_ray(const int x, const int y, const t_env *env)
 {
 	t_vec3			screen_point;
 
@@ -82,6 +102,7 @@ union u_color	raytrace(const int x, const int y, const t_env *env)
 	// multiply by world matrix here <<<
 	screen_point = vec3_normalize(screen_point);
 
+	return (trace_ray(env, (t_ray){env->camera.org, screen_point}, 2));
 	// ft_printf("screen_point: .x=%f\t.y=%f\t.z=%f\n", screen_point.x, screen_point.y, screen_point.z);
 
 	
@@ -105,7 +126,7 @@ void		render(t_env *env)
 		j = -1;
 		while (++j < env->disp.res.x)
 		{
-			color = raytrace(j, i, env);
+			color = launch_ray(j, i, env);
 			env->mlx->img.data[px_id++] = color.intc;
 		}
 	}

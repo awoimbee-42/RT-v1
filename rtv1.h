@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/10 18:22:32 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/11 01:53:42 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ typedef struct	s_int2
 
 typedef union	u_color
 {
-	struct
+	struct		s_charc
 	{
 		char	r;
 		char	g;
