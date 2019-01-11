@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/11 19:37:29 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/11 22:02:33 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_id_dist		nearest_obj(const t_env *env, const t_ray ray)
 }
 
 //https://stackoverflow.com/questions/15619830/raytracing-how-to-combine-diffuse-and-specular-color
-t_fcolor			spec_diff(const t_env *env, const t_ray hit_norm, const int bnce) //for the moment it's only semi diffraction
+t_fcolor			spec_diff(const t_env *env, const t_ray hit_norm) //for the moment it's only semi diffraction
 {
 	float			light_dist;
 	t_fcolor		light;
@@ -44,8 +44,12 @@ t_fcolor			spec_diff(const t_env *env, const t_ray hit_norm, const int bnce) //f
 	while (++i < env->light_nb)
 	{
 		light_dist = points_dist(env->light_arr[i].pos, hit_norm.org);
-		if (light_dist < nearest_obj(env, hit_norm).dist)
-			light_add(light, light_drop(env->light_arr[i].intensity, light_dist));
+		// printf("light dist: %f	hit_norm.org {x: %f, y: %f, z: %f}\n", light_dist, hit_norm.org.x, hit_norm.org.y, hit_norm.org.z);
+		if (light_dist < nearest_obj(env, hit_norm).dist || 1) // this condition is bad, i'm guessing its because of the imprecision of floats
+		{
+			light = light_add(light, light_drop(env->light_arr[i].intensity, light_dist));
+			// printf("light: r=%f g=%f b=%f", )
+		}
 	}
 	return (light);
 }
@@ -62,11 +66,11 @@ t_fcolor	trace_ray(const t_env *env, const t_ray ray, const int bounce)
 	if (obj.id == -1)
 		return (env->bckgrnd_col);
 
-	// printf("dist: %f\n", dist[1]);
+	// printf("dist: %f\n", obj.dist);
 	hit_normal.org = vec3_add(vec3_multf(ray.dir, obj.dist), ray.org);
 	hit_normal.dir = env->objs_arr[obj.id].this.any
 						.normfun(&env->objs_arr[obj.id].this, hit_normal.org);
-	emit_col = light_filter(spec_diff(env, hit_normal, bounce - 1),
+	emit_col = light_mult(spec_diff(env, hit_normal),
 							env->objs_arr[obj.id].color);
 	return (emit_col);
 }
@@ -101,6 +105,7 @@ void		render(t_env *env)
 	t_fcolor		px_color;
 
 	//should mlx calls be protected?
+
 	env->mlx->img.ptr = mlx_new_image(env->mlx->ptr, env->disp.res.x, env->disp.res.y);
 	env->mlx->img.data = (int *)mlx_get_data_addr(env->mlx->img.ptr, &env->mlx->img.bpp, &env->mlx->img.line_s, &env->mlx->img.endian);
 

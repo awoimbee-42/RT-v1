@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/09 22:48:12 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/10 23:30:38 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/11 21:58:22 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_vec3		norm_sphere(const union u_object *obj, const t_vec3 hit)
 {
-	return (vec3_sub(hit, obj->sphere.orig));
+	return (vec3_divf(vec3_sub(hit, obj->sphere.orig), obj->sphere.radius));
 }
 
 t_vec3		norm_plane(const union u_object *obj, const t_vec3 hit)

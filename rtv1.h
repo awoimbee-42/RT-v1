@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/11 19:24:30 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/11 21:58:01 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,6 +271,7 @@ t_vec3			vec3_sub(t_vec3 a, const t_vec3 b);
 t_vec3			vec3_multv(t_vec3 a, const t_vec3 b);
 t_vec3			vec3_multf(t_vec3 a, const float b);
 t_vec3			vec3_div(t_vec3 a, const t_vec3 b);
+t_vec3			vec3_divf(t_vec3 a, const float b);
 float			vec3_dot(const t_vec3 a, const t_vec3 b);
 float			vec3_mod(const t_vec3 a);
 t_vec3			vec3_normalize(t_vec3 a);
@@ -296,5 +297,6 @@ int				srgb(t_fcolor color);
 t_fcolor		light_add(const t_fcolor c1, const t_fcolor c2);
 t_fcolor		light_drop(const t_fcolor light, const float dist);
 t_fcolor		light_filter(const t_fcolor light, const t_fcolor surface);
+t_fcolor		light_mult(const t_fcolor color, const t_fcolor light);
 
 #endif

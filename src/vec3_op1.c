@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/09 22:49:07 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/11 18:08:26 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/11 21:35:45 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ t_vec3		vec3_normalize(t_vec3 a)
 
 float		points_dist(const t_vec3 p1, const t_vec3 p2)
 {
-	return (
+	return (sqrt(
 		(p2.x - p1.x) * (p2.x - p1.x)
 		+ (p2.y - p1.y) * (p2.y - p1.y)
-		+ (p2.z - p1.z) * (p2.z - p1.z)
+		+ (p2.z - p1.z) * (p2.z - p1.z))
 	);
 }

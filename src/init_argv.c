@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:12:01 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/11 19:27:32 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/11 21:31:19 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	init(t_env *env, t_mlx *mlx)
 		(t_vec3){0., 0., 0.},
 		(t_vec3){0., 0., 1.}
 	};
-	env->bckgrnd_col = (t_fcolor){0.25, 0.25, 0.25};
+	env->bckgrnd_col = (t_fcolor){0.05, 0.05, 0.05};
 	env->mlx = mlx;
 	env->keys_presed = 0;
 }

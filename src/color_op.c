@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/11 18:26:31 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/11 19:40:15 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/11 21:47:01 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ t_fcolor		light_drop(const t_fcolor light, const float dist)
 int							srgb(t_fcolor color)
 {
 	return (
-		(((int)(color.r * 255))
-		+ (((int)(color.g * 255)) >> 8)
-		+ (((int)(color.b * 255)) >> 18))
+		(((int)(color.b * 255) & 0xFF)
+		+ ((((int)(color.g * 255)) << 8) & 0xFF00)
+		+ ((((int)(color.r * 255)) << 16) & 0xFF0000))
 	);
 }

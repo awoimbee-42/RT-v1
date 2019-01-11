@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 14:14:19 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/09 22:48:53 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/11 21:57:29 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,13 @@ inline t_vec3		vec3_div(t_vec3 a, const t_vec3 b)
 	a.x /= b.x;
 	a.y /= b.y;
 	a.z /= b.z;
+	return (a);
+}
+
+inline t_vec3		vec3_divf(t_vec3 a, const float b)
+{
+	a.x /= b;
+	a.y /= b;
+	a.z /= b;
 	return (a);
 }

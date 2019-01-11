@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:36:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/11 19:38:33 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/11 21:51:28 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int		main(int argc, char **argv)
 		error(1);
 
 	//PLACEHOLDER
-	env.objs_arr = malloc(sizeof(t_obj) * 3);
+	env.objs_arr = malloc(sizeof(t_obj) * 4);
 
 	env.objs_arr[0].this.sphere.distfun = &dist_sphere;
 	env.objs_arr[0].this.sphere.normfun = &norm_sphere;
@@ -50,26 +50,27 @@ int		main(int argc, char **argv)
 	env.objs_arr[2].color = (t_fcolor){0.8, 0.8, 0.8};
 	env.objs_arr[2].material = MAT;
 
-	// env.objs_arr[2].this.plane.distfun = &dist_plane;
-	// env.objs_arr[2].this.plane.normfun = &norm_plane;
-	// env.objs_arr[2].this.plane.orig = (t_vec3){0.8, 0.1, 9.};
-	// env.objs_arr[2].this.plane.norm = (t_vec3){0, 0, 1};
-	// env.objs_arr[2].color_filter.intc = 0xFF00FF;
-	// env.objs_arr[2].material = MAT;
+	env.objs_arr[3].this.plane.distfun = &dist_plane;
+	env.objs_arr[3].this.plane.normfun = &norm_plane;
+	env.objs_arr[3].this.plane.orig = (t_vec3){0, -2, 9.};
+	env.objs_arr[3].this.plane.norm = (t_vec3){0, 1, 0};
+	env.objs_arr[3].color = (t_fcolor){0.5, 0, 0};
+	env.objs_arr[3].material = MAT;
 
-	env.objs_nb = 3;
+	env.objs_nb = 4;
 	//####################
 
 	//######################
 	env.light_arr = malloc(sizeof(t_light) * 1);
 
-	env.light_arr[0].pos = (t_vec3){0.2, 5, 0.5};
-	env.light_arr[0].intensity = (t_fcolor){1, 1, 1};
+	env.light_arr[0].pos = (t_vec3){0, 0, 0};
+	env.light_arr[0].intensity = (t_fcolor){5, 5, 5};
 
 	env.light_nb = 1;
 	//######################
 
 	render(&env);
+	printf("render done !\n");
 	mlx_loop(mlx.ptr);
 }
 
