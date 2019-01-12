@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/12 11:43:03 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/12 13:26:36 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,20 @@ t_fcolor	launch_ray(const int x, const int y, const t_env *env)
 	return (trace_ray(env, (t_ray){env->camera.org, screen_point}, 2));
 }
 
+void		tone_map(t_fcolor *img, unsigned long px_nb)
+{
+	unsigned long i;
+	float max;
+
+	max = 1;
+	i = 0;
+	while (i < px_nb)
+	{
+		img[i] = light_filter(img[i], light_add(img[i], (t_fcolor){1, 1, 1}));
+		++i;
+	}
+}
+
 void		render(t_env *env)
 {
 	int				u;
@@ -123,35 +137,7 @@ void		render(t_env *env)
 			img[px_id++] = launch_ray(u, v, env);
 		}
 	}
-
-
-	{
-		unsigned long i;
-		float max;
-
-		max = 1;
-		i = 0;
-		while (i < px_id)
-		{
-			if (img[i].r > max)
-				max = img[i].r;
-			if (img[i].g > max)
-				max = img[i].g;
-			if (img[i].b > max)
-				max = img[i].b;
-			++i;
-		}
-		i = 0;
-		while (i < px_id)
-		{
-			img[i].r /= max;
-			img[i].g /= max;
-			img[i].b /= max;
-			++i;
-		}
-	}
-
-
+	tone_map(img, px_id);
 
 	px_id = 0;
 	v = -1;

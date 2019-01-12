@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:36:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/12 11:42:36 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/12 13:29:39 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,13 @@ int		main(int argc, char **argv)
 	//######################
 	env.light_arr = malloc(sizeof(t_light) * 2);
 
-	env.light_arr[0].pos = (t_vec3){4, -1, 5};
+	env.light_arr[0].pos = (t_vec3){0.8, -1, 6.5};
 	env.light_arr[0].intensity = (t_fcolor){10, 10, 10};
 
 	env.light_arr[1].pos = (t_vec3){0, 10, 0};
 	env.light_arr[1].intensity = (t_fcolor){0, 0, 0};
 
-	env.light_nb = 2;
+	env.light_nb = 1;
 	//######################
 
 	render(&env);
