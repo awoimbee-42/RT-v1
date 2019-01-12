@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/11 22:44:05 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/12 11:43:03 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_id_dist		nearest_obj(const t_env *env, const t_ray ray)
 	{
 		tmp.dist = env->objs_arr[tmp.id].this.any
 						.distfun(&env->objs_arr[tmp.id].this, ray);
-		if (tmp.dist > 0 && tmp.dist < nearest.dist)
+		if (tmp.dist > 0.01 && tmp.dist < nearest.dist)
 		{
 			nearest.id = tmp.id;
 			nearest.dist = tmp.dist;
@@ -38,6 +38,7 @@ t_fcolor			spec_diff(const t_env *env, const t_ray hit_norm) //for the moment it
 {
 	float			light_dist;
 	t_fcolor		light;
+	t_id_dist		near_obj;
 
 	light = env->bckgrnd_col;
 	int i = -1;
@@ -45,11 +46,14 @@ t_fcolor			spec_diff(const t_env *env, const t_ray hit_norm) //for the moment it
 	{
 		light_dist = points_dist(env->light_arr[i].pos, hit_norm.org);
 		// printf("light dist: %f	hit_norm.org {x: %f, y: %f, z: %f}\n", light_dist, hit_norm.org.x, hit_norm.org.y, hit_norm.org.z);
-		if (light_dist < nearest_obj(env, hit_norm).dist) // this condition is bad, i'm guessing its because of the imprecision of floats OR the sphere dist func sucks
+		near_obj = nearest_obj(env, hit_norm);
+		if (light_dist < near_obj.dist) // this condition is bad, i'm guessing its because of the imprecision of floats OR the sphere dist func sucks
 		{
 			light = light_add(light, light_drop(env->light_arr[i].intensity, light_dist));
 			// printf("light: r=%f g=%f b=%f", )
 		}
+		// else
+		// 	printf("light.dist: %7.5f obj.dist: %6.5f hit_norm.org {x: %.5f, y: %.5f, z: %.5f}\n", light_dist, near_obj.dist, hit_norm.org.x, hit_norm.org.y, hit_norm.org.z);
 	}
 	return (light);
 }
