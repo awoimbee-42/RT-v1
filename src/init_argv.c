@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:12:01 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/11 21:31:19 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/12 18:22:58 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,12 @@ void	read_argv(t_env *env, char **argv, int argc)
 	{
 		if (ft_strcmp(argv[i], "-res") == 0 && i + 2 < argc)  // need to enforce image width >= image height !
 		{
-			(env->disp.res.x = ft_atoi(argv[++i])) < 10 ?
-			error(1) : 0;
-			(env->disp.res.y = ft_atoi(argv[++i])) < 10 ?
-			error(1) : 0;
+			env->disp.res.x = ft_atoi(argv[++i]);
+			env->disp.res.y = ft_atoi(argv[++i]);
+			if (env->disp.res.x < 10 || env->disp.res.y < 10
+			|| env->disp.res.x < env->disp.res.y)
+				error(1);
+			env->disp.aspect_ratio = env->disp.res.x / env->disp.res.y;
 		}
 		else
 			usage();

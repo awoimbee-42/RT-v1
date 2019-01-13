@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/11 21:58:01 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/13 01:38:06 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,37 +184,24 @@ typedef t_vec3(*t_normfun)(const union u_object*, const t_vec3);
 
 union			u_object
 {
-	struct		s_any
-	{
-		t_distfun		distfun;
-		t_normfun		normfun;
-	}				any;
 	struct		s_sphere
 	{
-		t_distfun		distfun;
-		t_normfun		normfun;
 		t_vec3			orig;
 		float			radius;
 	}				sphere;
 	struct		s_plane
 	{
-		t_distfun		distfun;
-		t_normfun		normfun;
 		t_vec3			orig;
 		t_vec3			norm;
 	}				plane;
 	struct		s_disk
 	{
-		t_distfun		distfun;
-		t_normfun		normfun;
 		t_vec3			orig;
 		t_vec3			norm;
 		float			radius2;
 	}				disk;
 	struct		s_cone
 	{
-		t_distfun		distfun;
-		t_normfun		normfun;
 		t_vec3			orig;
 		t_vec3			height; // it's a height vector, which goes from the origin (tip) to the base
 		float			angle;
@@ -223,7 +210,11 @@ union			u_object
 
 typedef struct	s_obj
 {
-	enum e_material	material;
+	t_distfun		distfun;
+	t_normfun		normfun;
+	// enum e_material	material;
+	float			diffuse;
+	float			specular;
 	struct s_fcolor	color;
 	union u_object	this;
 }				t_obj;
@@ -253,7 +244,7 @@ typedef struct	s_env
 **	###########################
 */
 
-void			render(t_env *env);
+void			render(const t_env *env);
 void			error(int	err_nb);
 
 /*
@@ -298,5 +289,6 @@ t_fcolor		light_add(const t_fcolor c1, const t_fcolor c2);
 t_fcolor		light_drop(const t_fcolor light, const float dist);
 t_fcolor		light_filter(const t_fcolor light, const t_fcolor surface);
 t_fcolor		light_mult(const t_fcolor color, const t_fcolor light);
+t_fcolor		tone_map(const t_fcolor px);
 
 #endif
