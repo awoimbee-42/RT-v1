@@ -3,3 +3,4 @@
 rtv1
 .vscode
 *.gen
+.DS_Store
