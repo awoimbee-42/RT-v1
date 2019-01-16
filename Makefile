@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/01/11 21:39:33 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/01/16 14:33:11 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,11 +55,11 @@ all : $(NAME)
 
 libft/libft.a :
 	$(ECHO) "$(RED)Making libft...$(EOC)\n"
-	make -C libft/ all
+	make -C libft/ -j
 
 $(LIBX_FD)/libmlx.a :
 	$(ECHO) "$(RED)Making libx...$(EOC)\n"
-	make all -C $(LIBX_FD)
+	make all -C $(LIBX_FD) -j
 
 
 $(NAME) : $(LIBS) $(OBJ)

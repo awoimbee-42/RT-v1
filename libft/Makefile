@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/16 11:55:20 by awoimbee          #+#    #+#              #
-#    Updated: 2019/01/02 04:08:18 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/01/16 14:37:56 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,12 +83,12 @@ $(OBJ_PATH)	:
 	@mkdir -p $(addprefix $(OBJ_PATH)/, $(OBJ_DIRS)) 2> /dev/null
 	@printf "$(GRN)Making libft with \"$(CFLAGS) $(CPPFLAGS)\"...$(EOC)\n"
 
-$(NAME)	: $(OBJ_PATH) $(OBJS)
+$(NAME)	: $(OBJS)
 	@printf "$(GRN)creating $(NAME)...$(EOC)\n"
 	@printf "\tar -rcs $(NAME) (...)\n"
 	@ar -rcs $(NAME) $(OBJS)
 
-$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
+$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(OBJ_PATH)
 	@printf "\t$(CC) (...) $@\n"
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -c $<
 
