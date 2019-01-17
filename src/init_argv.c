@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:12:01 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/12 18:22:58 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/15 13:39:09 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ void	init(t_env *env, t_mlx *mlx)
 	};
 	env->camera = (t_ray)
 	{
-		(t_vec3){0., 0., 0.},
-		(t_vec3){0., 0., 1.}
+		(t_vec3){1., 1., 0.},
+		(t_vec3){-0.6, 0., 1.}
 	};
 	env->bckgrnd_col = (t_fcolor){0.05, 0.05, 0.05};
 	env->mlx = mlx;
