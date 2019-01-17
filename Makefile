@@ -6,15 +6,13 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/01/16 14:33:11 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/01/17 02:10:41 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	rtv1
 
 CC = gcc
-
-ECHO = @printf
 
 CFLAGS	=	-Wall -Wextra -Ofast #-Werror -O3 -ffast-math
 
@@ -54,48 +52,44 @@ LIBS = libft/libft.a $(LIBX_FD)/libmlx.a
 all : $(NAME)
 
 libft/libft.a :
-	$(ECHO) "$(RED)Making libft...$(EOC)\n"
-	make -C libft/ -j
+	@printf "$(RED)Making libft...$(EOC)\n"
+	@make -s -j -C libft/
 
 $(LIBX_FD)/libmlx.a :
-	$(ECHO) "$(RED)Making libx...$(EOC)\n"
-	make all -C $(LIBX_FD) -j
-
+	@printf "$(RED)Making libx...$(EOC)\n"
+	@make -s -j all -C $(LIBX_FD)
 
 $(NAME) : $(LIBS) $(OBJ)
-	$(ECHO) "$(RED)Linking $(NAME)...$(EOC)\n"
+	@printf "$(RED)Linking $(NAME)...$(EOC)\n"
 	$(CC) $^ -o $@ $(LDFLAGS) $(LDLIBS)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
-	$(ECHO) "$(GRN)Making $@ with \"$(CFLAGS) $(CPPFLAGS)\"...$(EOC)\n"
+	@printf "$(GRN)Building $@ with \"$(CFLAGS) $(CPPFLAGS)\"...$(EOC)\n"
 	@mkdir -p $(OBJ_PATH) 2> /dev/null
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -c $<
 
-clean :
-	$(ECHO) "$(RED)Cleaning libx...$(EOC)\n"
-	make clean -C $(LIBX_FD)
-	$(ECHO) "$(RED)Cleaning libft...$(EOC)\n"
-	make fclean -C libft
-	$(ECHO) "$(RED)Cleaning objects...$(EOC)\n"
-	rm -f $(OBJ)
-	@rmdir $(OBJ_PATH) 2> /dev/null || true
+libclean :
+	@printf "$(RED)Cleaning libx...$(EOC)\n"
+	@make -s clean -C $(LIBX_FD)
+	@printf "$(RED)Cleaning libft...$(EOC)\n"
+	@make -s fclean -C libft
 
-fclean : clean
-	$(ECHO) "$(RED)Cleaning $(NAME)...$(EOC)\n"
-	rm -f $(NAME)
+objclean :
+	@printf "$(RED)Cleaning objects...$(EOC)\n\trm -rf $(OBJ_PATH)\n"
+	@rm -rf $(OBJ_PATH)
 
+clean : libclean objclean
+
+outclean :
+	@printf "$(RED)Cleaning $(NAME)...$(EOC)\n\trm -f $(NAME)\n"
+	@rm -f $(NAME)
+
+fclean : clean outclean
 re : fclean all
-
-sfclean :
-	$(ECHO) "$(RED)Cleaning $(NAME)...$(EOC)\n"
-	rm -f $(NAME)
-	$(ECHO) "$(RED)Cleaning objects...$(EOC)\n"
-	rm -f $(OBJ)
-	@rmdir $(OBJ_PATH) 2> /dev/null || true
-
+sfclean : objclean outclean
 sre: sfclean $(NAME)
 
-.PHONY: all clean re fclean sfclean sre
+.PHONY: all libclean objclean clean re fclean sfclean sre
 
 RED = \033[1;31m
 GRN = \033[1;32m

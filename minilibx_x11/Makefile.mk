@@ -39,7 +39,7 @@ $(NAME)	: $(OBJ)
 	ar -r $(NAME) $(OBJ)
 	ranlib $(NAME)
 
-do_cp	:
+do_cp	: $(NAME)
 	cp $(NAME) libmlx_$(HT).a
 
 
