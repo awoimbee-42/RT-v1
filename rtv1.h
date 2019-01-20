@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/13 01:38:06 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/20 23:49:40 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,18 +60,18 @@ typedef struct	s_id_dist
 **	###################################
 */
 
-typedef struct	s_vec3
+typedef struct	s_float3
 {
 	float			x;
 	float			y;
 	float			z;
-}				t_vec3;
+}				t_flt3;
 
-typedef struct	s_vec2
+typedef struct	s_float2
 {
 	float			x;
 	float			y;
-}				t_vec2;
+}				t_flt2;
 
 typedef struct	s_int2
 {
@@ -79,45 +79,25 @@ typedef struct	s_int2
 	int				y;
 }				t_int2;
 
+typedef t_flt3
+t_vec3;
+
+typedef t_flt3
+t_fcolor;
+
+typedef t_flt3
+t_coords;
+
 /*
 **	#####################################
 **	#        RAY TRACING STRUCTS        #
 **	#####################################
 */
 
-typedef struct	s_fcolor
-{
-	float			r;
-	float			g;
-	float			b;
-}				t_fcolor;
-
-// typedef union	u_color
-// {
-// 	struct		s_charc
-// 	{
-// 		unsigned char	r;
-// 		unsigned char	g;
-// 		unsigned char	b;
-// 	}				charc;
-// }				t_color;
-
-
-// typedef union	u_color
-// {
-// 	struct		s_charc
-// 	{
-// 		unsigned char	r;
-// 		unsigned char	g;
-// 		unsigned char	b;
-// 	}				charc;
-// 	unsigned int	intc;
-// }				t_color;
-
 typedef struct	s_ray
 {
-	struct s_vec3	org;
-	struct s_vec3	dir;
+	t_coords		org;
+	t_vec3			dir;
 }				t_ray;
 
 typedef struct	s_disp
@@ -158,7 +138,7 @@ typedef struct	s_mlx
 typedef struct	s_light
 {
 	t_vec3			pos;
-	struct s_fcolor	intensity;
+	t_fcolor		intensity;
 }				t_light;
 
 /*
@@ -215,7 +195,7 @@ typedef struct	s_obj
 	// enum e_material	material;
 	float			diffuse;
 	float			specular;
-	struct s_fcolor	color;
+	t_fcolor		color;
 	union u_object	this;
 }				t_obj;
 
@@ -234,7 +214,7 @@ typedef struct	s_env
 	struct s_obj	*objs_arr;
 	int				light_nb;
 	struct s_light	*light_arr;
-	struct s_fcolor	bckgrnd_col;
+	t_fcolor		bckgrnd_col;
 	long			keys_presed; // C'est pour utliser des operatioons binaires, sinon on peut utiliser un char[..]
 }				t_env;
 
@@ -255,18 +235,20 @@ void			read_argv(t_env *env, char **argv, int argc);
 void			init(t_env *env, t_mlx *mlx);
 
 /*
-**	vec3_op.c
+**	flt3_op.c
 */
-t_vec3			vec3_add(t_vec3 a, const t_vec3 b);
-t_vec3			vec3_sub(t_vec3 a, const t_vec3 b);
-t_vec3			vec3_multv(t_vec3 a, const t_vec3 b);
-t_vec3			vec3_multf(t_vec3 a, const float b);
-t_vec3			vec3_div(t_vec3 a, const t_vec3 b);
-t_vec3			vec3_divf(t_vec3 a, const float b);
-float			vec3_dot(const t_vec3 a, const t_vec3 b);
-float			vec3_mod(const t_vec3 a);
-t_vec3			vec3_normalize(t_vec3 a);
-float			points_dist(const t_vec3 p1, const t_vec3 p2);
+t_flt3			flt3_add(t_flt3 a, const t_flt3 b);
+t_flt3			flt3_sub(t_flt3 a, const t_flt3 b);
+t_flt3			flt3_mult(t_flt3 a, const t_flt3 b);
+t_flt3			flt3_multf(t_flt3 a, const float b);
+t_flt3			flt3_div(t_flt3 a, const t_flt3 b);
+t_flt3			flt3_divf(t_flt3 a, const float b);
+float			flt3_dot(const t_flt3 a, const t_flt3 b);
+float			flt3_mod(const t_flt3 a);
+t_flt3			flt3_normalize(t_flt3 a);
+
+
+float			points_dist(const t_coords p1, const t_coords p2);
 
 /*
 **	dist_functions.c
@@ -285,10 +267,7 @@ t_vec3			norm_plane(const union u_object *obj, const t_vec3 hit);
 **	color_op.c
 */
 int				srgb(t_fcolor color);
-t_fcolor		light_add(const t_fcolor c1, const t_fcolor c2);
 t_fcolor		light_drop(const t_fcolor light, const float dist);
-t_fcolor		light_filter(const t_fcolor light, const t_fcolor surface);
-t_fcolor		light_mult(const t_fcolor color, const t_fcolor light);
 t_fcolor		tone_map(const t_fcolor px);
 
 #endif

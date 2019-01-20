@@ -1,24 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   norm_functions.c                                   :+:      :+:    :+:   */
+/*   flt3_op1.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/09 22:48:12 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/12 17:54:06 by awoimbee         ###   ########.fr       */
+/*   Created: 2019/01/09 22:49:07 by awoimbee          #+#    #+#             */
+/*   Updated: 2019/01/20 23:35:59 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-t_vec3		norm_sphere(const union u_object *obj, const t_vec3 hit)
+inline float	flt3_dot(const t_flt3 a, const t_flt3 b)
 {
-	return (vec3_divf(vec3_sub(hit, obj->sphere.orig), obj->sphere.radius));
+	return (a.x * b.x + a.y * b.y + a.z * b.z);
 }
 
-t_vec3		norm_plane(const union u_object *obj, const t_vec3 hit)
+inline float	flt3_mod(const t_flt3 a)
 {
-	(void)hit;
-	return (obj->plane.norm);
+	return sqrtf(flt3_dot(a, a));
+}
+
+inline t_flt3	flt3_normalize(t_flt3 a)
+{
+	float length = flt3_mod(a);
+	return (flt3_divf(a, length));
 }

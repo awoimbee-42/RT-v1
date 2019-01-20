@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/13 01:37:42 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/20 23:49:06 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_id_dist		nearest_obj(const t_env *env, const t_ray ray)
 	{
 		tmp.dist = env->objs_arr[tmp.id]
 						.distfun(&env->objs_arr[tmp.id].this, ray);
-		if (tmp.dist > 0.01 && tmp.dist < nearest.dist)
+		if (tmp.dist < nearest.dist && tmp.dist > 0.01)
 		{
 			nearest.id = tmp.id;
 			nearest.dist = tmp.dist;
@@ -53,7 +53,7 @@ t_fcolor			fast_diffuse(const t_env *env, const t_ray hit_norm)
 		near_obj = nearest_obj(env, hit_norm);
 		if (light_dist < near_obj.dist)
 		{
-			light = light_add(light, light_drop(env->light_arr[i].intensity, light_dist));
+			light = flt3_add(light, light_drop(env->light_arr[i].intensity, light_dist));
 		}
 	}
 	return (light);
@@ -87,18 +87,18 @@ t_fcolor	trace_ray(const t_env *env, const t_ray ray, const int bounce)
 	if (obj.id == -1)
 		return (env->bckgrnd_col);
 	// printf("dist: %f\n", obj.dist);
-	hit_normal.org = vec3_add(vec3_multf(ray.dir, obj.dist), ray.org);
-	hit_normal.dir = vec3_normalize(env->objs_arr[obj.id]
+	hit_normal.org = flt3_add(flt3_multf(ray.dir, obj.dist), ray.org);
+	hit_normal.dir = flt3_normalize(env->objs_arr[obj.id]
 						.normfun(&env->objs_arr[obj.id].this, hit_normal.org));  // is there a real need to normalize ?
-	emit_col = light_mult(fast_diffuse(env, hit_normal),
+	emit_col = flt3_mult(fast_diffuse(env, hit_normal),
 							env->objs_arr[obj.id].color);
 	return (emit_col);
 }
 
 /*
-**	raytrace() shoots the rays from the 'camera' onto the 'lens'
+**	launch_ray() shoots the rays from the 'camera' onto the 'lens'
 **	screen_point are the coordinates of the point of the screen that the ray
-**		points to
+**		hits
 */
 
 t_fcolor	launch_ray(const int x, const int y, const t_env *env)
@@ -112,7 +112,7 @@ t_fcolor	launch_ray(const int x, const int y, const t_env *env)
 		1.0
 	};
 	// multiply by world matrix here <<<
-	screen_point = vec3_normalize(screen_point);
+	screen_point = flt3_normalize(screen_point);
 
 	return (trace_ray(env, (t_ray){env->camera.org, screen_point}, 2));
 }
