@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/21 14:27:59 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/21 18:47:07 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <limits.h>
 
 # include "libft.h"
-# include "mlx.h"
+# include "SDL2/SDL.h"
 
 # define WIN_W 1280
 # define WIN_H 720
@@ -150,18 +150,14 @@ typedef struct	s_disp
 **	#############################
 */
 
-typedef struct	s_img
+typedef struct	s_sdl
 {
-	void			*ptr;
-	int				*data;
-}				t_img;
-
-typedef struct	s_mlx
-{
-	void			*ptr;
-	void			*win;
-	struct s_img	img;
-}				t_mlx;
+	unsigned int	*img;
+	SDL_Renderer	*renderer;
+	SDL_Texture		*texture;
+	SDL_Window		*win;
+    SDL_Surface		*surface;
+}				t_sdl;
 
 /*
 **	########################
@@ -235,7 +231,7 @@ typedef struct	s_obj
 
 typedef struct	s_env
 {
-	struct s_mlx	*mlx;
+	struct s_sdl	*sdl;
 	struct s_disp	disp;
 	struct s_ray	camera;
 	int				objs_nb;
@@ -253,6 +249,11 @@ typedef struct	s_env
 */
 
 void			render(const t_env *env);
+
+/*
+**	main.c
+*/
+void			exit_cleanly(t_env *env);
 void			error(int	err_nb);
 
 /*
@@ -260,7 +261,7 @@ void			error(int	err_nb);
 */
 void			usage(void);
 void			read_argv(t_env *env, char **argv, int argc);
-void			init(t_env *env, t_mlx *mlx);
+void			init(t_env *env, t_sdl *sdl);
 
 /*
 **	operators/flt3_opX.c
@@ -291,7 +292,7 @@ t_vec3			norm_plane(const union u_object *obj, const t_vec3 hit);
 /*
 **	operators/special_op.c
 */
-int				srgb(t_fcolor color);
+unsigned int	srgb(t_fcolor color);
 t_fcolor		light_drop(const t_fcolor light, const float dist);
 t_fcolor		tone_map(const t_fcolor px);
 float			points_dist(const t_coords p1, const t_coords p2);
@@ -299,8 +300,8 @@ float			points_dist(const t_coords p1, const t_coords p2);
 /*
 **	keys_handlers.c
 */
-int				loop(void *ram);
-int				key_pressed(int key, void *ram);
-int				key_released(int key, void *ram);
+void			loop(t_env *env);
+void			key_pressed(SDL_Keycode key, t_env *env);
+void			key_released(SDL_Keycode key, t_env *env);
 
 #endif

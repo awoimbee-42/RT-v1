@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:36:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/21 14:01:40 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/21 18:48:42 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,32 +57,44 @@ void	placeholder_fill_objs(t_env *env)
 
 int		main(int argc, char **argv)
 {
-	t_mlx	mlx;
+	t_sdl	sdl;
 	t_env	env;
-	int		n;
 
-	init(&env, &mlx);
+	init(&env, &sdl);
 	read_argv(&env, argv, argc);
 	placeholder_fill_objs(&env);
-	if (!(mlx.win = mlx_new_window(mlx.ptr,
-			env.disp.res.x, env.disp.res.y, "RT-V1"))
-		|| !(mlx.img.ptr = mlx_new_image(mlx.ptr, env.disp.res.x, env.disp.res.y))
-		|| !(mlx.img.data = (int *)mlx_get_data_addr(mlx.img.ptr, &n, &n, &n)))
+	if (!(sdl.win = SDL_CreateWindow( "RT-V1", 0, 0,
+			env.disp.res.x, env.disp.res.y, SDL_WINDOW_SHOWN)))
 		error(1);
-	mlx_hook(mlx.win, 2, 1L << 0, &key_pressed, &env);
-	mlx_hook(mlx.win, 3, 1L << 0, &key_released, &env);
-	mlx_loop_hook(mlx.ptr, &loop, &env);
+	sdl.renderer = SDL_CreateRenderer(sdl.win, -1, SDL_RENDERER_ACCELERATED);
+	sdl.texture = SDL_CreateTexture(sdl.renderer,
+		SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, env.disp.res.x, env.disp.res.y);
+	if (!(sdl.img = malloc(env.disp.res.x * env.disp.res.y * sizeof(int))))
+		error(2);
 	render(&env);
-	printf("render done !\n");
-	mlx_loop(mlx.ptr);
+	loop(&env);
+	return (0);
 }
 
 void	error(int err_nb)
 {
 	if (err_nb == 0)
-		perror("MiniLibX error: ");
-	else  if (err_nb == 1)
+		ft_fprintf(2, "SDL_Error: %s\n", SDL_GetError());
+	else if (err_nb == 1)
 		perror("Bad resolution");
-	else
-		exit(EXIT_FAILURE);
+	else if (err_nb == 2)
+		perror("Malloc error");
+	exit(EXIT_FAILURE);
+}
+
+void			exit_cleanly(t_env *env)
+{
+	SDL_DestroyTexture(env->sdl->texture);
+	SDL_DestroyRenderer(env->sdl->renderer);
+	free(env->sdl->img);
+	free(env->light_arr);
+	free(env->objs_arr);
+	SDL_DestroyWindow(env->sdl->win);
+	SDL_Quit();
+	exit(EXIT_SUCCESS);
 }

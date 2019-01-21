@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:12:01 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/21 13:55:56 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/21 15:12:22 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ void	read_argv(t_env *env, char **argv, int argc)
 	}
 }
 
-void	init(t_env *env, t_mlx *mlx)
+void	init(t_env *env, t_sdl *sdl)
 {
-	if (!(mlx->ptr = mlx_init()))
+	if(SDL_Init(SDL_INIT_VIDEO) < 0)
 		error(0);
 	env->disp = (t_disp)
 	{
@@ -60,6 +60,6 @@ void	init(t_env *env, t_mlx *mlx)
 		(t_vec3){-0.6, 0., 1.}
 	};
 	env->bckgrnd_col = (t_fcolor){0.05, 0.05, 0.05};
-	env->mlx = mlx;
+	env->sdl = sdl;
 	env->keys_pressed = 0;
 }

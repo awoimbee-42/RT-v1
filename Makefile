@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/01/21 14:28:29 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/01/21 19:39:50 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,12 +14,12 @@ NAME	=	rtv1
 
 CC = gcc
 
-CFLAGS	=	-Wall -Wextra -g3 #-Werror -O3 -ffast-math
+CFLAGS	=	-Wall -Wextra -O3 #-Werror -O3 -ffast-math
 
-SRC_NAME =	main.c										\
-			init_argv.c									\
-			keys_handlers.c								\
-			render.c									\
+SRC_NAME =	main.c							\
+			init_argv.c						\
+			loop.c							\
+			render.c						\
 			t_obj/dist.c					\
 			t_obj/norm.c					\
 			operators/flt3_op0.c			\
@@ -37,38 +37,36 @@ OBJ_PATH =	obj
 SRC = $(addprefix $(SRC_PATH)/,$(SRC_NAME))
 OBJ = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
 
-LDLIBS = -lft -lmlx -lm -lpthread
+LDLIBS = -lft -lSDL2 -lm
 
-UNAME_S := $(shell uname -s)
-ifeq ($(UNAME_S),Darwin)
-	LIBX_FD = ./minilibx_macos
-	LDLIBS += -framework OpenGL -framework AppKit
-else
-	LIBX_FD = ./minilibx_x11
-	LDLIBS += -lXext -lX11
-	#Don't forget you need libxext-dev & libx11-dev
-endif
+LDFLAGS = -Llibft -LSDL2/lib
 
-LDFLAGS = -Llibft -L$(LIBX_FD)
-LIBS = libft/libft.a $(LIBX_FD)/libmlx.a
+CFLAGS += -I./ -I./SDL2/include/ -I./libft
 
-CFLAGS += -I./ -I$(LIBX_FD) -I./libft
+SDL_OPTIONS =	--prefix=$$sdl2dir		\
+				--exec-prefix=$$sdl2dir
 
 ################################################################################
 
 all : $(NAME)
 
-$(word 1,$(LIBS)) :
+SDL2/lib/libSDL2.a :
+	cd SDL2;															\
+	sdl2dir=`pwd`;														\
+	mkdir -p build;														\
+	cd build;															\
+	echo `pwd`;															\
+	../sources/configure $(SDL_OPTIONS);								\
+	make -j;															\
+	make install
+
+libft/libft.a :
 	@printf "$(YLW)Making $@...$(EOC)\n"
 	@make -s -j -C libft/
 
-$(word 2,$(LIBS)) :
-	@printf "$(YLW)Making $@...$(EOC)\n"
-	@make -s -j all -C $(LIBX_FD)
-
-$(NAME) : $(LIBS) $(OBJ)
+$(NAME) : libft/libft.a SDL2/lib/libSDL2.a $(OBJ)
 	@printf "$(GRN)Linking $(NAME)...$(EOC)\n"
-	$(CC) $^ -o $@ $(LDFLAGS) $(LDLIBS)
+	$(CC) $(OBJ) -o $@ $(LDFLAGS) $(LDLIBS)
 
 $(OBJ_PATH) :
 	@mkdir -p $(OBJ_PATH) 2> /dev/null
@@ -81,7 +79,7 @@ $(OBJ_PATH)/%.o : $(SRC_PATH)/%.c | $(OBJ_PATH)
 
 libclean :
 	@printf "$(YLW)Cleaning libx...$(EOC)\n"
-	@make -s clean -C $(LIBX_FD)
+	@rm -rf SDL2/build SDL2/lib SDL2/share SDL2/bin SDL2/include
 	@printf "$(YLW)Cleaning libft...$(EOC)\n"
 	@make -s fclean -C libft
 

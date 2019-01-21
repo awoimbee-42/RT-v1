@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/11 18:26:31 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/21 14:19:25 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/21 16:19:47 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,13 @@ t_fcolor		light_drop(const t_fcolor light, const float dist)
 		});
 }
 
-int		srgb(const t_fcolor color)
+unsigned int	srgb(const t_fcolor color)
 {
 	return (
-		(((int)(color.z * 255) & 0xFF)
-			+ ((((int)(color.y * 255)) << 8) & 0xFF00)
-			+ ((((int)(color.x * 255)) << 16) & 0xFF0000)));
+			((unsigned int)(color.z * 255) & 0xFFU)
+			+ ((((unsigned int)(color.y * 255)) << 8) & 0xFF00)
+			+ ((((unsigned int)(color.x * 255)) << 16) & 0xFF0000)
+			+ (0U << 24));
 }
 
 t_fcolor	tone_map(const t_fcolor px)

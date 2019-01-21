@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/21 14:03:53 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/21 18:33:19 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,17 +122,25 @@ void				render(const t_env *env)
 {
 	int				u;
 	int				v;
-	unsigned long	px_id;
+	unsigned int	*tmp_img;
 
-	px_id = 0;
+	tmp_img = env->sdl->img;
+	memset(tmp_img, 255, env->disp.res.x * env->disp.res.y * sizeof(int));
 	v = -1;
 	while (++v < env->disp.res.y)
 	{
 		u = -1;
 		while (++u < env->disp.res.x)
 		{
-			env->mlx->img.data[px_id++] = srgb(tone_map(launch_ray(u, v, env)));
+			*tmp_img = srgb(tone_map(launch_ray(u, v, env)));
+			++tmp_img;
 		}
 	}
-	mlx_put_image_to_window(env->mlx->ptr, env->mlx->win, env->mlx->img.ptr, 0, 0);
+	SDL_UpdateTexture(env->sdl->texture, NULL, env->sdl->img, env->disp.res.x * sizeof(int));
+	// SDL_RenderClear(env->sdl->renderer);
+	SDL_RenderCopy(env->sdl->renderer, env->sdl->texture, NULL, NULL);
+	SDL_RenderPresent(env->sdl->renderer);
+
+	// SDL_UpdateWindowSurface(env->sdl->win);
+	// mlx_put_image_to_window(env->mlx->ptr, env->mlx->win, env->mlx->img.ptr, 0, 0);
 }
