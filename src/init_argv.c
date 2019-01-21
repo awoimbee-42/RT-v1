@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:12:01 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/15 13:39:09 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/21 01:11:19 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ void	init(t_env *env, t_mlx *mlx)
 		error(0);
 	env->disp = (t_disp)
 	{
-		(t_int2){RES_H, RES_V},
-		(float)RES_H / RES_V,
-		(float)75. / 2. * M_PI / 180.
+		.res = (t_int2){WIN_W, WIN_H},
+		.aspect_ratio = (float)WIN_W / WIN_H,
+		.tfov = tan(75. / 2. * M_PI / 180.)
 	};
 	env->camera = (t_ray)
 	{
@@ -61,5 +61,5 @@ void	init(t_env *env, t_mlx *mlx)
 	};
 	env->bckgrnd_col = (t_fcolor){0.05, 0.05, 0.05};
 	env->mlx = mlx;
-	env->keys_presed = 0;
+	env->keys_pressed = 0;
 }

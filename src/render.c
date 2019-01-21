@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/20 23:49:06 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/21 00:36:20 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,8 @@ t_fcolor	launch_ray(const int x, const int y, const t_env *env)
 
 	screen_point = (t_vec3) //ray direction / point on the 'screen' in world coords
 	{
-		(2.0 * (x + 0.5) / (float)env->disp.res.x - 1.0) * tan(env->disp.fov) * env->disp.aspect_ratio,
-		(1.0 - 2.0 * (y + 0.5) / (float)env->disp.res.y) * tan(env->disp.fov),
+		(2.0 * (x + 0.5) / (float)env->disp.res.x - 1.0) * env->disp.tfov * env->disp.aspect_ratio,
+		(1.0 - 2.0 * (y + 0.5) / (float)env->disp.res.y) * env->disp.tfov,
 		1.0
 	};
 	// multiply by world matrix here <<<
@@ -123,10 +123,6 @@ void		render(const t_env *env)
 	int				v;
 	unsigned long	px_id;
 
-	//should mlx calls be protected?
-	env->mlx->img.ptr = mlx_new_image(env->mlx->ptr, env->disp.res.x, env->disp.res.y);
-	env->mlx->img.data = (int *)mlx_get_data_addr(env->mlx->img.ptr, &env->mlx->img.bpp, &env->mlx->img.line_s, &env->mlx->img.endian);
-
 	px_id = 0;
 	v = -1;
 	while (++v < env->disp.res.y)
@@ -138,5 +134,4 @@ void		render(const t_env *env)
 		}
 	}
 	mlx_put_image_to_window(env->mlx->ptr, env->mlx->win, env->mlx->img.ptr, 0, 0);
-	mlx_destroy_image(env->mlx->ptr, env->mlx->img.ptr);
 }

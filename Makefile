@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/01/20 23:51:02 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/01/21 01:10:13 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,10 +14,11 @@ NAME	=	rtv1
 
 CC = gcc
 
-CFLAGS	=	-Wall -Wextra -Ofast #-Werror -O3 -ffast-math
+CFLAGS	=	-Wall -Wextra -g3 #-Werror -O3 -ffast-math
 
 SRC_NAME =	main.c										\
 			init_argv.c									\
+			keys_handlers.c								\
 			render.c									\
 			t_obj/dist.c					\
 			t_obj/norm.c					\

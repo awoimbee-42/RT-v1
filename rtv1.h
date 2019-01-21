@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/20 23:49:40 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/21 00:56:55 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,27 +23,64 @@
 # include "libft.h"
 # include "mlx.h"
 
-# define RES_H 1280
-# define RES_V 720
+# define WIN_W 1280
+# define WIN_H 720
 
-struct s_vec3;
-struct s_vec2;
+/*
+**	Define inputs
+*/
+
+# ifdef __linux__
+#  define K_UP	65362
+#  define K_DWN	65364
+#  define K_LFT	65361
+#  define K_RGT	65363
+#  define K_W	119
+#  define K_S	115
+#  define K_PLS	61
+#  define K_MNS	45
+#  define K_R	114
+#  define K_ESC	65307
+# else
+#  define K_UP	126
+#  define K_DWN	125
+#  define K_LFT	123
+#  define K_RGT	124
+#  define K_W	13
+#  define K_S	1
+#  define K_PLS	69
+#  define K_MNS	78
+#  define K_R	15
+#  define K_ESC	53
+# endif
+# define BT_ESC (1 << 0)
+
+/*
+**	All of the structures & such, in order
+*/
+
+struct s_id_dist;
+
+struct s_float3;
+struct s_float2;
 struct s_int2;
 
-union u_color;
 struct s_ray;
 struct s_disp;
 
 struct s_img;
 struct s_mlx;
 
+struct s_light;
 enum e_material;
 union u_object;
 struct s_obj;
 
 struct s_env;
 
-/*	###############################
+
+/*
+**	###############################
 **	#        FUCKING TRASH        #
 **	###############################
 */
@@ -100,11 +137,15 @@ typedef struct	s_ray
 	t_vec3			dir;
 }				t_ray;
 
+/*
+**	tfov contains tan(fov)
+*/
+
 typedef struct	s_disp
 {
 	struct s_int2	res;
 	float			aspect_ratio;
-	float			fov;
+	float			tfov;
 }				t_disp;
 
 /*
@@ -117,9 +158,6 @@ typedef struct	s_img
 {
 	void			*ptr;
 	int				*data;
-	int				line_s;
-	int				bpp;
-	int				endian;
 }				t_img;
 
 typedef struct	s_mlx
@@ -137,7 +175,7 @@ typedef struct	s_mlx
 
 typedef struct	s_light
 {
-	t_vec3			pos;
+	t_coords		pos;
 	t_fcolor		intensity;
 }				t_light;
 
@@ -152,12 +190,6 @@ typedef enum	e_material
 	MAT,
 	GLOSS
 }				t_material;
-
-/*
-**	Reading the function pointers is not problem as it is the common
-**	 first member of all the structs.
-**	Beware, the norminette doesn't like this.. thing!
-*/
 
 typedef float(*t_distfun)(const union u_object*, const t_ray);
 typedef t_vec3(*t_normfun)(const union u_object*, const t_vec3);
@@ -215,7 +247,7 @@ typedef struct	s_env
 	int				light_nb;
 	struct s_light	*light_arr;
 	t_fcolor		bckgrnd_col;
-	long			keys_presed; // C'est pour utliser des operatioons binaires, sinon on peut utiliser un char[..]
+	long			keys_pressed; // C'est pour utliser des operatioons binaires, sinon on peut utiliser un char[..]
 }				t_env;
 
 /*
@@ -235,7 +267,7 @@ void			read_argv(t_env *env, char **argv, int argc);
 void			init(t_env *env, t_mlx *mlx);
 
 /*
-**	flt3_op.c
+**	operators/flt3_opX.c
 */
 t_flt3			flt3_add(t_flt3 a, const t_flt3 b);
 t_flt3			flt3_sub(t_flt3 a, const t_flt3 b);
@@ -247,27 +279,33 @@ float			flt3_dot(const t_flt3 a, const t_flt3 b);
 float			flt3_mod(const t_flt3 a);
 t_flt3			flt3_normalize(t_flt3 a);
 
-
-float			points_dist(const t_coords p1, const t_coords p2);
-
 /*
-**	dist_functions.c
+**	t_obj/dist.c
 */
 float			dist_sphere(const union u_object *obj, const t_ray ray);
 float			dist_plane(const union u_object *obj, const t_ray ray);
 float			dist_disk(const union u_object *obj, const t_ray ray);
 
 /*
-**	norm_functions.c
+**	t_obj/norm.c
 */
 t_vec3			norm_sphere(const union u_object *obj, const t_vec3 hit);
 t_vec3			norm_plane(const union u_object *obj, const t_vec3 hit);
 
 /*
-**	color_op.c
+**	operators/special_op.c
 */
 int				srgb(t_fcolor color);
 t_fcolor		light_drop(const t_fcolor light, const float dist);
 t_fcolor		tone_map(const t_fcolor px);
+float			points_dist(const t_coords p1, const t_coords p2);
+
+/*
+**	keys_handlers.c
+*/
+int			loop(void *ram);
+int			key_pressed(int key, void *ram);
+int			key_released(int key, void *ram);
+
 
 #endif
