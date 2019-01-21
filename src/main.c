@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:36:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/21 01:11:50 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/21 14:01:40 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	placeholder_fill_objs(t_env *env)
 {
-	//PLACEHOLDER
 	env->objs_arr = malloc(sizeof(t_obj) * 4);
 
 	env->objs_arr[0].distfun = &dist_sphere;
@@ -44,8 +43,6 @@ void	placeholder_fill_objs(t_env *env)
 
 	env->objs_nb = 4;
 	//####################
-
-	//######################
 	env->light_arr = malloc(sizeof(t_light) * 2);
 
 	env->light_arr[0].pos = (t_vec3){0, -1.2, 5};
@@ -80,7 +77,7 @@ int		main(int argc, char **argv)
 	mlx_loop(mlx.ptr);
 }
 
-void	error(int	err_nb)
+void	error(int err_nb)
 {
 	if (err_nb == 0)
 		perror("MiniLibX error: ");

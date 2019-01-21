@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/21 00:56:55 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/21 14:27:59 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ struct s_obj;
 
 struct s_env;
 
-
 /*
 **	###############################
 **	#        FUCKING TRASH        #
@@ -116,14 +115,11 @@ typedef struct	s_int2
 	int				y;
 }				t_int2;
 
-typedef t_flt3
-t_vec3;
+typedef t_flt3	t_vec3;
 
-typedef t_flt3
-t_fcolor;
+typedef t_flt3	t_fcolor;
 
-typedef t_flt3
-t_coords;
+typedef t_flt3	t_coords;
 
 /*
 **	#####################################
@@ -247,7 +243,7 @@ typedef struct	s_env
 	int				light_nb;
 	struct s_light	*light_arr;
 	t_fcolor		bckgrnd_col;
-	long			keys_pressed; // C'est pour utliser des operatioons binaires, sinon on peut utiliser un char[..]
+	long			keys_pressed;
 }				t_env;
 
 /*
@@ -303,9 +299,8 @@ float			points_dist(const t_coords p1, const t_coords p2);
 /*
 **	keys_handlers.c
 */
-int			loop(void *ram);
-int			key_pressed(int key, void *ram);
-int			key_released(int key, void *ram);
-
+int				loop(void *ram);
+int				key_pressed(int key, void *ram);
+int				key_released(int key, void *ram);
 
 #endif

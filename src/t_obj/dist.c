@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 22:02:07 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/20 23:42:52 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/21 13:59:59 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,10 @@ float		dist_plane(const union u_object *obj, const t_ray ray)
 	denom = flt3_dot(obj->plane.norm, ray.dir);
 	if (fabs(denom) > 1e-6)
 	{
-		dist = 
-		flt3_dot(flt3_sub(obj->plane.orig, ray.org), obj->plane.norm) / denom;
+		dist = flt3_dot(
+			flt3_sub(obj->plane.orig, ray.org),
+			obj->plane.norm)
+			/ denom;
 		if (dist > 0)
 			return (dist);
 	}

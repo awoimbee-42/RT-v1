@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:12:01 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/21 01:11:19 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/21 13:55:56 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	read_argv(t_env *env, char **argv, int argc)
 	i = 0;
 	while (++i < argc)
 	{
-		if (ft_strcmp(argv[i], "-res") == 0 && i + 2 < argc)  // need to enforce image width >= image height !
+		if (ft_strcmp(argv[i], "-res") == 0 && i + 2 < argc)
 		{
 			env->disp.res.x = ft_atoi(argv[++i]);
 			env->disp.res.y = ft_atoi(argv[++i]);

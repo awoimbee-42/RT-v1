@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/21 00:36:20 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/21 14:03:53 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,19 +34,20 @@ t_id_dist		nearest_obj(const t_env *env, const t_ray ray)
 			nearest.id = tmp.id;
 			nearest.dist = tmp.dist;
 		}
-	};
+	}
 	return (nearest);
 }
 
 //https://stackoverflow.com/questions/15619830/raytracing-how-to-combine-diffuse-and-specular-color
-t_fcolor			fast_diffuse(const t_env *env, const t_ray hit_norm)
+t_fcolor		fast_diffuse(const t_env *env, const t_ray hit_norm)
 {
 	float			light_dist;
 	t_fcolor		light;
 	t_id_dist		near_obj;
+	int 			i;
 
 	light = env->bckgrnd_col;
-	int i = -1;
+	i = -1;
 	while (++i < env->light_nb)
 	{
 		light_dist = points_dist(env->light_arr[i].pos, hit_norm.org);
@@ -59,7 +60,7 @@ t_fcolor			fast_diffuse(const t_env *env, const t_ray hit_norm)
 	return (light);
 }
 
-t_fcolor		real_diffuse(const t_env *env, const t_ray hit_norm)
+t_fcolor			real_diffuse(const t_env *env, const t_ray hit_norm)
 {
 	float			light_dist;
 	t_fcolor		light;
@@ -75,7 +76,7 @@ t_fcolor		real_diffuse(const t_env *env, const t_ray hit_norm)
 	return (light);
 }
 
-t_fcolor	trace_ray(const t_env *env, const t_ray ray, const int bounce)
+t_fcolor			trace_ray(const t_env *env, const t_ray ray, const int bounce)
 {
 	t_id_dist		obj;
 	t_ray			hit_normal;
@@ -101,7 +102,7 @@ t_fcolor	trace_ray(const t_env *env, const t_ray ray, const int bounce)
 **		hits
 */
 
-t_fcolor	launch_ray(const int x, const int y, const t_env *env)
+t_fcolor			launch_ray(const int x, const int y, const t_env *env)
 {
 	t_vec3			screen_point;
 
@@ -117,7 +118,7 @@ t_fcolor	launch_ray(const int x, const int y, const t_env *env)
 	return (trace_ray(env, (t_ray){env->camera.org, screen_point}, 2));
 }
 
-void		render(const t_env *env)
+void				render(const t_env *env)
 {
 	int				u;
 	int				v;
