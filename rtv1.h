@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/21 20:45:55 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/21 20:49:54 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,29 @@
 # define BT_A	(1 << 1)
 # define BT_S	(1 << 2)
 # define BT_D	(1 << 3)
+
+/*
+**	All of the structures & such, in order
+*/
+
+struct s_id_dist;
+
+struct s_float3;
+struct s_float2;
+struct s_int2;
+
+struct s_ray;
+struct s_disp;
+
+struct s_img;
+struct s_mlx;
+
+struct s_light;
+enum e_material;
+union u_object;
+struct s_obj;
+
+struct s_env;
 
 /*
 **	###############################
