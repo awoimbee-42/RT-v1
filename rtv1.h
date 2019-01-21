@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/21 18:47:07 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/21 20:45:55 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,57 +26,18 @@
 # define WIN_W 1280
 # define WIN_H 720
 
-/*
-**	Define inputs
-*/
-
-# ifdef __linux__
-#  define K_UP	65362
-#  define K_DWN	65364
-#  define K_LFT	65361
-#  define K_RGT	65363
-#  define K_W	119
-#  define K_S	115
-#  define K_PLS	61
-#  define K_MNS	45
-#  define K_R	114
-#  define K_ESC	65307
-# else
-#  define K_UP	126
-#  define K_DWN	125
-#  define K_LFT	123
-#  define K_RGT	124
-#  define K_W	13
-#  define K_S	1
-#  define K_PLS	69
-#  define K_MNS	78
-#  define K_R	15
-#  define K_ESC	53
-# endif
-# define BT_ESC (1 << 0)
+# define SDL_ERR	1
+# define MALLOC_ERR	2
+# define RES_ERR	3
 
 /*
-**	All of the structures & such, in order
+**	Define bitwise inputs
 */
 
-struct s_id_dist;
-
-struct s_float3;
-struct s_float2;
-struct s_int2;
-
-struct s_ray;
-struct s_disp;
-
-struct s_img;
-struct s_mlx;
-
-struct s_light;
-enum e_material;
-union u_object;
-struct s_obj;
-
-struct s_env;
+# define BT_W	(1 << 0)
+# define BT_A	(1 << 1)
+# define BT_S	(1 << 2)
+# define BT_D	(1 << 3)
 
 /*
 **	###############################

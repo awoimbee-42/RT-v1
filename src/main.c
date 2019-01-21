@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:36:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/21 18:48:42 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/21 20:26:03 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,12 @@ int		main(int argc, char **argv)
 	placeholder_fill_objs(&env);
 	if (!(sdl.win = SDL_CreateWindow( "RT-V1", 0, 0,
 			env.disp.res.x, env.disp.res.y, SDL_WINDOW_SHOWN)))
-		error(1);
+		error(SDL_ERR);
 	sdl.renderer = SDL_CreateRenderer(sdl.win, -1, SDL_RENDERER_ACCELERATED);
 	sdl.texture = SDL_CreateTexture(sdl.renderer,
 		SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, env.disp.res.x, env.disp.res.y);
 	if (!(sdl.img = malloc(env.disp.res.x * env.disp.res.y * sizeof(int))))
-		error(2);
+		error(MALLOC_ERR);
 	render(&env);
 	loop(&env);
 	return (0);
@@ -78,11 +78,11 @@ int		main(int argc, char **argv)
 
 void	error(int err_nb)
 {
-	if (err_nb == 0)
+	if (err_nb == SDL_ERR)
 		ft_fprintf(2, "SDL_Error: %s\n", SDL_GetError());
-	else if (err_nb == 1)
+	else if (err_nb == RES_ERR)
 		perror("Bad resolution");
-	else if (err_nb == 2)
+	else if (err_nb == MALLOC_ERR)
 		perror("Malloc error");
 	exit(EXIT_FAILURE);
 }

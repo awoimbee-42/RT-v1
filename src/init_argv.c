@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:12:01 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/21 15:12:22 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/21 20:30:52 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	read_argv(t_env *env, char **argv, int argc)
 			env->disp.res.y = ft_atoi(argv[++i]);
 			if (env->disp.res.x < 10 || env->disp.res.y < 10
 			|| env->disp.res.x < env->disp.res.y)
-				error(1);
+				error(RES_ERR);
 			env->disp.aspect_ratio = env->disp.res.x / env->disp.res.y;
 		}
 		else
@@ -47,7 +47,7 @@ void	read_argv(t_env *env, char **argv, int argc)
 void	init(t_env *env, t_sdl *sdl)
 {
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)
-		error(0);
+		error(SDL_ERR);
 	env->disp = (t_disp)
 	{
 		.res = (t_int2){WIN_W, WIN_H},

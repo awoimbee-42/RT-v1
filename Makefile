@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/01/21 19:39:50 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/01/21 20:01:37 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,8 @@ LDFLAGS = -Llibft -LSDL2/lib
 
 CFLAGS += -I./ -I./SDL2/include/ -I./libft
 
-SDL_OPTIONS =	--prefix=$$sdl2dir		\
+SDL_OPTIONS =	-q						\
+				--prefix=$$sdl2dir		\
 				--exec-prefix=$$sdl2dir
 
 ################################################################################
@@ -51,14 +52,15 @@ SDL_OPTIONS =	--prefix=$$sdl2dir		\
 all : $(NAME)
 
 SDL2/lib/libSDL2.a :
-	cd SDL2;															\
-	sdl2dir=`pwd`;														\
-	mkdir -p build;														\
-	cd build;															\
-	echo `pwd`;															\
-	../sources/configure $(SDL_OPTIONS);								\
-	make -j;															\
-	make install
+	@printf "$(YLW)Making $@...$(EOC)\n"
+	@cd SDL2;															\
+		sdl2dir=`pwd`;													\
+		mkdir -p build;													\
+		cd build;														\
+		echo `pwd`;														\
+		../sources/configure $(SDL_OPTIONS);							\
+		make -j 10;														\
+		make install
 
 libft/libft.a :
 	@printf "$(YLW)Making $@...$(EOC)\n"
@@ -78,7 +80,7 @@ $(OBJ_PATH)/%.o : $(SRC_PATH)/%.c | $(OBJ_PATH)
 	@$(CC) $(CFLAGS) -o $@ -c $<
 
 libclean :
-	@printf "$(YLW)Cleaning libx...$(EOC)\n"
+	@printf "$(YLW)Cleaning SDL2...$(EOC)\n"
 	@rm -rf SDL2/build SDL2/lib SDL2/share SDL2/bin SDL2/include
 	@printf "$(YLW)Cleaning libft...$(EOC)\n"
 	@make -s fclean -C libft

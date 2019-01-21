@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/21 18:33:19 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/21 20:26:48 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,6 @@ void				render(const t_env *env)
 	unsigned int	*tmp_img;
 
 	tmp_img = env->sdl->img;
-	memset(tmp_img, 255, env->disp.res.x * env->disp.res.y * sizeof(int));
 	v = -1;
 	while (++v < env->disp.res.y)
 	{
@@ -137,10 +136,6 @@ void				render(const t_env *env)
 		}
 	}
 	SDL_UpdateTexture(env->sdl->texture, NULL, env->sdl->img, env->disp.res.x * sizeof(int));
-	// SDL_RenderClear(env->sdl->renderer);
 	SDL_RenderCopy(env->sdl->renderer, env->sdl->texture, NULL, NULL);
 	SDL_RenderPresent(env->sdl->renderer);
-
-	// SDL_UpdateWindowSurface(env->sdl->win);
-	// mlx_put_image_to_window(env->mlx->ptr, env->mlx->win, env->mlx->img.ptr, 0, 0);
 }
