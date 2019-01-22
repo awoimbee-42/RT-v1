@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:36:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/21 20:26:03 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/22 11:46:21 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	placeholder_fill_objs(t_env *env)
 	env->objs_arr[0].distfun = &dist_sphere;
 	env->objs_arr[0].normfun = &norm_sphere;
 	env->objs_arr[0].this.sphere.orig = (t_vec3){0, 0, 5.};
-	env->objs_arr[0].this.sphere.radius = 1;
+	env->objs_arr[0].this.sphere.radius = 2.;
 	env->objs_arr[0].color = (t_fcolor){1, 0, 1};
 
 	env->objs_arr[1].distfun = &dist_sphere;

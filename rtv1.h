@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/21 20:49:54 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/22 12:06:24 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,14 @@
 **	Define bitwise inputs
 */
 
-# define BT_W	(1 << 0)
-# define BT_A	(1 << 1)
-# define BT_S	(1 << 2)
-# define BT_D	(1 << 3)
+# define BT_W		(1 << 0)
+# define BT_A		(1 << 1)
+# define BT_S		(1 << 2)
+# define BT_D		(1 << 3)
+# define BT_UP		(1 << 4)
+# define BT_DOWN	(1 << 5)
+# define BT_LEFT	(1 << 6)
+# define BT_RIGHT	(1 << 7)
 
 /*
 **	All of the structures & such, in order

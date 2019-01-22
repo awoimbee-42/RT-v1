@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/21 20:26:48 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/22 12:27:03 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,13 +108,13 @@ t_fcolor			launch_ray(const int x, const int y, const t_env *env)
 
 	screen_point = (t_vec3) //ray direction / point on the 'screen' in world coords
 	{
-		(2.0 * (x + 0.5) / (float)env->disp.res.x - 1.0) * env->disp.tfov * env->disp.aspect_ratio,
+		 (2.0 * (x + 0.5) / (float)env->disp.res.x - 1.0) * env->disp.tfov * env->disp.aspect_ratio,
 		(1.0 - 2.0 * (y + 0.5) / (float)env->disp.res.y) * env->disp.tfov,
 		1.0
 	};
 	// multiply by world matrix here <<<
 	screen_point = flt3_normalize(screen_point);
-
+	
 	return (trace_ray(env, (t_ray){env->camera.org, screen_point}, 2));
 }
 
