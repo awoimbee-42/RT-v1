@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/01/22 01:20:09 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/01/22 12:47:06 by cpoirier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,8 @@ SRC_NAME =	main.c							\
 			t_obj/norm.c					\
 			operators/flt3_op0.c			\
 			operators/flt3_op1.c			\
-			operators/special_op.c
+			operators/special_op.c			\
+			camera_ope.c					\
 
 SRC_FOLDERS = operators t_obj
 ################################################################################

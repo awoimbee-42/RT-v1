@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/21 00:40:33 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/22 12:26:30 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/22 14:00:34 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,27 +28,42 @@ void		loop(t_env *env)
 	
 		if (env->keys_pressed & BT_W)
 		{
-			env->camera.org.y += 0.5;
+			move_camera(env, 0);
 			render(env);
 		}
 		if (env->keys_pressed & BT_A)
 		{
-			env->camera.org.x -= 0.5;
+			move_camera(env, 2);
 			render(env);
 		}
 		if (env->keys_pressed & BT_S)
 		{
-			env->camera.org.y -= 0.5;
+			move_camera(env, 1);
 			render(env);
 		}
 		if (env->keys_pressed & BT_D)
 		{
-			env->camera.org.x += 0.5;
+			move_camera(env, 3);
 			render(env);
 		}
 		if (env->keys_pressed & BT_RIGHT)
 		{
-			env->camera.dir.z -= 0.1;
+			env->camera.dir.y -= 0.1;
+			render(env);
+		}
+		if (env->keys_pressed & BT_LEFT)
+		{
+			env->camera.dir.y += 0.1;
+			render(env);
+		}
+		if (env->keys_pressed & BT_UP)
+		{
+			env->camera.dir.x += 0.1;
+			render(env);
+		}
+		if (env->keys_pressed & BT_DOWN)
+		{
+			env->camera.dir.x -= 0.1;
 			render(env);
 		}
 	}

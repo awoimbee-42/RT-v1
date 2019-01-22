@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/22 12:06:24 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/22 13:56:35 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -284,6 +284,12 @@ unsigned int	srgb(t_fcolor color);
 t_fcolor		light_drop(const t_fcolor light, const float dist);
 t_fcolor		tone_map(const t_fcolor px);
 float			points_dist(const t_coords p1, const t_coords p2);
+
+/*
+**	camera_ope.c
+*/
+void			apply_camera_rot(const t_env *v, t_vec3 *s);
+void			move_camera(t_env *env, int dir);
 
 /*
 **	keys_handlers.c

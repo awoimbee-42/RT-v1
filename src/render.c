@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/22 12:27:03 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/22 14:02:14 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,10 @@ t_fcolor			launch_ray(const int x, const int y, const t_env *env)
 		1.0
 	};
 	// multiply by world matrix here <<<
+
+	apply_camera_rot(env, &screen_point);
+
 	screen_point = flt3_normalize(screen_point);
-	
 	return (trace_ray(env, (t_ray){env->camera.org, screen_point}, 2));
 }
 
