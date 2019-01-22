@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 16:11:46 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/22 20:22:26 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/22 22:19:05 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static t_light	parse_light(int fd, unsigned int *line_nb)
 			light.pos = parse_f3(line + 11, *line_nb);
 		else if (!ft_strncmp(line, "\t\t.intensity", 12) && (done |= 0xF0))
 			light.intensity = parse_f3(line + 12, *line_nb);
-		else if (line != '\0')
+		else if (*line != '\0')
 			break ;
 		if (line[ft_strlen(line) - 1] == ';' && (done |= 0xF00))
 			break ;

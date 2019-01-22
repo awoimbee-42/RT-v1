@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 18:33:26 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/22 20:17:34 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/22 22:20:51 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_obj	parse_sphere(int fd, unsigned int *line_nb)
 			sphere.this.sphere.orig = parse_f3(line + 9, *line_nb);
 		else if (!ft_strncmp(line, "\t\t.radius", 9) && (done |= 0xF0000))
 			sphere.this.sphere.radius = parse_f(line + 9, *line_nb);
-		else if (!all_obj_parse(&sphere, line, &done, *line_nb) && line != '\0')
+		else if (!all_obj_parse(&sphere, line, &done, *line_nb) && *line != '\0')
 			break ;
 		if (line[ft_strlen(line) - 1] == ';' && (done |= 0xF00000))
 			break ;
@@ -58,7 +58,7 @@ t_obj	parse_plane(int fd, unsigned int *line_nb)
 			plane.this.plane.orig = parse_f3(line + 9, *line_nb);
 		else if (!ft_strncmp(line, "\t\t.normal", 9) && (done |= 0xF0000))
 			plane.this.plane.norm = parse_f3(line + 9, *line_nb);
-		else if (!all_obj_parse(&plane, line, &done, *line_nb) && line != '\0')
+		else if (!all_obj_parse(&plane, line, &done, *line_nb) && *line != '\0')
 			break ;
 		if (line[ft_strlen(line) - 1] == ';' && (done |= 0xF00000))
 			break ;
@@ -89,7 +89,7 @@ t_obj	parse_disk(int fd, unsigned int *line_nb)
 			disk.this.disk.norm = parse_f3(line + 9, *line_nb);
 		else if (!ft_strncmp(line, "\t\t.radius", 9) && (done |= 0xF00000))
 			disk.this.disk.radius2 = pow(parse_f(line + 9, *line_nb), 2);
-		else if (!all_obj_parse(&disk, line, &done, *line_nb) && line != '\0')
+		else if (!all_obj_parse(&disk, line, &done, *line_nb) && *line != '\0')
 			break ;
 		if (line[ft_strlen(line) - 1] == ';' && (done |= 0xF000000))
 			break ;

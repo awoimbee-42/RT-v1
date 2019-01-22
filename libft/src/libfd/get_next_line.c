@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 13:36:47 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/22 17:29:52 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/22 22:22:33 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ int		get_next_line(const int fd, char **line)
 		if (i != 0)
 			return (i);
 	}
-	if (cread > 0 || *line != '\0')
+	if (cread > 0 || (*line && **line))
 		return (1);
 	ft_lst_free_link(&lst, link);
 	return (cread);
