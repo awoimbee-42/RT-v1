@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/01/22 12:47:06 by cpoirier         ###   ########.fr        #
+#    Updated: 2019/01/22 19:58:49 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME	=	rtv1
 
 CC = gcc
 
-CFLAGS	=	-Wall -Wextra -O3 #-Werror -O3 -ffast-math
+CFLAGS	=	-Wall -Wextra -g3 #-Werror -O3 -ffast-math
 
 SRC_NAME =	main.c							\
 			init_argv.c						\
@@ -22,12 +22,21 @@ SRC_NAME =	main.c							\
 			render.c						\
 			t_obj/dist.c					\
 			t_obj/norm.c					\
-			operators/flt3_op0.c			\
-			operators/flt3_op1.c			\
-			operators/special_op.c			\
 			camera_ope.c					\
+			\
+			operators/flt3_op0.c				\
+			operators/flt3_op1.c				\
+			operators/special_op.c				\
+			\
+			parser/env_disp_cam.c				\
+			parser/lights.c						\
+			parser/obj_array.c					\
+			parser/obj_individual.c				\
+			parser/scene.c						\
+			parser/support_funs.c
 
-SRC_FOLDERS = operators t_obj
+
+SRC_FOLDERS = operators t_obj parser
 ################################################################################
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
@@ -53,7 +62,7 @@ SDL_OPTIONS =	-q						\
 all : $(NAME)
 
 SDL2/lib/libSDL2.a :
-	@printf "$(YLW)Making $@...$(EOC)\n"
+	@printf "$(YLW)Making SDL2...$(EOC)\n"
 	@cd SDL2;															\
 		sdl2path=`pwd`;													\
 		printf "$(INV)Creating build env...$(EOC)\n";					\
@@ -61,12 +70,12 @@ SDL2/lib/libSDL2.a :
 		cd build;														\
 		../sources/configure $(SDL_OPTIONS);							\
 		printf "$(INV)Building...$(EOC)\n";								\
-		make -s -j 10;														\
+		make -s -j 10;													\
 		printf "$(INV)Installing in ./SDL2...$(EOC)\n";					\
 		make -s install
 
 libft/libft.a :
-	@printf "$(YLW)Making $@...$(EOC)\n"
+	@printf "$(YLW)Making libft...$(EOC)\n"
 	@make -s -j -C libft/
 
 $(NAME) : libft/libft.a SDL2/lib/libSDL2.a $(OBJ)

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/22 13:56:35 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/22 16:16:35 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@
 
 # define SDL_ERR	1
 # define MALLOC_ERR	2
-# define RES_ERR	3
 
 /*
 **	Define bitwise inputs
@@ -227,7 +226,7 @@ typedef struct	s_env
 	int				light_nb;
 	struct s_light	*light_arr;
 	t_fcolor		bckgrnd_col;
-	long			keys_pressed;
+	unsigned int	keys_pressed;
 }				t_env;
 
 /*
@@ -243,6 +242,11 @@ void			render(const t_env *env);
 */
 void			exit_cleanly(t_env *env);
 void			error(int	err_nb);
+
+/*
+**	./parser/scene.c
+*/
+void		parse_scene(t_env *env);
 
 /*
 **	init_argv.c

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:12:01 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/22 12:50:39 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/22 15:03:31 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	read_argv(t_env *env, char **argv, int argc)
 			env->disp.res.y = ft_atoi(argv[++i]);
 			if (env->disp.res.x < 10 || env->disp.res.y < 10
 			|| env->disp.res.x < env->disp.res.y)
-				error(RES_ERR);
+				msg_exit("Bad resolution", 0);
 			env->disp.aspect_ratio = env->disp.res.x / env->disp.res.y;
 		}
 		else
