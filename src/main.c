@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:36:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/21 20:26:03 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/22 13:07:59 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ void	error(int err_nb)
 		perror("Bad resolution");
 	else if (err_nb == MALLOC_ERR)
 		perror("Malloc error");
+	else if (err_nb != 0)
+		ft_fprintf(stderr, "Unknown error number: %d\n", err_nb);
 	exit(EXIT_FAILURE);
 }
 
