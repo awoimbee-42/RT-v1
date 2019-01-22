@@ -19075,90 +19075,19 @@ $as_echo "$have_gcc_preferred_stack_boundary" >&6; }
 
 CheckDeclarationAfterStatement()
 {
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for GCC -Wdeclaration-after-statement option" >&5
-$as_echo_n "checking for GCC -Wdeclaration-after-statement option... " >&6; }
     have_gcc_declaration_after_statement=no
 
-    save_CFLAGS="$CFLAGS"
-    CFLAGS="$save_CFLAGS -Wdeclaration-after-statement -Werror=declaration-after-statement"
-    cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-    int x = 0;
-
-int
-main ()
-{
-
-
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_compile "$LINENO"; then :
-
-    have_gcc_declaration_after_statement=yes
-
-fi
 rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: $have_gcc_declaration_after_statement" >&5
-$as_echo "$have_gcc_declaration_after_statement" >&6; }
-    CFLAGS="$save_CFLAGS"
-
-    if test x$have_gcc_declaration_after_statement = xyes; then
-        EXTRA_CFLAGS="$EXTRA_CFLAGS -Wdeclaration-after-statement -Werror=declaration-after-statement"
-    fi
 }
 
 CheckWarnAll()
 {
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for GCC -Wall option" >&5
-$as_echo_n "checking for GCC -Wall option... " >&6; }
-    have_gcc_Wall=no
-
+   
     save_CFLAGS="$CFLAGS"
-    CFLAGS="$save_CFLAGS -Wall"
-    cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-    int x = 0;
-
-int
-main ()
-{
-
-
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_compile "$LINENO"; then :
-
+    CFLAGS="$save_CFLAGS -w"
     have_gcc_Wall=yes
 
-fi
 rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: $have_gcc_Wall" >&5
-$as_echo "$have_gcc_Wall" >&6; }
-    CFLAGS="$save_CFLAGS"
-
-    if test x$have_gcc_Wall = xyes; then
-        EXTRA_CFLAGS="$EXTRA_CFLAGS -Wall"
-
-                { $as_echo "$as_me:${as_lineno-$LINENO}: checking for necessary GCC -Wno-multichar option" >&5
-$as_echo_n "checking for necessary GCC -Wno-multichar option... " >&6; }
-        need_gcc_Wno_multichar=no
-        case "$host" in
-            *-*-haiku*)
-                need_gcc_Wno_multichar=yes
-                ;;
-        esac
-        { $as_echo "$as_me:${as_lineno-$LINENO}: result: $need_gcc_Wno_multichar" >&5
-$as_echo "$need_gcc_Wno_multichar" >&6; }
-        if test x$need_gcc_Wno_multichar = xyes; then
-            EXTRA_CFLAGS="$EXTRA_CFLAGS -Wno-multichar"
-        fi
-    fi
 }
 
 CheckWayland()
@@ -19723,7 +19652,8 @@ ac_x_header_dirs='
 /usr/X11R4/include
 
 /usr/include/X11
-/usr/include/X11R7
+/usr/include/X11R7fi
+
 /usr/include/X11R6
 /usr/include/X11R5
 /usr/include/X11R4

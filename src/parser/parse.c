@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/08 10:36:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/22 13:08:58 by awoimbee         ###   ########.fr       */
+/*   Created: 2019/01/22 12:38:31 by awoimbee          #+#    #+#             */
+/*   Updated: 2019/01/22 13:07:00 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
+#include "parser.h"
 
 void	placeholder_fill_objs(t_env *env)
 {
@@ -19,7 +20,7 @@ void	placeholder_fill_objs(t_env *env)
 	env->objs_arr[0].distfun = &dist_sphere;
 	env->objs_arr[0].normfun = &norm_sphere;
 	env->objs_arr[0].this.sphere.orig = (t_vec3){0, 0, 5.};
-	env->objs_arr[0].this.sphere.radius = 2.;
+	env->objs_arr[0].this.sphere.radius = 1;
 	env->objs_arr[0].color = (t_fcolor){1, 0, 1};
 
 	env->objs_arr[1].distfun = &dist_sphere;
@@ -55,48 +56,72 @@ void	placeholder_fill_objs(t_env *env)
 	//######################
 }
 
-int		main(int argc, char **argv)
-{
-	t_sdl	sdl;
-	t_env	env;
+env->disp = (t_disp)
+	{
+		.res = (t_int2){WIN_W, WIN_H},
+		.aspect_ratio = (float)WIN_W / WIN_H,
+		.tfov = tan(75. / 2. * M_PI / 180.)
+	};
+	env->camera = (t_ray)
+	{
+		(t_vec3){1., 1., 0.},
+		(t_vec3){-0.6, 0., 1.}
+	};
+	env->bckgrnd_col = (t_fcolor){0.05, 0.05, 0.05};
 
-	init(&env, &sdl);
-	read_argv(&env, argv, argc);
-	placeholder_fill_objs(&env);
-	if (!(sdl.win = SDL_CreateWindow( "RT-V1", 0, 0,
-			env.disp.res.x, env.disp.res.y, SDL_WINDOW_SHOWN)))
-		error(SDL_ERR);
-	sdl.renderer = SDL_CreateRenderer(sdl.win, -1, SDL_RENDERER_ACCELERATED);
-	sdl.texture = SDL_CreateTexture(sdl.renderer,
-		SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, env.disp.res.x, env.disp.res.y);
-	if (!(sdl.img = malloc(env.disp.res.x * env.disp.res.y * sizeof(int))))
-		error(MALLOC_ERR);
-	render(&env);
-	loop(&env);
-	return (0);
-}
 
-void	error(int err_nb)
-{
-	if (err_nb == SDL_ERR)
-		ft_fprintf(2, "SDL_Error: %s\n", SDL_GetError());
-	else if (err_nb == RES_ERR)
-		perror("Bad resolution");
-	else if (err_nb == MALLOC_ERR)
-		perror("Malloc error");
-	else if (err_nb != 0)
-		ft_fprintf(stderr, "Unknown error number: %d\n", err_nb);
-	exit(EXIT_FAILURE);
-}
+/*
+**	file format:
+**		env
+**			.background_light = {.., .., ..}
+**
+**		display
+**			.width = 1000
+**			.height = 500
+**
+**		camera
+**			.pos = {0., 0., 0.}
+**			.dir = {1., 2., 0.}
+**			.fov = 75
+**
+**		objs[X] :
+**		{
+**			Sphere
+**				.origin = {0., 0., 0.}
+**				.radius = 5.
+**				.color = {0.2, 0.4, 0.8}
+**			Plane
+**				...
+**		}
+**		lights[x] :
+**		{
+**		...
+**		}
+*/
 
-void			exit_cleanly(t_env *env)
+
+
+void		parse_scene(t_env *env)
 {
-	SDL_DestroyTexture(env->sdl->texture);
-	SDL_DestroyRenderer(env->sdl->renderer);
-	free(env->sdl->img);
-	free(env->light_arr);
-	free(env->objs_arr);
-	SDL_DestroyWindow(env->sdl->win);
-	SDL_Quit();
-	exit(EXIT_SUCCESS);
+	int		fd;
+	char	*line;
+	int		done;
+
+	done = 0;
+	if ((fd = open("scene.rt", O_RDONLY)) == -1)
+		error(FILE_ERR);
+	while (get_next_line(fd, &line) > 0)
+	{
+		if (!ft_strcmp(line, "env") && (done |= ENV))
+			parse_env(env);
+		else if (!ft_strcmp(line, "display") && (done |= DISP))
+			pase_disp(env);
+		else if (!ft_strcmp(line, "camera") && (done |= CAM))
+			pase_camera(env);
+		else if (!ft_strncmp(line, "objs", 4) && (done |= OBJS))
+			pase_objects(env, line);
+		else if (!ft_strncmp(line, "lights", 6) && (done |= LIGHTS))
+			pase_objects(env, line);
+	}
+
 }

@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/01/21 20:01:37 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/01/22 01:20:09 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,8 +44,8 @@ LDFLAGS = -Llibft -LSDL2/lib
 CFLAGS += -I./ -I./SDL2/include/ -I./libft
 
 SDL_OPTIONS =	-q						\
-				--prefix=$$sdl2dir		\
-				--exec-prefix=$$sdl2dir
+				--prefix=$$sdl2path		\
+				--exec-prefix=$$sdl2path
 
 ################################################################################
 
@@ -54,13 +54,15 @@ all : $(NAME)
 SDL2/lib/libSDL2.a :
 	@printf "$(YLW)Making $@...$(EOC)\n"
 	@cd SDL2;															\
-		sdl2dir=`pwd`;													\
+		sdl2path=`pwd`;													\
+		printf "$(INV)Creating build env...$(EOC)\n";					\
 		mkdir -p build;													\
 		cd build;														\
-		echo `pwd`;														\
 		../sources/configure $(SDL_OPTIONS);							\
-		make -j 10;														\
-		make install
+		printf "$(INV)Building...$(EOC)\n";								\
+		make -s -j 10;														\
+		printf "$(INV)Installing in ./SDL2...$(EOC)\n";					\
+		make -s install
 
 libft/libft.a :
 	@printf "$(YLW)Making $@...$(EOC)\n"
@@ -104,4 +106,5 @@ sre		:	sfclean		$(NAME)
 RED = \033[1;31m
 GRN = \033[1;32m
 YLW = \033[1;33m
+INV = \033[7m
 EOC = \033[0m
