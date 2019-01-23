@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/22 16:16:35 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/23 01:45:26 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,6 +257,9 @@ void			init(t_env *env, t_sdl *sdl);
 
 /*
 **	operators/flt3_opX.c
+**		for future references -> passing by value is OK here,
+**			benchmarking shows that void divf(t_vec3*a, (...)) is not
+**			faster that the implementation here 
 */
 t_flt3			flt3_add(t_flt3 a, const t_flt3 b);
 t_flt3			flt3_sub(t_flt3 a, const t_flt3 b);
