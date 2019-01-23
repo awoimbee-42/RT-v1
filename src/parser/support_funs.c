@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:09:52 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/23 00:55:14 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/23 18:26:21 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ float		parse_f(char *str, unsigned int line_nb)
 		msg_exit("'=' sign not found line %d!\n", &line_nb);
 	++str;
 	res = ft_atoi_double_mv(&str);
-	if (*str != '\0' && *str != ';')
+	if (!is_comment(str = skip_whitespaces(str)) && *str != ';')
 		msg_exit("Garbage at end of line %d\n", &line_nb);
 	return (res);
 }
