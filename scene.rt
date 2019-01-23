@@ -18,8 +18,8 @@ env
 	.background_light = {0.2, 0.2, 0.2};
 
 display
-	.width = 1000
-	.height = 500
+	.width = 300
+	.height = 144
 	.fov = 75;
 
 camera
@@ -30,6 +30,9 @@ objects[4] :
 {
 	Sphere
 		.origin = {0., 0., 5.}
+		#comments !
+			#They need to be placed on an empty line & can't end with ';' tho
+	#but hey, it works !
 		.radius = 2.
 		.color = {1, 0, 1}
 		.specular = 0.4

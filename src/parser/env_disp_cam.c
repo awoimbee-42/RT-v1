@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:18:42 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/22 18:50:52 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/23 00:58:39 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	parse_env(int fd, t_env *env)
 	{
 		if (!ft_strncmp(line, "\t.background_light", 18))
 			env->bckgrnd_col = parse_f3(line + 18, env->keys_pressed);
-		else if (*line != '\0')
+		else if (!is_comment(line))
 			break ;
 		if (line[ft_strlen(line) - 1] == ';' && (done = 1))
 			break ;
@@ -52,7 +52,7 @@ void	parse_disp(int fd, t_env *env)
 			env->disp.res.y = parse_f(line + 8, env->keys_pressed);
 		else if (!ft_strncmp(line, "\t.fov", 5) && (done |= 0xF00))
 			env->disp.tfov = parse_f(line + 5, env->keys_pressed);
-		else if (*line != '\0')
+		else if (!is_comment(line))
 			break ;
 		if (line[ft_strlen(line) - 1] == ';' && (done |= 0xF000))
 			break ;
@@ -79,7 +79,7 @@ void	parse_camera(int fd, t_env *env)
 			env->camera.org = parse_f3(line + 5, env->keys_pressed);
 		else if (!ft_strncmp(line, "\t.dir", 5) && (done |= 0xF0))
 			env->camera.dir = parse_f3(line + 5, env->keys_pressed);
-		else if (*line != '\0')
+		else if (!is_comment(line))
 			break ;
 		if (line[ft_strlen(line) - 1] == ';' && (done |= 0xF00))
 			break ;

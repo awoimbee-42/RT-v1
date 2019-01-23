@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 12:55:57 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/22 20:21:39 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/23 00:53:21 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # define MAX_OBJS	0xFFFFF
 # define MAX_LIGHTS	0xFFFFF
 
+int			is_comment(char *line);
+
 void		parse_scene(t_env *env);
 void		parse_env(int fd, t_env *env);
 void		parse_disp(int fd, t_env *env);
@@ -30,7 +32,7 @@ void		parse_camera(int fd, t_env *env);
 void		parse_objects(int fd, t_env *env, char *line);
 void		parse_lights(int fd, t_env *env, char *line);
 
-int			all_obj_parse(t_obj *obj, char *line, int *done,
+int			tobj_parse(t_obj *obj, char *line, int *done,
 					unsigned int line_nb);
 t_obj		parse_sphere(int fd, unsigned int *line_nb);
 t_obj		parse_plane(int fd, unsigned int *line_nb);

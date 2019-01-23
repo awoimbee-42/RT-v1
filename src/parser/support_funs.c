@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:09:52 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/22 20:21:55 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/23 00:55:14 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,14 @@ static char	*skip_whitespaces(char *str)
 	while (*str == ' ' || *str == '\t')
 		++str;
 	return (str);
+}
+
+int		is_comment(char *line)
+{
+	line = skip_whitespaces(line);
+	if (*line == '\0' || *line == '#')
+		return (1);
+	return (0);	
 }
 
 /*

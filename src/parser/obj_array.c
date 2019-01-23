@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:28:36 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/22 20:22:44 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/23 00:53:23 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 #include "parser.h"
 
 /*
-**	all_obj_parse
+**	tobj_parse
 **		because all objects have a lot in common.
 **		returns 1 if somethig was retrieved, else 0
 */
 
-int			all_obj_parse(t_obj *obj, char *line, int *done,
+int			tobj_parse(t_obj *obj, char *line, int *done,
 							unsigned int line_nb)
 {
 	if (!ft_strncmp(line, "\t\t.diffuse", 10) && (*done |= 0xF))
