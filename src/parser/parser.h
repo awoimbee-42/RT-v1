@@ -6,12 +6,14 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 12:55:57 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/23 00:53:21 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/24 15:33:37 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RT_PARSER_H
 # define RT_PARSER_H
+
+# include "rtv1.h"
 
 # define ENV	(1 << 0)
 # define DISP	(1 << 1)
@@ -22,9 +24,12 @@
 # define MAX_OBJS	0xFFFFF
 # define MAX_LIGHTS	0xFFFFF
 
+# define FILE_HEADER		"RICARD >>> PASTIS\n"
+# define FILE_HEADER_LEN	18
+
 int			is_comment(char *line);
 
-void		parse_scene(t_env *env);
+void		parse_scene(t_env *env, char *filename);
 void		parse_env(int fd, t_env *env);
 void		parse_disp(int fd, t_env *env);
 void		parse_camera(int fd, t_env *env);

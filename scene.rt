@@ -1,4 +1,4 @@
-
+RICARD >>> PASTIS
                          ,-------.                 /
                        ,'         `.           ,--'
                      ,'             `.      ,-;--        _.-
@@ -18,8 +18,8 @@ env
 	.background_light = {0.2, 0.2, 0.2};
 
 display
-	.width = 300
-	.height = 144
+	.width = 1001
+	.height = 1000
 	.fov = 75;
 
 camera
@@ -32,7 +32,7 @@ objects[4] :
 		.origin = {0., 0., 5.}	#comments ! but they cannot end with ';'
 			#but hey, it works !
 		.radius = 2.
-		.color = {1, 0, 1}
+		.color = {1, 1, 1}
 		.specular = 0.4
 		.diffuse = 0.7;
 	Sphere

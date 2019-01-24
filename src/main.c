@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:36:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/22 20:32:30 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/24 15:34:36 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int		main(int argc, char **argv)
 
 	init(&env, &sdl);
 	read_argv(&env, argv, argc);
-	parse_scene(&env);
+	parse_scene(&env, "scene.rt");
 	if (!(sdl.win = SDL_CreateWindow( "RT-V1", 0, 0,
 			env.disp.res.x, env.disp.res.y, SDL_WINDOW_SHOWN)))
 		error(SDL_ERR);

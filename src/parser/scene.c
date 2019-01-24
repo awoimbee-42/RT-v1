@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 12:38:31 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/22 20:21:46 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/24 15:33:26 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,21 +41,34 @@
 **		}
 */
 
+int			init_parser(int *done, t_env *env, char *filename)
+{
+	int		fd;
+	char	buff[FILE_HEADER_LEN];
+
+	env->keys_pressed = 0;
+	*done = 0;
+	if ((fd = open(filename, O_RDONLY)) == -1)
+		msg_exit("could not open %s", filename);
+	if (read(fd, buff, FILE_HEADER_LEN) != FILE_HEADER_LEN
+		|| ft_strncmp(buff, FILE_HEADER, FILE_HEADER_LEN))
+		msg_exit("Incorrect file type.", NULL);
+	return (fd);
+}
+
+
 /*
 **	Let's use env->keys_pressed as line nb because why not ?
 */
 
-void		parse_scene(t_env *env)
+void		parse_scene(t_env *env, char *filename)
 {
 	int		fd;
 	char	*line;
 	int		done;
 
-	env->keys_pressed = 0;
-	done = 0;
 	line = NULL;
-	if ((fd = open("scene.rt", O_RDONLY)) == -1)
-		msg_exit("could not open scene.rt", 0);
+	fd = init_parser(&done, env, filename);
 	while (get_next_line(fd, &line) > 0 && ++env->keys_pressed)
 	{
 		if (!ft_strcmp(line, "env") && (done |= 0xF))
