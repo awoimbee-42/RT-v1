@@ -1,0 +1,67 @@
+RICARD >>> PASTIS
+                         ,-------.                 /
+                       ,'         `.           ,--'
+                     ,'             `.      ,-;--        _.-
+                    /                 \ ---;-'  _.=.---''
+  +-------------+  ;    X        X     ---=-----'' _.-------
+  |    -----    |--|                   \-----=---:i-
+  +XX|'i:''''''''  :                   ;`--._ ''---':----
+  /X+-)             \   \         /   /      ''--._  `-
+ .XXX|)              `.  `.     ,'  ,'             ''---.
+   X\/)                `.  '---'  ,'                     `-
+     \                   `---+---'
+      \                      |
+       \.                    |
+         `-------------------+
+
+env
+	.background_light = {0.2, 0.2, 0.2};
+
+display
+	.width = 1001
+	.height = 1000
+	.fov = 75;
+
+camera
+	.pos = {0., 0., 0.}
+	.dir = {0., 0, 0};
+
+objects[4] :
+{
+	Sphere
+		.origin = {0., 0., 5.}	#comments ! but they cannot end with ';'
+			#but hey, it works !
+		.radius = 2.
+		.color = {1, 1, 1}
+		.specular = 0.4
+		.diffuse = 0.7;
+	Sphere
+		.origin = {0.8, 2.1, 7}
+		.radius = 2
+		.color = {0.2, 0.4, 0.8}
+		.specular = 0.5
+		.diffuse = 0.5;
+	Disk
+		.origin = {0.8, 2.1, 8}
+		.normal = {0, 0, 1}
+		.radius = 4
+		.color = {0.8, 0.8, 0.8}
+		.specular = 0.5
+		.diffuse = 0.5;
+	Plane
+		.origin = {0, -2, 9}
+		.normal = {0, 1, 0}
+		.color = {0.5, 0, 0}
+		.specular = 0.9
+		.diffuse = 0.2;
+}
+
+lights[2] :
+{
+	Light
+		.position = {0, -1.2, 5}
+		.intensity = {5, 5, 5};
+	Light
+		.position = {0, 100, 0}
+		.intensity = {10000, 10000, 10000};
+}

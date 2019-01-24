@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/24 17:49:49 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/24 17:55:20 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@
 
 # define SDL_ERR	1
 # define MALLOC_ERR	2
-# define RES_ERR	3
 
 /*
 **	Define bitwise inputs
@@ -233,7 +232,7 @@ typedef struct	s_env
 	int				light_nb;
 	struct s_light	*light_arr;
 	t_fcolor		bckgrnd_col;
-	long			keys_pressed;
+	unsigned int	keys_pressed;
 }				t_env;
 
 /*
@@ -251,6 +250,11 @@ void			exit_cleanly(t_env *env);
 void			error(int	err_nb);
 
 /*
+**	./parser/scene.c
+*/
+void		parse_scene(t_env *env, char *filename);
+
+/*
 **	init_argv.c
 */
 void			usage(void);
@@ -259,6 +263,9 @@ void			init(t_env *env, t_sdl *sdl);
 
 /*
 **	operators/flt3_opX.c
+**		for future references -> passing by value is OK here,
+**			benchmarking shows that void divf(t_vec3*a, (...)) is not
+**			faster that the implementation here
 */
 t_flt3			flt3_add(t_flt3 a, const t_flt3 b);
 t_flt3			flt3_sub(t_flt3 a, const t_flt3 b);
