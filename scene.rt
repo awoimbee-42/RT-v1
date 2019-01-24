@@ -18,19 +18,26 @@ env
 	.background_light = {0.2, 0.2, 0.2};
 
 display
-	.width = 1001
-	.height = 1000
+	.width = 400
+	.height = 400
 	.fov = 75;
 
 camera
 	.pos = {0., 0., 0.}
 	.dir = {0., 0, 0};
 
-objects[4] :
+objects[5] :
 {
 	Sphere
 		.origin = {0., 0., 5.}	#comments ! but they cannot end with ';'
 			#but hey, it works !
+		.radius = 2.
+		.color = {1, 1, 1}
+		.specular = 0.4
+		.diffuse = 0.7;
+	Cylinder
+		.origin = {0., 0., 12.}
+		.end = {2., 2., 12.}
 		.radius = 2.
 		.color = {1, 1, 1}
 		.specular = 0.4

@@ -82,12 +82,15 @@ t_fcolor			trace_ray(const t_env *env, const t_ray ray, const int bounce)
 	t_ray			hit_normal;
 	t_fcolor		emit_col;
 
-	if (bounce == 0)
+	/*if (bounce == 0)
 		return (env->bckgrnd_col);
+	*/
 	obj = nearest_obj(env, ray);
 	if (obj.id == -1)
 		return (env->bckgrnd_col);
 	// printf("dist: %f\n", obj.dist);
+	if (!bounce)
+		return (env->objs_arr[obj.id].color);
 	hit_normal.org = flt3_add(flt3_multf(ray.dir, obj.dist), ray.org);
 	hit_normal.dir = flt3_normalize(env->objs_arr[obj.id]
 						.normfun(&env->objs_arr[obj.id].this, hit_normal.org));  // is there a real need to normalize ?
@@ -117,7 +120,7 @@ t_fcolor			launch_ray(const int x, const int y, const t_env *env)
 	apply_camera_rot(env, &screen_point);
 
 	screen_point = flt3_normalize(screen_point);
-	return (trace_ray(env, (t_ray){env->camera.org, screen_point}, 2));
+	return (trace_ray(env, (t_ray){env->camera.org, screen_point}, 0));
 }
 
 void				render(const t_env *env)

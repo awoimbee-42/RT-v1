@@ -12,6 +12,95 @@
 
 #include "rtv1.h"
 #include "parser.h"
+#include "libft.h"
+
+#include "libft.h"
+#include <stdlib.h>
+#include <unistd.h>
+
+int		ft_atoi_mv(char **nptr)
+{
+	short int		sign;
+	unsigned long	result;
+
+	result = 0;
+	sign = 1;
+	while (**nptr == ' ' || **nptr == '\n' || **nptr == '\t'
+		|| **nptr == '\f' || **nptr == '\v' || **nptr == '\r')
+		++(*nptr);
+	if (**nptr == '-' && ++(*nptr))
+		sign = -1;
+	else if (**nptr == '+')
+		++(*nptr);
+	while ('0' <= **nptr && **nptr <= '9')
+		result = result * 10UL + ((unsigned long)*(*nptr)++ - 48UL);
+	return ((int)result * sign);
+}
+
+double		ft_atoi_double_mv(char **nptr)
+{
+	short int		sign;
+	double			result;
+	float			i;
+
+	result = 0;
+	sign = 1;
+	while (**nptr == ' ' || **nptr == '\n' || **nptr == '\t'
+		|| **nptr == '\f' || **nptr == '\v' || **nptr == '\r')
+		++*nptr;
+	if (**nptr == '-' && ++*nptr)
+		sign = -1;
+	else if (**nptr == '+')
+		++*nptr;
+	while ('0' <= **nptr && **nptr <= '9')
+		result = result * 10 + (*(*nptr)++ - 48);
+	if (**nptr == '.' && ++*nptr)
+	{
+		i = 1;
+		while ('0' <= **nptr && **nptr <= '9' && (i *= 10))
+			result += (float)(*(*nptr)++ - 48) / i;
+	}
+	return (result * sign);
+}
+
+
+/*
+**	msg_exit : a printf for crashing cleanly.
+**	USAGE : msg_exit("error %[d, s]...", memory)
+**		%s = string (char*)
+**		%d = int
+**	When %[...] is read,
+**	 msg_exit will interpret memory as pointing to the specified datatype.
+*/
+
+void	msg_exit(const char *msg, void *data)
+{
+	size_t	len;
+	char	*var;
+
+	if (msg)
+	{
+		len = 0;
+		while (msg[len] && msg[len] != '%')
+			++len;
+		write(2, (void *)msg, len);
+		if (msg[len++] == '%')
+		{
+			if (msg[len] == 'd')
+				var = ft_itoa(*(int*)data);
+			else if (msg[len] == 's')
+				var = (char*)data;
+			else
+				msg_exit(&msg[len], data);
+			write(2, var, ft_strlen(var));
+			msg_exit(&msg[len] + 1, 0);
+		}
+		write(2, "\n", 1);
+	}
+	write(1, "error\n", 6);
+	exit(EXIT_FAILURE);
+}
+
 
 static char	*skip_whitespaces(char *str)
 {
@@ -33,10 +122,13 @@ int		is_comment(char *line)
 **		line_nb is only given to be printed when errors occur
 */
 
+#include <stdio.h>
+
 t_flt3		parse_f3(char *str, unsigned int line_nb)
 {
 	t_flt3	res;
 
+	printf("My line: %lu\n", line_nb);
 	str = skip_whitespaces(str);
 	if (*str != '='
 		|| *(str = skip_whitespaces(str + 1)) != '{'

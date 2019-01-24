@@ -51,7 +51,7 @@ LDLIBS = -lft -lSDL2 -lm
 
 LDFLAGS = -Llibft -LSDL2/lib
 
-CFLAGS += -I./ -I./SDL2/include/ -I./libft
+CFLAGS += -I./ -I./SDL2/include/ -I./libft -O2 -lfto
 
 SDL_OPTIONS =	-q						\
 				--prefix=$$sdl2path		\

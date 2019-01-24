@@ -12,6 +12,8 @@
 
 #include "rtv1.h"
 
+#include <stdio.h>
+
 void		loop(t_env *env)
 {
 	SDL_Event event;
@@ -21,11 +23,15 @@ void		loop(t_env *env)
 		SDL_WaitEvent(&event);
 		if (event.type == SDL_QUIT)
 			exit_cleanly(env);
-		if (event.type == SDL_KEYDOWN && !event.key.repeat)
+		else if (event.type == SDL_KEYDOWN)// && !event.key.repeat)
 			key_pressed(event.key.keysym.sym, env);
-		if (event.type == SDL_KEYUP)
+		else if (event.type == SDL_KEYUP)
 			key_released(event.key.keysym.sym, env);
-	
+		else
+			continue;
+		//if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP)
+			printf("%d\n", event.type);
+
 		if (env->keys_pressed & BT_W)
 		{
 			move_camera(env, 0);

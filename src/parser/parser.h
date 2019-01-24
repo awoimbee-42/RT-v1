@@ -42,6 +42,7 @@ int			tobj_parse(t_obj *obj, char *line, int *done,
 t_obj		parse_sphere(int fd, unsigned int *line_nb);
 t_obj		parse_plane(int fd, unsigned int *line_nb);
 t_obj		parse_disk(int fd, unsigned int *line_nb);
+t_obj		parse_cylinder(int fd, unsigned int *line_nb);
 
 void		parse_open_bracket(int fd, unsigned int *line_nb);
 float		parse_f(char *str, unsigned int line_nb);
