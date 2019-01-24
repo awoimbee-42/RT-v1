@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 22:02:07 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/21 13:59:59 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/24 17:50:09 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,25 @@ float		dist_disk(const union u_object *obj, const t_ray ray)
 			return (dist);
 	}
 	return (-1);
+}
+
+float		dist_cylinder(const union u_object *obj, const t_ray ray)
+{
+	t_flt3		x;
+	t_flt3		y;
+	float		d;
+	t_flt3		diff;
+	t_flt3		par;
+
+	diff = flt3_sub(obj->cylinder.end, obj->cylinder.org);
+	x = flt3_cross(flt3_sub(ray.org, obj->cylinder.org), diff);
+	y = flt3_cross(ray.dir, diff);
+	d = obj->cylinder.radius * obj->cylinder.radius * flt3_dot(diff, diff);
+	par.x = flt3_dot(y, y);
+	par.y = 2 * flt3_dot(x, y);
+	par.z = flt3_dot(x, x) - d;
+	d = par.y * par.y - 4 * par.x * par.z;
+	if (d < 0)
+		return (-1);
+	return ((-par.y - sqrt(d)) / (2 * par.x));
 }

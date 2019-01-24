@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/22 13:56:35 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/24 17:49:49 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,6 +198,12 @@ union			u_object
 		t_vec3			height; // it's a height vector, which goes from the origin (tip) to the base
 		float			angle;
 	}				cone;
+	struct		s_cylinder
+	{
+		t_vec3			org;
+		t_vec3			end;
+		float			radius;
+	}					cylinder;
 };
 
 typedef struct	s_obj
@@ -263,6 +269,7 @@ t_flt3			flt3_divf(t_flt3 a, const float b);
 float			flt3_dot(const t_flt3 a, const t_flt3 b);
 float			flt3_mod(const t_flt3 a);
 t_flt3			flt3_normalize(t_flt3 a);
+t_flt3			flt3_cross(t_flt3 a, const t_flt3 b);
 
 /*
 **	t_obj/dist.c
@@ -270,12 +277,14 @@ t_flt3			flt3_normalize(t_flt3 a);
 float			dist_sphere(const union u_object *obj, const t_ray ray);
 float			dist_plane(const union u_object *obj, const t_ray ray);
 float			dist_disk(const union u_object *obj, const t_ray ray);
+float			dist_cylinder(const union u_object *obj, const t_ray ray);
 
 /*
 **	t_obj/norm.c
 */
 t_vec3			norm_sphere(const union u_object *obj, const t_vec3 hit);
 t_vec3			norm_plane(const union u_object *obj, const t_vec3 hit);
+t_vec3			norm_cylinder(const union u_object *obj, const t_vec3 hit);
 
 /*
 **	operators/special_op.c

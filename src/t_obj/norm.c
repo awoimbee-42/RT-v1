@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/09 22:48:12 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/20 23:42:52 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/24 17:44:56 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,9 @@ t_vec3		norm_plane(const union u_object *obj, const t_vec3 hit)
 {
 	(void)hit;
 	return (obj->plane.norm);
+}
+
+t_vec3		norm_cylinder(const union u_object *obj, const t_vec3 hit)
+{
+	return (flt3_divf(flt3_sub(hit, obj->cylinder.org), obj->cylinder.radius));
 }
