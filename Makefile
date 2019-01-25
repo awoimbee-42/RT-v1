@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/01/25 20:19:06 by cpoirier         ###   ########.fr        #
+#    Updated: 2019/01/25 23:23:25 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME	=	rtv1
 
 CC = gcc
 
-CFLAGS	=	-Wall -Wextra -O3 -ffast-math #-Werror -O3 -ffast-math
+CFLAGS	=	-Wall -Wextra -O3 -ffast-math -flto=full -msse#-mavx -fopt-info-vec-all #-Werror -O3 -ffast-math
 
 SRC_NAME =	main.c							\
 			init_argv.c						\
@@ -78,7 +78,7 @@ libft/libft.a :
 	@printf "$(YLW)Making libft...$(EOC)\n"
 	@make -s -j -C libft/
 
-$(NAME) : libft/libft.a SDL2/lib/libSDL2.a $(OBJ)
+$(NAME) : libft/libft.a SDL2/lib/libSDL2.a $(OBJ) rtv1.h
 	@printf "$(GRN)Linking $(NAME)...$(EOC)\n"
 	$(CC) $(OBJ) -o $@ $(LDFLAGS) $(LDLIBS)
 

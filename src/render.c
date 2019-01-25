@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/25 21:01:13 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/25 22:53:32 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,23 +127,36 @@ t_fcolor			launch_ray(const int x, const int y, const t_env *env)
 	return (trace_ray(env, (t_ray){env->camera.org, screen_point}, 1));
 }
 
-void				render(const t_env *env)
+static int			render_line(void *vthread)
 {
+	t_thread		*thread;
+	unsigned int	*tmp_img;
 	int				u;
 	int				v;
-	unsigned int	*tmp_img;
 
-	tmp_img = env->sdl->img;
-	v = -1;
-	while (++v < env->disp.res.y)
+	thread = (t_thread*)vthread;
+	v = thread->line_start;
+	tmp_img = &thread->env->sdl->img[v * thread->env->disp.res.x];
+	while (v < thread->line_end)
 	{
 		u = -1;
-		while (++u < env->disp.res.x)
-		{
-			*tmp_img = srgb(tone_map(launch_ray(u, v, env)));
-			++tmp_img;
-		}
+		while (++u < thread->env->disp.res.x)
+			*tmp_img++ = srgb(tone_map(launch_ray(u, v, thread->env)));
+		++v;
 	}
+	return (0);
+}
+
+void				render(t_env *env)
+{
+	int			i;
+
+	i = -1;
+	while (++i < THREAD_NB)
+		env->threads[i].ptr = SDL_CreateThread(&render_line, "", &env->threads[i]);
+	i = -1;
+	while (++i < THREAD_NB)
+		SDL_WaitThread(env->threads[i].ptr, NULL);
 	SDL_UpdateTexture(env->sdl->texture, NULL, env->sdl->img, env->disp.res.x * sizeof(int));
 	SDL_RenderCopy(env->sdl->renderer, env->sdl->texture, NULL, NULL);
 	SDL_RenderPresent(env->sdl->renderer);

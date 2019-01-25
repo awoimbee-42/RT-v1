@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/25 19:23:22 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/25 22:29:02 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 
 # include "libft.h"
 # include "SDL2/SDL.h"
+#include "SDL2/SDL_thread.h"
+
+# define THREAD_NB 10
 
 # define WIN_W 1280
 # define WIN_H 720
@@ -224,6 +227,14 @@ typedef struct	s_obj
 **	############################
 */
 
+typedef struct	s_thread
+{
+	SDL_Thread		*ptr;
+	struct s_env	*env;
+	int				line_start;
+	int				line_end;
+}				t_thread;
+
 typedef struct	s_env
 {
 	struct s_sdl	*sdl;
@@ -235,6 +246,7 @@ typedef struct	s_env
 	struct s_light	*light_arr;
 	t_fcolor		bckgrnd_col;
 	unsigned int	keys_pressed;
+	t_thread		threads[THREAD_NB];
 }				t_env;
 
 /*
@@ -243,7 +255,7 @@ typedef struct	s_env
 **	###########################
 */
 
-void			render(const t_env *env);
+void			render(t_env *env);
 
 /*
 **	main.c

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/21 00:40:33 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/25 19:29:36 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/25 23:07:50 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,49 +16,40 @@
 
 void		loop(t_env *env)
 {
-	SDL_Event event;
+	SDL_Event	event;
+	int			rerender;
 
 	while (1)
 	{
-		SDL_WaitEvent(&event);
-		if (event.type == SDL_QUIT)
-			exit_cleanly(env);
-		else if (event.type == SDL_KEYDOWN)// && !event.key.repeat)
-			key_pressed(event.key.keysym.sym, env);
-		else if (event.type == SDL_KEYUP)
-			key_released(event.key.keysym.sym, env);
-		else
+		rerender = 0;
+		if (SDL_PollEvent(&event))
+		{
+			if (event.type == SDL_QUIT)
+				exit_cleanly(env);
+			else if (event.type == SDL_KEYDOWN)// && !event.key.repeat)
+				key_pressed(event.key.keysym.sym, env);
+			else if (event.type == SDL_KEYUP)
+				key_released(event.key.keysym.sym, env);
 			continue;
-		//if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP)
-			//printf("%d\n", event.type);
+		}
+		env->keys_pressed & BT_W && (rerender = 1)? move_camera(env, 0) : 0;
+		env->keys_pressed & BT_A && (rerender = 1)? move_camera(env, 2) : 0;
+		env->keys_pressed & BT_S && (rerender = 1)? move_camera(env, 1) : 0;
+		env->keys_pressed & BT_D && (rerender = 1)? move_camera(env, 3) : 0;
 
-		if (env->keys_pressed & BT_W)
-			move_camera(env, 0);
-		if (env->keys_pressed & BT_A)
-			move_camera(env, 2);
-		if (env->keys_pressed & BT_S)
-			move_camera(env, 1);
-		if (env->keys_pressed & BT_D)
-			move_camera(env, 3);
-		if (env->keys_pressed & BT_RIGHT)
-			env->camera.dir.y -= 0.1;
-		if (env->keys_pressed & BT_LEFT)
-			env->camera.dir.y += 0.1;
-		if (env->keys_pressed & BT_UP)
-			env->camera.dir.x += 0.1;
-		if (env->keys_pressed & BT_DOWN)
-			env->camera.dir.x -= 0.1;
-		if (env->keys_pressed & BT_Q)
-			env->camera.org.y -= 0.25;
-		if (env->keys_pressed & BT_E)
-			env->camera.org.y += 0.25;
-		render(env);
+		env->keys_pressed & BT_RIGHT && (rerender = 1) ? env->camera.dir.y -= 0.1 : 0;
+		env->keys_pressed & BT_LEFT && (rerender = 1) ? env->camera.dir.y += 0.1 : 0;
+		env->keys_pressed & BT_UP && (rerender = 1) ? env->camera.dir.x += 0.1 : 0;
+		env->keys_pressed & BT_DOWN && (rerender = 1) ? env->camera.dir.x -= 0.1 : 0;
+		env->keys_pressed & BT_Q && (rerender = 1) ? env->camera.org.y -= 0.25 : 0;
+		env->keys_pressed & BT_E && (rerender = 1) ? env->camera.org.y += 0.25 : 0;
+		if (rerender)
+			render(env);
 	}
 }
 
 void		key_pressed(SDL_Keycode key, t_env *env)
 {
-	ft_printf("key_pressed: %b\n", key);
 	if (key == SDLK_ESCAPE)
 		exit_cleanly(env);
 	key == SDLK_w ? env->keys_pressed |= BT_W : 0;

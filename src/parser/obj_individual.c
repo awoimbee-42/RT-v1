@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 18:33:26 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/23 00:52:45 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/25 23:09:20 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,35 +14,35 @@
 #include "parser.h"
 #include "../libft/libft.h"
 
-t_obj   parse_cylinder(int fd, unsigned int *line_nb)
+t_obj	parse_cylinder(int fd, unsigned int *line_nb)
 {
-        char    *line;
-        int             d;
-        t_obj   cylinder;
+	char	*line;
+	int	d;
+	t_obj	cylinder;
 
-        d = 0;
-        line = NULL;
-        cylinder.distfun = &dist_cylinder;
-        cylinder.normfun = &norm_cylinder;
-        while (get_next_line(fd, &line) > 0 && ++*line_nb)
-        {
-                if (!ft_strncmp(line, "\t\t.origin", 9) && (d |= 0xF000))
-                        cylinder.this.cylinder.org = parse_f3(line + 9, *line_nb);
+	d = 0;
+	line = NULL;
+	cylinder.distfun = &dist_cylinder;
+	cylinder.normfun = &norm_cylinder;
+	while (get_next_line(fd, &line) > 0 && ++*line_nb)
+	{
+		if (!ft_strncmp(line, "\t\t.origin", 9) && (d |= 0xF000))
+			cylinder.this.cylinder.org = parse_f3(line + 9, *line_nb);
 		else if (!ft_strncmp(line, "\t\t.end", 6) && (d |= 0xF0000))
 			cylinder.this.cylinder.end = parse_f3(line + 6, *line_nb);
-                else if (!ft_strncmp(line, "\t\t.radius", 9) && (d |= 0xF00000))
-                        cylinder.this.cylinder.radius = parse_f(line + 9, *line_nb);
-                else if (!tobj_parse(&cylinder, line, &d, *line_nb) && !is_comment(line))
-                        break ;
-                if (line[ft_strlen(line) - 1] == ';' && (d |= 0xF000000))
-                        break ;
-                ft_memdel((void**)&line);
-        }
-        if (line)
-                ft_memdel((void**)&line);
-        if (d != 0xFFFFFFF)
-                msg_exit("Bad format in Cylinder, around line %d\n", line_nb);
-        return (cylinder);
+		else if (!ft_strncmp(line, "\t\t.radius", 9) && (d |= 0xF00000))
+			cylinder.this.cylinder.radius = parse_f(line + 9, *line_nb);
+		else if (!tobj_parse(&cylinder, line, &d, *line_nb) && !is_comment(line))
+			break ;
+		if (line[ft_strlen(line) - 1] == ';' && (d |= 0xF000000))
+			break ;
+		ft_memdel((void**)&line);
+	}
+	if (line)
+		ft_memdel((void**)&line);
+	if (d != 0xFFFFFFF)
+		msg_exit("Bad format in Cylinder, around line %d\n", line_nb);
+	return (cylinder);
 }
 
 t_obj	parse_sphere(int fd, unsigned int *line_nb)
