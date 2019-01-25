@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/16 11:55:20 by awoimbee          #+#    #+#              #
-#    Updated: 2019/01/22 15:34:49 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/01/25 03:28:15 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ SRCS_MEM =	ft_bzero.c			ft_memchr.c			ft_memdel.c			\
 
 SRCS_NB =	ft_abs.c			ft_atoi.c			ft_itoa.c			\
 			ft_atoi_base.c		ft_itoa_base.c		ft_swap_int.c		\
-			ft_atoi_double.c	ft_atoi_double_mv.c	ft_atoi_mv.c
+			ft_atof.c	ft_atof_mv.c	ft_atoi_mv.c
 
 SRCS_STR =	ft_stpcpy.c			ft_striter.c		ft_strncpy.c		\
 			ft_strcat.c			ft_striteri.c		ft_strnequ.c		\

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:09:52 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/23 18:26:21 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/25 03:28:15 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int		ft_atoi_mv(char **nptr)
 	return ((int)result * sign);
 }
 
-double		ft_atoi_double_mv(char **nptr)
+double		ft_atof_mv(char **nptr)
 {
 	short int		sign;
 	double			result;
@@ -134,13 +134,13 @@ t_flt3		parse_f3(char *str, unsigned int line_nb)
 		|| *(str = skip_whitespaces(str + 1)) != '{'
 		|| *(str = skip_whitespaces(str + 1)) == 0)
 		msg_exit("error around '=' sign line %d!\n", &line_nb);
-	res.x = ft_atoi_double_mv(&str);
+	res.x = ft_atof_mv(&str);
 	if (*(str = skip_whitespaces(str)) != ',' || !*++str)
 		msg_exit("',' not found line %d\n", &line_nb);
-	res.y = ft_atoi_double_mv(&str);
+	res.y = ft_atof_mv(&str);
 	if (*(str = skip_whitespaces(str)) != ',' || !*++str)
 		msg_exit("',' not found line %d\n", &line_nb);
-	res.z = ft_atoi_double_mv(&str);
+	res.z = ft_atof_mv(&str);
 	if (*(str = skip_whitespaces(str)) != '}')
 		msg_exit("'}' not found line %d\n", &line_nb);
 	return (res);
@@ -153,7 +153,7 @@ float		parse_f(char *str, unsigned int line_nb)
 	if (*(str = skip_whitespaces(str)) != '=')
 		msg_exit("'=' sign not found line %d!\n", &line_nb);
 	++str;
-	res = ft_atoi_double_mv(&str);
+	res = ft_atof_mv(&str);
 	if (!is_comment(str = skip_whitespaces(str)) && *str != ';')
 		msg_exit("Garbage at end of line %d\n", &line_nb);
 	return (res);
