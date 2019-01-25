@@ -6,7 +6,7 @@
 /*   By: cpoirier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 12:32:57 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/01/22 13:59:11 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/25 19:21:29 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void			move_camera(t_env *env, int dir)
 	else
 	{
 		rotate_2d(&unit, M_PI / 2, 1);
+		unit.y = 0;
 		if (dir == 2)
 			env->camera.org = flt3_add(env->camera.org, unit);
 		else

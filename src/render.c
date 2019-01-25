@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/22 14:02:14 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/25 19:52:26 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_id_dist		nearest_obj(const t_env *env, const t_ray ray)
 	{
 		tmp.dist = env->objs_arr[tmp.id]
 						.distfun(&env->objs_arr[tmp.id].this, ray);
-		if (tmp.dist < nearest.dist && tmp.dist > 0.01)
+		if (tmp.dist < nearest.dist && tmp.dist > 0.0001)
 		{
 			nearest.id = tmp.id;
 			nearest.dist = tmp.dist;
@@ -39,24 +39,27 @@ t_id_dist		nearest_obj(const t_env *env, const t_ray ray)
 }
 
 //https://stackoverflow.com/questions/15619830/raytracing-how-to-combine-diffuse-and-specular-color
-t_fcolor		fast_diffuse(const t_env *env, const t_ray hit_norm)
+t_fcolor		fast_diffuse(const t_env *env, const t_coords hit)
 {
 	float			light_dist;
 	t_fcolor		light;
 	t_id_dist		near_obj;
 	int 			i;
+	t_ray			ray;
 
-	light = env->bckgrnd_col;
+	light = flt3_divf(env->bckgrnd_col, 3.);
 	i = -1;
+	ray.org = hit;
 	while (++i < env->light_nb)
 	{
-		light_dist = points_dist(env->light_arr[i].pos, hit_norm.org);
-		near_obj = nearest_obj(env, hit_norm);
+		ray.dir = flt3_sub(env->light_arr[i].pos, hit);
+		ray.dir = flt3_normalize(ray.dir);
+		light_dist = flt3_mod(flt3_sub(env->light_arr[i].pos, hit));
+		near_obj = nearest_obj(env, ray);
 		if (light_dist < near_obj.dist)
-		{
 			light = flt3_add(light, light_drop(env->light_arr[i].intensity, light_dist));
-		}
 	}
+	flt3_divf(light, env->light_nb);
 	return (light);
 }
 
@@ -79,7 +82,7 @@ t_fcolor			real_diffuse(const t_env *env, const t_ray hit_norm)
 t_fcolor			trace_ray(const t_env *env, const t_ray ray, const int bounce)
 {
 	t_id_dist		obj;
-	t_ray			hit_normal;
+	t_ray			hit_reflect;
 	t_fcolor		emit_col;
 
 	/*if (bounce == 0)
@@ -91,10 +94,11 @@ t_fcolor			trace_ray(const t_env *env, const t_ray ray, const int bounce)
 	// printf("dist: %f\n", obj.dist);
 	if (!bounce)
 		return (env->objs_arr[obj.id].color);
-	hit_normal.org = flt3_add(flt3_multf(ray.dir, obj.dist), ray.org);
-	hit_normal.dir = flt3_normalize(env->objs_arr[obj.id]
-						.normfun(&env->objs_arr[obj.id].this, hit_normal.org));  // is there a real need to normalize ?
-	emit_col = flt3_mult(fast_diffuse(env, hit_normal),
+	hit_reflect.org = flt3_add(flt3_multf(ray.dir, obj.dist), ray.org);
+	hit_reflect.dir = flt3_normalize(env->objs_arr[obj.id].normfun(&env->objs_arr[obj.id].this, hit_reflect.org));
+	//hit_reflect.dir = get_reflection(ray.dir, flt3_normalize(env->objs_arr[obj.id]
+						//.normfun(&env->objs_arr[obj.id].this, hit_reflect.org)));  // is there a real need to normalize ?
+	emit_col = flt3_mult(fast_diffuse(env, hit_reflect.org),
 							env->objs_arr[obj.id].color);
 	return (emit_col);
 }
@@ -120,7 +124,7 @@ t_fcolor			launch_ray(const int x, const int y, const t_env *env)
 	apply_camera_rot(env, &screen_point);
 
 	screen_point = flt3_normalize(screen_point);
-	return (trace_ray(env, (t_ray){env->camera.org, screen_point}, 0));
+	return (trace_ray(env, (t_ray){env->camera.org, screen_point}, 1));
 }
 
 void				render(const t_env *env)

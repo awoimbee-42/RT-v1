@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:09:52 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/25 03:28:15 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/25 15:33:17 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,6 @@ t_flt3		parse_f3(char *str, unsigned int line_nb)
 {
 	t_flt3	res;
 
-	printf("My line: %lu\n", line_nb);
 	str = skip_whitespaces(str);
 	if (*str != '='
 		|| *(str = skip_whitespaces(str + 1)) != '{'

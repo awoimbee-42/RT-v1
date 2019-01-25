@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 22:02:07 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/24 17:50:09 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/25 19:39:08 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,9 @@ float		dist_sphere(const union u_object *obj, const t_ray ray)
 	delta = b * b - 4 * a * c;
 	if (delta < 0)
 		return (-1);
-	else
-		return ((-b - sqrt(delta)) / (2 * a));
+	else if ((c = (-b - sqrt(delta)) / (2 * a)) > 0)
+		return (c);
+	return (0);
 }
 
 float		dist_plane(const union u_object *obj, const t_ray ray)
@@ -44,7 +45,7 @@ float		dist_plane(const union u_object *obj, const t_ray ray)
 			obj->plane.norm)
 			/ denom;
 		if (dist > 0)
-			return (dist);
+			return (dist - 0.1);
 	}
 	return (-1);
 }
@@ -84,5 +85,9 @@ float		dist_cylinder(const union u_object *obj, const t_ray ray)
 	d = par.y * par.y - 4 * par.x * par.z;
 	if (d < 0)
 		return (-1);
-	return ((-par.y - sqrt(d)) / (2 * par.x));
+	diff.x = (-par.y - sqrt(d)) / (2 * par.x);
+	//diff.y = (-par.y - sqrt(d)) / (2 * par.x);
+	if (diff.x > 0)
+		return (diff.x);
+	return (0);
 }

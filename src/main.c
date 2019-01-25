@@ -6,56 +6,11 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:36:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/24 17:55:04 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/25 18:21:31 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
-
-/*
-void	placeholder_fill_objs(t_env *env)
-{
-	env->objs_arr = malloc(sizeof(t_obj) * 4);
-
-	env->objs_arr[0].distfun = &dist_sphere;
-	env->objs_arr[0].normfun = &norm_sphere;
-	env->objs_arr[0].this.sphere.orig = (t_vec3){0, 0, 5.};
-	env->objs_arr[0].this.sphere.radius = 2.;
-	env->objs_arr[0].color = (t_fcolor){1, 0, 1};
-
-	env->objs_arr[1].distfun = &dist_sphere;
-	env->objs_arr[1].normfun = &norm_sphere;
-	env->objs_arr[1].this.sphere.orig = (t_vec3){0.8, 2.1, 7.};
-	env->objs_arr[1].this.sphere.radius = 2.;
-	env->objs_arr[1].color = (t_fcolor){0.2, 0.4, 0.8};
-
-	env->objs_arr[2].distfun = &dist_cylinder;
-	env->objs_arr[2].normfun = &norm_cylinder;
-	env->objs_arr[2].this.cylinder.org = (t_vec3){0.3, 1.5, 10.6};
-	env->objs_arr[2].this.cylinder.end = (t_vec3){0.3, 3.5, 10.6};
-	env->objs_arr[2].this.cylinder.radius = 2.;
-	env->objs_arr[2].color = (t_fcolor){1., 1., 1.};
-
-	env->objs_arr[3].distfun = &dist_plane;
-	env->objs_arr[3].normfun = &norm_plane;
-	env->objs_arr[3].this.plane.orig = (t_vec3){0, -2, 9.};
-	env->objs_arr[3].this.plane.norm = (t_vec3){0, 1, 0};
-	env->objs_arr[3].color = (t_fcolor){0.5, 0, 0};
-
-	env->objs_nb = 4;
-	//####################
-	env->light_arr = malloc(sizeof(t_light) * 2);
-
-	env->light_arr[0].pos = (t_vec3){0, -3.2, 10.1};
-	env->light_arr[0].intensity = (t_fcolor){5000, 5000, 5000};
-
-	env->light_arr[1].pos = (t_vec3){0, 100, 0};
-	env->light_arr[1].intensity = (t_fcolor){10000, 10000, 10000};
-
-	env->light_nb = 1;
-	//######################
-}
-*/
 
 int		main(int argc, char **argv)
 {
@@ -63,8 +18,8 @@ int		main(int argc, char **argv)
 	t_env	env;
 
 	init(&env, &sdl);
-	read_argv(&env, argv, argc);
-	parse_scene(&env, "demo_scene.rt");
+	//read_argv(&env, argv, argc);
+	parse_scene(&env, argv[1]);//"demo_scene_m.rt");
 	if (!(sdl.win = SDL_CreateWindow( "RT-V1", 0, 0,
 			env.disp.res.x, env.disp.res.y, SDL_WINDOW_SHOWN)))
 		error(SDL_ERR);

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:12:01 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/22 15:03:31 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/25 15:55:14 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 void	usage(void)
 {
 	ft_fprintf(2,
-		"<bold>Usage : ./rtv1 [-res x y]</bold>\n"
+		"<bold>Usage : ./rtv1 [-res x y] file</bold>\n"
 		"\tother stuff\n"
 		"\t\tmore stuff\n");
 	exit(EXIT_FAILURE);

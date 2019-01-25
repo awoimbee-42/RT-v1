@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/21 00:40:33 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/22 14:00:34 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/25 19:29:36 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,48 +30,29 @@ void		loop(t_env *env)
 		else
 			continue;
 		//if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP)
-			printf("%d\n", event.type);
+			//printf("%d\n", event.type);
 
 		if (env->keys_pressed & BT_W)
-		{
 			move_camera(env, 0);
-			render(env);
-		}
 		if (env->keys_pressed & BT_A)
-		{
 			move_camera(env, 2);
-			render(env);
-		}
 		if (env->keys_pressed & BT_S)
-		{
 			move_camera(env, 1);
-			render(env);
-		}
 		if (env->keys_pressed & BT_D)
-		{
 			move_camera(env, 3);
-			render(env);
-		}
 		if (env->keys_pressed & BT_RIGHT)
-		{
 			env->camera.dir.y -= 0.1;
-			render(env);
-		}
 		if (env->keys_pressed & BT_LEFT)
-		{
 			env->camera.dir.y += 0.1;
-			render(env);
-		}
 		if (env->keys_pressed & BT_UP)
-		{
 			env->camera.dir.x += 0.1;
-			render(env);
-		}
 		if (env->keys_pressed & BT_DOWN)
-		{
 			env->camera.dir.x -= 0.1;
-			render(env);
-		}
+		if (env->keys_pressed & BT_Q)
+			env->camera.org.y -= 0.25;
+		if (env->keys_pressed & BT_E)
+			env->camera.org.y += 0.25;
+		render(env);
 	}
 }
 
@@ -88,6 +69,8 @@ void		key_pressed(SDL_Keycode key, t_env *env)
 	key == SDLK_DOWN ? env->keys_pressed |= BT_DOWN : 0;
 	key == SDLK_LEFT ? env->keys_pressed |= BT_LEFT : 0;
 	key == SDLK_RIGHT ? env->keys_pressed |= BT_RIGHT : 0;
+	key == SDLK_q ? env->keys_pressed |= BT_Q : 0;
+	key == SDLK_e ? env->keys_pressed |= BT_E : 0;
 }
 
 void		key_released(SDL_Keycode key, t_env *env)
@@ -100,4 +83,6 @@ void		key_released(SDL_Keycode key, t_env *env)
 	key == SDLK_DOWN ? env->keys_pressed ^= BT_DOWN : 0;
 	key == SDLK_UP ? env->keys_pressed ^= BT_UP : 0;
 	key == SDLK_RIGHT ? env->keys_pressed ^= BT_RIGHT : 0;
+	key == SDLK_q ? env->keys_pressed ^= BT_Q : 0;
+	key == SDLK_e ? env->keys_pressed ^= BT_E : 0;
 }

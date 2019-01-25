@@ -6,11 +6,16 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/11 18:26:31 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/21 16:19:47 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/25 17:59:29 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
+
+t_vec3			get_reflection(t_vec3 d, const t_vec3 n)
+{
+	return (flt3_sub(d, flt3_multf(n, 2. * flt3_dot(d, n))));
+}
 
 t_fcolor		light_drop(const t_fcolor light, const float dist)
 {

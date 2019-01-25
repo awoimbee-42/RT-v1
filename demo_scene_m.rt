@@ -26,40 +26,12 @@ camera
 	.pos = {0., 5., -14.}
 	.dir = {-0.1, 0, 0};
 
-objects[16] :
+objects[12] :
 {
 	Sphere
 		.origin = {0., 1., -1.}
 		.radius = 0.63
 		.color = {1, 0, 0}
-		.specular = 0.4
-		.diffuse = 0.7;
-	Cylinder
-		.origin = {-5., 0., -2.}
-		.end = {-5, 2., -2.}
-		.radius = 1.4
-		.color = {0.8, 0.8, 0.8}
-		.specular = 0.4
-		.diffuse = 0.7;
-	Cylinder
-		.origin = {-5., 0., 10.}
-		.end = {-5, 2., 10.}
-		.radius = 1.4
-		.color = {0.8, 0.8, 0.8}
-		.specular = 0.4
-		.diffuse = 0.7;
-	Cylinder
-		.origin = {5., 0., -2.}
-		.end = {5, 2., -2.}
-		.radius = 1.4
-		.color = {0.8, 0.8, 0.8}
-		.specular = 0.4
-		.diffuse = 0.7;
-	Cylinder
-		.origin = {5., 0., 10.}
-		.end = {5, 2., 10.}
-		.radius = 1.4
-		.color = {0.8, 0.8, 0.8}
 		.specular = 0.4
 		.diffuse = 0.7;
 	Sphere

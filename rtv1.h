@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/24 17:55:20 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/25 19:23:22 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@
 # define BT_DOWN	(1 << 5)
 # define BT_LEFT	(1 << 6)
 # define BT_RIGHT	(1 << 7)
+# define BT_Q		(1 << 8)
+# define BT_E		(1 << 9)
 
 /*
 **	All of the structures & such, in order
@@ -300,6 +302,7 @@ unsigned int	srgb(t_fcolor color);
 t_fcolor		light_drop(const t_fcolor light, const float dist);
 t_fcolor		tone_map(const t_fcolor px);
 float			points_dist(const t_coords p1, const t_coords p2);
+t_vec3			get_reflection(t_vec3 d, const t_vec3 n);
 
 /*
 **	camera_ope.c
