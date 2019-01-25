@@ -64,7 +64,7 @@ int		main(int argc, char **argv)
 
 	init(&env, &sdl);
 	read_argv(&env, argv, argc);
-	parse_scene(&env, "scene.rt");
+	parse_scene(&env, "demo_scene.rt");
 	if (!(sdl.win = SDL_CreateWindow( "RT-V1", 0, 0,
 			env.disp.res.x, env.disp.res.y, SDL_WINDOW_SHOWN)))
 		error(SDL_ERR);

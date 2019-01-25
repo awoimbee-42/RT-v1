@@ -25,5 +25,7 @@ t_vec3		norm_plane(const union u_object *obj, const t_vec3 hit)
 
 t_vec3		norm_cylinder(const union u_object *obj, const t_vec3 hit)
 {
-	return (flt3_divf(flt3_sub(hit, obj->cylinder.org), obj->cylinder.radius));
+	return ((t_vec3){0, 1, 0});
+	return (flt3_divf(flt3_cross(flt3_sub(hit, obj->cylinder.org)
+		, flt3_sub(obj->cylinder.end, obj->cylinder.org)), obj->cylinder.radius));
 }
