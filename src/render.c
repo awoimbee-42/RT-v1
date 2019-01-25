@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/25 19:52:26 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/25 21:01:13 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_id_dist		nearest_obj(const t_env *env, const t_ray ray)
 	{
 		tmp.dist = env->objs_arr[tmp.id]
 						.distfun(&env->objs_arr[tmp.id].this, ray);
-		if (tmp.dist < nearest.dist && tmp.dist > 0.0001)
+		if (tmp.dist < nearest.dist && tmp.dist > 0.001)
 		{
 			nearest.id = tmp.id;
 			nearest.dist = tmp.dist;
@@ -47,7 +47,7 @@ t_fcolor		fast_diffuse(const t_env *env, const t_coords hit)
 	int 			i;
 	t_ray			ray;
 
-	light = flt3_divf(env->bckgrnd_col, 3.);
+	light = env->bckgrnd_col;
 	i = -1;
 	ray.org = hit;
 	while (++i < env->light_nb)

@@ -15,11 +15,11 @@ RICARD >>> PASTIS
          `-------------------+
 
 env
-	.background_light = {0., 0., 0.};
+	.background_light = {0.4, 0.4, 0.4};
 
 display
-	.width = 300
-	.height = 300
+	.width = 600
+	.height = 600
 	.fov = 70;
 
 camera
@@ -130,9 +130,15 @@ objects[16] :
 		.diffuse = 0.2;
 }
 
-lights[1] :
+lights[3] :
 {
 	Light
-		.position = {-10, 7, -5}
-		.intensity = {500, 500, 500};
+		.position = {-9, 7, -7}
+		.intensity = {200, 200, 200};
+	Light
+		.position = {9, 7, -7}
+		.intensity = {200, 200, 200};
+	Light
+		.position = {0, 7, -7}
+		.intensity = {200, 200, 200};
 }
