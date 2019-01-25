@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:36:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/25 22:34:05 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/25 23:50:01 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int		main(int argc, char **argv)
 	{
 		env.threads[i].env = &env;
 		env.threads[i].line_start = (i * env.disp.res.y) / THREAD_NB;
-		env.threads[i].line_end = (((i + 1) * env.disp.res.y) / THREAD_NB) + 1;
+		env.threads[i].line_end = (((i + 1) * env.disp.res.y) / THREAD_NB);
 	}
 
 	render(&env);

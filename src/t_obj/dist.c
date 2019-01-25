@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 22:02:07 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/25 21:45:26 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/25 23:49:50 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ float		dist_sphere(const union u_object *obj, const t_ray ray)
 	delta = b * b - 4 * a * c;
 	if (delta < 0)
 		return (-1);
-	else if ((c = (-b - sqrt(delta)) / (2 * a)) > 0.1)
+	if ((c = (-b - sqrt(delta)) / (2 * a)) > 0.1)
 		return (c);
 	return ((-b + sqrt(delta)) / (2 * a));
 }
