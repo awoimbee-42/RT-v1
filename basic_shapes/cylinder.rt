@@ -15,7 +15,7 @@ RICARD >>> PASTIS
          `-------------------+
 
 env
-	.background_light = {0.2, 0.2, 0.2};
+	.background_light = {0., 0., 0.};
 
 display
 	.width = 600
@@ -28,12 +28,13 @@ camera
 
 objects[1] :
 {
-	Sphere
+	Cylinder
 		.origin = {0, 0, 0}
+		.end = {0, 1, 0}
 		.radius = 2
-		.color = {0.9, 0.02, 0.02}
+		.color = {0.02, 0.02, 0.9}
 		.specular = 0.5
-		.diffuse = 0.5;
+		.diffuse = 1;
 }
 
 lights[1] :

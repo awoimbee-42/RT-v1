@@ -30,3 +30,8 @@ t_vec3		norm_cylinder(const union u_object *obj, const t_vec3 hit)
 	diff = flt3_sub(obj->cylinder.end, obj->cylinder.org);
 	return (flt3_cross(diff, flt3_cross(flt3_sub(hit, obj->cylinder.org), diff)));
 }
+
+t_vec3		norm_cone(const union u_object *obj, const t_vec3 hit)
+{
+        return (flt3_cross(obj->cone.dir, flt3_cross(flt3_sub(hit, obj->cone.org), obj->cone.dir)));
+}

@@ -38,13 +38,14 @@ t_id_dist		nearest_obj(const t_env *env, const t_ray ray)
 	return (nearest);
 }
 
-t_fcolor			get_specular(const t_fcolor light, const t_vec3 dir, const t_vec3 light_dir)
+t_fcolor			get_specular(const t_fcolor light, const t_vec3 dir
+	, const t_vec3 light_dir, const float specular)
 {
 	double		theta;
 	double		is_bright;
 
 	theta = acos(flt3_dot(dir, light_dir) / (flt3_mod(dir) * flt3_mod(light_dir)));
-	if (theta < 0.6)
+	if (theta < specular / 2)
 		theta /= 0.4;
 	//else if (theta > 2 * M_PI - 0.4)
 	//	theta = (theta - 2 * M_PI + 0.4) / -0.4;
@@ -53,8 +54,23 @@ t_fcolor			get_specular(const t_fcolor light, const t_vec3 dir, const t_vec3 lig
 	is_bright = 1 / (theta * theta * theta);
 	return ((t_vec3){is_bright, is_bright, is_bright});
 }
+
+t_fcolor                        get_diffuse(const t_fcolor light, const t_vec3 dir
+	, const t_vec3 norm, float diffuse)
+{
+	double	theta;
+
+	theta = acos(flt3_dot(dir, norm) / (flt3_mod(dir) * flt3_mod(norm)));
+	if (theta > M_PI / 2 - 0.2)
+		theta = 1 - diffuse * (1 - fabs(M_PI / 2. - theta) / 0.2);
+	else
+		return ((t_vec3){1, 1, 1});
+	return ((t_vec3){theta, theta, theta});
+}
+
 //https://stackoverflow.com/questions/15619830/raytracing-how-to-combine-diffuse-and-specular-color
-t_fcolor		fast_diffuse(const t_env *env, const t_ray hit, const t_obj obj)
+t_fcolor		fast_diffuse(const t_env *env, const t_ray hit, const t_obj obj
+	, const t_vec3 norm)
 {
 	float			light_dist;
 	t_fcolor		light;
@@ -74,8 +90,9 @@ t_fcolor		fast_diffuse(const t_env *env, const t_ray hit, const t_obj obj)
 		if (light_dist < near_obj.dist)
 		{
 			light = flt3_add(light, light_drop(env->light_arr[i].intensity, light_dist));
-			light = flt3_add(light, flt3_multf(get_specular(light, hit.dir, ray.dir)
+			light = flt3_add(light, get_specular(light, hit.dir, ray.dir
 				, obj.specular));
+			//light = flt3_add(env->bckgrnd_col, flt3_mult(flt3_sub(light, env->bckgrnd_col), get_diffuse(light, ray.dir, norm, obj.diffuse)));
 		}
 	}
 	flt3_divf(light, env->light_nb);
@@ -117,7 +134,7 @@ t_fcolor			trace_ray(const t_env *env, const t_ray ray, const int bounce)
 	hit_reflect.org = flt3_add(flt3_multf(ray.dir, obj.dist), ray.org);
 	norm = flt3_normalize(env->objs_arr[obj.id].normfun(&env->objs_arr[obj.id].this, hit_reflect.org));		
 	hit_reflect.dir = get_reflection(ray.dir, norm);
-	emit_col = flt3_mult(fast_diffuse(env, hit_reflect, env->objs_arr[obj.id]),
+	emit_col = flt3_mult(fast_diffuse(env, hit_reflect, env->objs_arr[obj.id], norm),
 						env->objs_arr[obj.id].color);
 	return (emit_col);
 }

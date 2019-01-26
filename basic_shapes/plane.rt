@@ -18,34 +18,27 @@ env
 	.background_light = {0.2, 0.2, 0.2};
 
 display
-	.width = 800
+	.width = 600
 	.height = 600
 	.fov = 75;
 
 camera
-	.pos = {0., 0., 0.}
+	.pos = {0., 3., -40.}
 	.dir = {0., 0, 0};
 
-objects[2] :
+objects[1] :
 {
-	Cylinder
-		.origin = {0., 3., 5.}
-		.end = {0., 4., 5.}
-		.radius = 2.
-		.color = {1, 0, 0}
-		.specular = 0.4
-		.diffuse = 0.7;
 	Plane
-		.origin = {0., 0, 0}
+		.origin = {0, 0, 0}
 		.normal = {0, 1, 0}
-		.color = {0, 0, 0.6}
+		.color = {0.9, 0.02, 0.9}
 		.specular = 0
-		.diffuse = 0;
+		.diffuse = 0.5;
 }
 
 lights[1] :
 {
 	Light
-		.position = {3, 1, 0}
-		.intensity = {35, 35, 35};
+		.position = {30, 20, 0}
+		.intensity = {5000, 5000, 5000};
 }

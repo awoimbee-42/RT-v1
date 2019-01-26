@@ -196,18 +196,18 @@ union			u_object
 		t_vec3			norm;
 		float			radius2;
 	}				disk;
-	struct		s_cone
-	{
-		t_vec3			orig;
-		t_vec3			height; // it's a height vector, which goes from the origin (tip) to the base
-		float			angle;
-	}				cone;
 	struct		s_cylinder
 	{
 		t_vec3			org;
 		t_vec3			end;
 		float			radius;
 	}					cylinder;
+	struct		s_cone
+	{
+		t_vec3			org;
+		t_vec3			dir;
+		float			angle;
+	}					cone;
 };
 
 typedef struct	s_obj
@@ -299,6 +299,7 @@ float			dist_sphere(const union u_object *obj, const t_ray ray);
 float			dist_plane(const union u_object *obj, const t_ray ray);
 float			dist_disk(const union u_object *obj, const t_ray ray);
 float			dist_cylinder(const union u_object *obj, const t_ray ray);
+float                   dist_cone(const union u_object *obj, const t_ray ray);
 
 /*
 **	t_obj/norm.c
@@ -306,6 +307,7 @@ float			dist_cylinder(const union u_object *obj, const t_ray ray);
 t_vec3			norm_sphere(const union u_object *obj, const t_vec3 hit);
 t_vec3			norm_plane(const union u_object *obj, const t_vec3 hit);
 t_vec3			norm_cylinder(const union u_object *obj, const t_vec3 hit);
+t_vec3                  norm_cone(const union u_object *obj, const t_vec3 hit);
 
 /*
 **	operators/special_op.c
