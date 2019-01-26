@@ -91,3 +91,28 @@ float		dist_cylinder(const union u_object *obj, const t_ray ray)
 		return (diff.x);
 	return (diff.y);
 }
+
+float		dist_cone(const union u_object *obj, const t_ray ray)
+{
+	t_vec3		diff;
+	t_vec3		par;
+	double		cos2;
+	double		dir_dot;
+	double		org_dot;
+
+	diff = flt3_sub(ray.org, obj->cone.org);
+	dir_dot = flt3_dot(ray.dir, obj->cone.dir);
+	org_dot = flt3_dot(diff, obj->cone.dir);
+	cos2 = cos(obj->cone.angle) * cos(obj->cone.angle);
+	par.x = dir_dot * dir_dot - cos2;
+	par.y = 2 * (dir_dot * org_dot - flt3_dot(ray.dir, diff) * cos2);
+	par.z = org_dot * org_dot - flt3_dot(diff, diff) * cos2;
+	dir_dot = par.y * par.y - 4 * par.x * par.z;
+	if (dir_dot < 0)
+                return (-1);
+        diff.x = (-par.y - sqrt(dir_dot)) / (2 * par.x);
+        diff.y = (-par.y + sqrt(dir_dot)) / (2 * par.x);
+        if (diff.y > 0.1)
+                return (diff.y);
+        return (diff.x);
+}

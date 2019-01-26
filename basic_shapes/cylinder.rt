@@ -34,7 +34,7 @@ objects[1] :
 		.radius = 2
 		.color = {0.02, 0.02, 0.9}
 		.specular = 0.5
-		.diffuse = 0.5;
+		.diffuse = 1;
 }
 
 lights[1] :

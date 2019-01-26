@@ -71,6 +71,8 @@ void		parse_objects(int fd, t_env *env, char *line)
 			env->objs_arr[obj_nb] = parse_disk(fd, &env->keys_pressed);
 		else if (!ft_strcmp(line, "\tCylinder") && --obj_nb >= 0)
 			env->objs_arr[obj_nb] = parse_cylinder(fd, &env->keys_pressed);
+		else if (!ft_strcmp(line, "\tCone") && --obj_nb >= 0)
+			env->objs_arr[obj_nb] = parse_cone(fd, &env->keys_pressed);
 		else if (!ft_strcmp(line, "}") && (done = 1))
 			break ;
 		else

@@ -6,14 +6,14 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/26 15:18:44 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/26 16:57:09 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
 /*
-**	We compare tmp.dist against 0.001 to prevent the case of
+**	We compare tmp.dist against 0.01 to prevent the case of
 **		the rays hitting objects on their origin point.
 */
 
@@ -38,49 +38,50 @@ t_id_dist		nearest_obj(const t_env *env, const t_ray ray)
 	return (nearest);
 }
 
-float			get_specular(const t_vec3 spec_dir, const t_vec3 light_dir)
+float			get_specular(const t_vec3 dir,
+					const t_vec3 light_dir, const float specular)
 {
 	double		theta;
 	double		is_bright;
 
-	theta = acos(flt3_dot(spec_dir, light_dir)
-					/ (flt3_mod(spec_dir) * flt3_mod(light_dir)));
-	if (theta < 0.6)
-		theta /= 0.4;
-	//else if (theta > 2 * M_PI - 0.4)
-	//	theta = (theta - 2 * M_PI + 0.4) / -0.4;
-	else
-		return (0);
-	is_bright = 1 / (theta * theta * theta);
+	theta = acos(fmax(flt3_dot(dir, light_dir), 0) / (flt3_mod(dir)
+				* flt3_mod(light_dir)));
+	is_bright = specular * (1 / (theta * theta * theta));
 	return (is_bright);
 }
 
-t_fcolor		fast_diffuse(const t_env *env,
-							const t_ray reflected, const t_obj obj)
+t_fcolor		fast_diffuse(const t_env *env, const t_ray hit, const t_obj obj
+	, const t_vec3 norm)
 {
 	float			light_dist;
 	t_fcolor		light;
 	t_id_dist		near_obj;
 	int 			i;
-	t_ray			light_r;
+	t_ray			ray;
 
 	light = env->bckgrnd_col;
 	i = -1;
-	light_r.org = reflected.org;
+	ray.org = hit.org;
 	while (++i < env->light_nb)
 	{
-		light_r.dir = flt3_sub(env->light_arr[i].pos, reflected.org);
-		light_r.dir = flt3_normalize(light_r.dir);
-		light_dist = flt3_mod(flt3_sub(env->light_arr[i].pos, reflected.org));
-		near_obj = nearest_obj(env, light_r);
+		ray.dir = flt3_sub(env->light_arr[i].pos, hit.org);
+		ray.dir = flt3_normalize(ray.dir);
+		light_dist = flt3_mod(flt3_sub(env->light_arr[i].pos, hit.org));
+		near_obj = nearest_obj(env, ray);
 		if (light_dist < near_obj.dist)
 		{
-			light = flt3_add(light, 
-					light_drop(env->light_arr[i].intensity, light_dist));
+			float d = flt3_dot(norm, ray.dir) * obj.diffuse;
+			if (d < 0.)
+				d *= -1.;
+			light = flt3_add(light, flt3_multf(light_drop(env->light_arr[i].intensity, light_dist), d));
+
+
+			//light = flt3_add(light, light_drop(env->light_arr[i].intensity, light_dist));
 			light = flt3_addf(light,
-				get_specular(reflected.dir, light_r.dir) * obj.specular);
+					get_specular(hit.dir, ray.dir, obj.specular));
 		}
 	}
+	//flt3_divf(light, env->light_nb);
 	return (light);
 }
 
@@ -113,12 +114,13 @@ t_fcolor			trace_ray(const t_env *env, const t_ray ray, const int bounce)
 	obj = nearest_obj(env, ray);
 	if (obj.id == -1)
 		return (env->bckgrnd_col);
+	// printf("dist: %f\n", obj.dist);
 	if (!bounce)
 		return (env->objs_arr[obj.id].color);
 	hit_reflect.org = flt3_add(flt3_multf(ray.dir, obj.dist), ray.org);
 	norm = flt3_normalize(env->objs_arr[obj.id].normfun(&env->objs_arr[obj.id].this, hit_reflect.org));		
 	hit_reflect.dir = get_reflection(ray.dir, norm);
-	emit_col = flt3_mult(fast_diffuse(env, hit_reflect, env->objs_arr[obj.id]),
+	emit_col = flt3_mult(fast_diffuse(env, hit_reflect, env->objs_arr[obj.id], norm),
 						env->objs_arr[obj.id].color);
 	return (emit_col);
 }
@@ -139,7 +141,10 @@ t_fcolor			launch_ray(const int x, const int y, const t_env *env)
 		(1.0 - 2.0 * (y + 0.5) / (float)env->disp.res.y) * env->disp.tfov,
 		1.0
 	};
+	// multiply by world matrix here <<<
+
 	apply_camera_rot(env, &screen_point);
+
 	screen_point = flt3_normalize(screen_point);
 	return (trace_ray(env, (t_ray){env->camera.org, screen_point}, 1));
 }
@@ -153,7 +158,7 @@ static int			render_line(void *vthread)
 
 	thread = (t_thread*)vthread;
 	v = thread->line_start;
-	tmp_img = thread->px_start;
+	tmp_img = &thread->env->sdl.img[v * thread->env->disp.res.x];
 	while (v < thread->line_end)
 	{
 		u = -1;
