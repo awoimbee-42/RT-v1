@@ -26,7 +26,10 @@ int			tobj_parse(t_obj *obj, char *line, int *done,
 	if (!ft_strncmp(line, "\t\t.diffuse", 10) && (*done |= 0xF))
 		obj->diffuse = parse_f(line + 10, line_nb);
 	else if (!ft_strncmp(line, "\t\t.specular", 11) && (*done |= 0xF0))
+	{
 		obj->specular = parse_f(line + 11, line_nb);
+		printf("My spec %f\n", obj->specular);
+	}
 	else if (!ft_strncmp(line, "\t\t.color", 8) && (*done |= 0xF00))
 		obj->color = parse_f3(line + 8, line_nb);
 	else

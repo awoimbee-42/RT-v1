@@ -18,57 +18,28 @@ env
 	.background_light = {0.2, 0.2, 0.2};
 
 display
-	.width = 400
-	.height = 400
+	.width = 600
+	.height = 600
 	.fov = 75;
 
 camera
-	.pos = {0., 0., 0.}
+	.pos = {0., 0., -8.}
 	.dir = {0., 0, 0};
 
-objects[5] :
+objects[1] :
 {
-	Sphere
-		.origin = {0., 0., 5.}	#comments ! but they cannot end with ';'
-			#but hey, it works !
-		.radius = 2.
-		.color = {1, 1, 1}
-		.specular = 0.4
-		.diffuse = 0.7;
 	Cylinder
-		.origin = {0., 0., 12.}
-		.end = {2.5, 2., 12.}
-		.radius = 2.
-		.color = {1, 1, 1}
-		.specular = 0.4
-		.diffuse = 0.7;
-	Sphere
-		.origin = {0.8, 2.1, 7}
+		.origin = {0, 0, 0}
+		.end = {0, 1, 0}
 		.radius = 2
-		.color = {0.2, 0.4, 0.8}
+		.color = {0.02, 0.02, 0.9}
 		.specular = 0.5
 		.diffuse = 0.5;
-	Disk
-		.origin = {0.8, 2.1, 8}
-		.normal = {0, 0, -1}
-		.radius = 4
-		.color = {0.8, 0.8, 0.8}
-		.specular = 0.5
-		.diffuse = 0.5;
-	Plane
-		.origin = {0, -2, 9}
-		.normal = {0, 1, 0}
-		.color = {0.5, 0, 0}
-		.specular = 0.9
-		.diffuse = 0.2;
 }
 
-lights[2] :
+lights[1] :
 {
 	Light
-		.position = {10, -1.2, 5}
+		.position = {10, 6, -6}
 		.intensity = {500, 500, 500};
-	Light
-		.position = {-10, 10, -10}
-		.intensity = {1000, 1000, 1000};
 }
