@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/01/25 23:23:25 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/01/26 19:12:35 by cpoirier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ SRC_NAME =	main.c							\
 			t_obj/dist.c					\
 			t_obj/norm.c					\
 			camera_ope.c					\
+			light_ope.c						\
 			\
 			operators/flt3_op0.c				\
 			operators/flt3_op1.c				\

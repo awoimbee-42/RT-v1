@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:09:52 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/25 23:12:48 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/26 17:54:52 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,33 +17,6 @@
 #include "libft.h"
 #include <stdlib.h>
 #include <unistd.h>
-
-double		ft_atof_mv(char **nptr)
-{
-	short int		sign;
-	double			result;
-	float			i;
-
-	result = 0;
-	sign = 1;
-	while (**nptr == ' ' || **nptr == '\n' || **nptr == '\t'
-		|| **nptr == '\f' || **nptr == '\v' || **nptr == '\r')
-		++*nptr;
-	if (**nptr == '-' && ++*nptr)
-		sign = -1;
-	else if (**nptr == '+')
-		++*nptr;
-	while ('0' <= **nptr && **nptr <= '9')
-		result = result * 10 + (*(*nptr)++ - 48);
-	if (**nptr == '.' && ++*nptr)
-	{
-		i = 1;
-		while ('0' <= **nptr && **nptr <= '9' && (i *= 10))
-			result += (float)(*(*nptr)++ - 48) / i;
-	}
-	return (result * sign);
-}
-
 
 /*
 **	msg_exit : a printf for crashing cleanly.
@@ -61,7 +34,7 @@ static char	*skip_whitespaces(char *str)
 	return (str);
 }
 
-int		is_comment(char *line)
+int			is_comment(char *line)
 {
 	line = skip_whitespaces(line);
 	if (*line == '\0' || *line == '#')

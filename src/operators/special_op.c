@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/11 18:26:31 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/25 17:59:29 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/26 19:01:49 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@ unsigned int	srgb(const t_fcolor color)
 			+ (0U << 24));
 }
 
-t_fcolor	tone_map(const t_fcolor px)
+t_fcolor		tone_map(const t_fcolor px)
 {
 	return (flt3_div(px, flt3_add(px, (t_fcolor){1, 1, 1})));
 }
 
-float	points_dist(const t_coords p1, const t_coords p2)
+float			points_dist(const t_coords p1, const t_coords p2)
 {
 	return (sqrt(
 		(p2.x - p1.x) * (p2.x - p1.x)

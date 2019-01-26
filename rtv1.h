@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/25 22:29:02 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/26 19:14:19 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <stdlib.h>
-# include <stdio.h> //perror strerror
+# include <stdio.h>
 # include <math.h>
 # include <limits.h>
 
 # include "libft.h"
 # include "SDL2/SDL.h"
-#include "SDL2/SDL_thread.h"
+# include "SDL2/SDL_thread.h"
 
 # define THREAD_NB 10
 
@@ -148,7 +148,7 @@ typedef struct	s_sdl
 	SDL_Renderer	*renderer;
 	SDL_Texture		*texture;
 	SDL_Window		*win;
-    SDL_Surface		*surface;
+	SDL_Surface		*surface;
 }				t_sdl;
 
 /*
@@ -184,37 +184,36 @@ union			u_object
 	{
 		t_vec3			orig;
 		float			radius;
-	}				sphere;
+	}			sphere;
 	struct		s_plane
 	{
 		t_vec3			orig;
 		t_vec3			norm;
-	}				plane;
+	}			plane;
 	struct		s_disk
 	{
 		t_vec3			orig;
 		t_vec3			norm;
 		float			radius2;
-	}				disk;
+	}			disk;
 	struct		s_cylinder
 	{
 		t_vec3			org;
 		t_vec3			end;
 		float			radius;
-	}					cylinder;
+	}			cylinder;
 	struct		s_cone
 	{
 		t_vec3			org;
 		t_vec3			dir;
 		float			angle;
-	}					cone;
+	}			cone;
 };
 
 typedef struct	s_obj
 {
 	t_distfun		distfun;
 	t_normfun		normfun;
-	// enum e_material	material;
 	float			diffuse;
 	float			specular;
 	t_fcolor		color;
@@ -266,7 +265,7 @@ void			error(int	err_nb);
 /*
 **	./parser/scene.c
 */
-void		parse_scene(t_env *env, char *filename);
+void			parse_scene(t_env *env, char *filename);
 
 /*
 **	init_argv.c
@@ -299,7 +298,7 @@ float			dist_sphere(const union u_object *obj, const t_ray ray);
 float			dist_plane(const union u_object *obj, const t_ray ray);
 float			dist_disk(const union u_object *obj, const t_ray ray);
 float			dist_cylinder(const union u_object *obj, const t_ray ray);
-float                   dist_cone(const union u_object *obj, const t_ray ray);
+float			dist_cone(const union u_object *obj, const t_ray ray);
 
 /*
 **	t_obj/norm.c
@@ -307,7 +306,7 @@ float                   dist_cone(const union u_object *obj, const t_ray ray);
 t_vec3			norm_sphere(const union u_object *obj, const t_vec3 hit);
 t_vec3			norm_plane(const union u_object *obj, const t_vec3 hit);
 t_vec3			norm_cylinder(const union u_object *obj, const t_vec3 hit);
-t_vec3                  norm_cone(const union u_object *obj, const t_vec3 hit);
+t_vec3			norm_cone(const union u_object *obj, const t_vec3 hit);
 
 /*
 **	operators/special_op.c
@@ -317,6 +316,15 @@ t_fcolor		light_drop(const t_fcolor light, const float dist);
 t_fcolor		tone_map(const t_fcolor px);
 float			points_dist(const t_coords p1, const t_coords p2);
 t_vec3			get_reflection(t_vec3 d, const t_vec3 n);
+
+/*
+**	light_ope.c
+*/
+t_fcolor		get_specular(const t_fcolor light, const t_vec3 dir
+		, const t_vec3 light_dir, const float specular);
+t_fcolor		fast_diffuse(const t_env *env, const t_ray hit
+		, const t_obj obj, const t_vec3 norm);
+t_id_dist		nearest_obj(const t_env *env, const t_ray ray);
 
 /*
 **	camera_ope.c

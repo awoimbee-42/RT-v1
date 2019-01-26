@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 22:02:07 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/25 23:49:50 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/26 19:04:14 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ float		dist_plane(const union u_object *obj, const t_ray ray)
 	if (fabs(denom) > 1e-6)
 	{
 		dist = flt3_dot(
-			flt3_sub(obj->plane.orig, ray.org),
-			obj->plane.norm)
+				flt3_sub(obj->plane.orig, ray.org),
+				obj->plane.norm)
 			/ denom;
 		if (dist > 0)
 			return (dist);
@@ -58,8 +58,8 @@ float		dist_disk(const union u_object *obj, const t_ray ray)
 
 	if ((dist = dist_plane(obj, ray)) != -1)
 	{
-		v =
-		flt3_sub(flt3_add(ray.org, flt3_multf(ray.dir, dist)), obj->disk.orig);
+		v = flt3_sub(flt3_add(ray.org, flt3_multf(ray.dir, dist))
+				, obj->disk.orig);
 		disk2 = flt3_dot(v, v);
 		if (disk2 <= obj->disk.radius2)
 			return (dist);
@@ -109,10 +109,10 @@ float		dist_cone(const union u_object *obj, const t_ray ray)
 	par.z = org_dot * org_dot - flt3_dot(diff, diff) * cos2;
 	dir_dot = par.y * par.y - 4 * par.x * par.z;
 	if (dir_dot < 0)
-                return (-1);
-        diff.x = (-par.y - sqrt(dir_dot)) / (2 * par.x);
-        diff.y = (-par.y + sqrt(dir_dot)) / (2 * par.x);
-        if (diff.y > 0.1)
-                return (diff.y);
-        return (diff.x);
+		return (-1);
+	diff.x = (-par.y - sqrt(dir_dot)) / (2 * par.x);
+	diff.y = (-par.y + sqrt(dir_dot)) / (2 * par.x);
+	if (diff.y > 0.1)
+		return (diff.y);
+	return (diff.x);
 }

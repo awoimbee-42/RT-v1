@@ -6,48 +6,45 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:12:01 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/25 15:55:14 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/26 18:01:21 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 #include "../libft/libft.h"
 
-//LOTS OF TODOS IN HERE
-
 void	usage(void)
 {
-	ft_fprintf(2,
-		"<bold>Usage : ./rtv1 [-res x y] file</bold>\n"
-		"\tother stuff\n"
-		"\t\tmore stuff\n");
+	ft_fprintf(2, "<bold>Usage : ./rtv1 file</bold>\n");
 	exit(EXIT_FAILURE);
 }
 
-void	read_argv(t_env *env, char **argv, int argc)
-{
-	int		i;
-
-	i = 0;
-	while (++i < argc)
-	{
-		if (ft_strcmp(argv[i], "-res") == 0 && i + 2 < argc)
-		{
-			env->disp.res.x = ft_atoi(argv[++i]);
-			env->disp.res.y = ft_atoi(argv[++i]);
-			if (env->disp.res.x < 10 || env->disp.res.y < 10
-			|| env->disp.res.x < env->disp.res.y)
-				msg_exit("Bad resolution", 0);
-			env->disp.aspect_ratio = env->disp.res.x / env->disp.res.y;
-		}
-		else
-			usage();
-	}
-}
+/*
+** void	read_argv(t_env *env, char **argv, int argc)
+** {
+**	int		i;
+**
+**	i = 0;
+**	while (++i < argc)
+**	{
+**		if (ft_strcmp(argv[i], "-res") == 0 && i + 2 < argc)
+**		{
+**			env->disp.res.x = ft_atoi(argv[++i]);
+**			env->disp.res.y = ft_atoi(argv[++i]);
+**			if (env->disp.res.x < 10 || env->disp.res.y < 10
+**			|| env->disp.res.x < env->disp.res.y)
+**				msg_exit("Bad resolution", 0);
+**			env->disp.aspect_ratio = env->disp.res.x / env->disp.res.y;
+**		}
+**		else
+**			usage();
+**	}
+**}
+*/
 
 void	init(t_env *env, t_sdl *sdl)
 {
-	if(SDL_Init(SDL_INIT_VIDEO) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		error(SDL_ERR);
 	env->disp = (t_disp)
 	{

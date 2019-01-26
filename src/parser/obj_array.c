@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:28:36 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/23 00:53:23 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/26 17:52:22 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,7 @@ int			tobj_parse(t_obj *obj, char *line, int *done,
 	if (!ft_strncmp(line, "\t\t.diffuse", 10) && (*done |= 0xF))
 		obj->diffuse = parse_f(line + 10, line_nb);
 	else if (!ft_strncmp(line, "\t\t.specular", 11) && (*done |= 0xF0))
-	{
 		obj->specular = parse_f(line + 11, line_nb);
-		printf("My spec %f\n", obj->specular);
-	}
 	else if (!ft_strncmp(line, "\t\t.color", 8) && (*done |= 0xF00))
 		obj->color = parse_f3(line + 8, line_nb);
 	else
@@ -76,13 +73,9 @@ void		parse_objects(int fd, t_env *env, char *line)
 			env->objs_arr[obj_nb] = parse_cylinder(fd, &env->keys_pressed);
 		else if (!ft_strcmp(line, "\tCone") && --obj_nb >= 0)
 			env->objs_arr[obj_nb] = parse_cone(fd, &env->keys_pressed);
-		else if (!ft_strcmp(line, "}") && (done = 1))
-			break ;
-		else
+		else if ((!ft_strcmp(line, "}") && (done = 1)) || 1)
 			break ;
 	}
-	if (obj_nb != 0)
-		msg_exit("Wrong number of objects in definition\n", 0);
-	if (!done)
-		msg_exit("Fuckyou, okay ?", 0); // mashallah
+	obj_nb != 0 ? msg_exit("Wrong number of objects in def\n", 0) : (void)0;
+	!done ? msg_exit("Don't know what went wrong, retry again", 0) : (void)0;
 }

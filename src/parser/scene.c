@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 12:38:31 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/24 15:33:26 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/26 17:53:47 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int			init_parser(int *done, t_env *env, char *filename)
 		msg_exit("Incorrect file type.", NULL);
 	return (fd);
 }
-
 
 /*
 **	Let's use env->keys_pressed as line nb because why not ?

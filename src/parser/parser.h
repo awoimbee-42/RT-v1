@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 12:55:57 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/24 15:33:37 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/26 17:48:14 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_obj		parse_sphere(int fd, unsigned int *line_nb);
 t_obj		parse_plane(int fd, unsigned int *line_nb);
 t_obj		parse_disk(int fd, unsigned int *line_nb);
 t_obj		parse_cylinder(int fd, unsigned int *line_nb);
-t_obj           parse_cone(int fd, unsigned int *line_nb);
+t_obj		parse_cone(int fd, unsigned int *line_nb);
 
 void		parse_open_bracket(int fd, unsigned int *line_nb);
 float		parse_f(char *str, unsigned int line_nb);

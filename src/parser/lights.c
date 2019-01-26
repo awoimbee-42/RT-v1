@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 16:11:46 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/22 22:19:05 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/26 17:47:51 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,5 @@ void			parse_lights(int fd, t_env *env, char *line)
 	if (lights_nb != 0)
 		msg_exit("Wrong number of lights in definition\n", 0);
 	if (!done)
-		msg_exit("MADLAD", 0); // wallah al hadim
+		msg_exit("MADLAD", 0);
 }

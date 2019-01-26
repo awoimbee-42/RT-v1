@@ -18,8 +18,8 @@ env
 	.background_light = {0.02, 0.02, 0.02};
 
 display
-	.width = 400
-	.height = 400
+	.width = 700
+	.height = 700
 	.fov = 75;
 
 camera

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 18:33:26 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/25 23:09:20 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/26 18:55:16 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,76 +14,71 @@
 #include "parser.h"
 #include "../libft/libft.h"
 
-t_obj   parse_cone(int fd, unsigned int *line_nb)
-{
-        char    *line;
-        int     d;
-        t_obj   cone;
-
-        d = 0;
-        line = NULL;
-        cone.distfun = &dist_cone;
-        cone.normfun = &norm_cone;
-        while (get_next_line(fd, &line) > 0 && ++*line_nb)
-        {
-                if (!ft_strncmp(line, "\t\t.origin", 9) && (d |= 0xF000))
-                        cone.this.cone.org = parse_f3(line + 9, *line_nb);
-                else if (!ft_strncmp(line, "\t\t.dir", 6) && (d |= 0xF0000))
-                        cone.this.cone.dir = parse_f3(line + 6, *line_nb);
-                else if (!ft_strncmp(line, "\t\t.angle", 8) && (d |= 0xF00000))
-                        cone.this.cone.angle = parse_f(line + 8, *line_nb);
-                else if (!tobj_parse(&cone, line, &d, *line_nb) && !is_comment(line))
-                        break ;
-                if (line[ft_strlen(line) - 1] == ';' && (d |= 0xF000000))
-                        break ;
-                ft_memdel((void**)&line);
-        }
-        if (line)
-                ft_memdel((void**)&line);
-        if (d != 0xFFFFFFF)
-                msg_exit("Bad format in Cone, around line %d\n", line_nb);
-        return (cone);
-}
-
-t_obj	parse_cylinder(int fd, unsigned int *line_nb)
+t_obj		parse_cone(int fd, unsigned int *line_nb)
 {
 	char	*line;
-	int	d;
-	t_obj	cylinder;
+	int		d;
+	t_obj	cone;
 
 	d = 0;
-	line = NULL;
-	cylinder.distfun = &dist_cylinder;
-	cylinder.normfun = &norm_cylinder;
+	cone.distfun = &dist_cone;
+	cone.normfun = &norm_cone;
 	while (get_next_line(fd, &line) > 0 && ++*line_nb)
 	{
 		if (!ft_strncmp(line, "\t\t.origin", 9) && (d |= 0xF000))
-			cylinder.this.cylinder.org = parse_f3(line + 9, *line_nb);
-		else if (!ft_strncmp(line, "\t\t.end", 6) && (d |= 0xF0000))
-			cylinder.this.cylinder.end = parse_f3(line + 6, *line_nb);
-		else if (!ft_strncmp(line, "\t\t.radius", 9) && (d |= 0xF00000))
-			cylinder.this.cylinder.radius = parse_f(line + 9, *line_nb);
-		else if (!tobj_parse(&cylinder, line, &d, *line_nb) && !is_comment(line))
+			cone.this.cone.org = parse_f3(line + 9, *line_nb);
+		else if (!ft_strncmp(line, "\t\t.dir", 6) && (d |= 0xF0000))
+			cone.this.cone.dir = flt3_normalize(parse_f3(line + 6, *line_nb));
+		else if (!ft_strncmp(line, "\t\t.angle", 8) && (d |= 0xF00000))
+			cone.this.cone.angle = parse_f(line + 8, *line_nb);
+		else if (!tobj_parse(&cone, line, &d, *line_nb) && !is_comment(line))
 			break ;
 		if (line[ft_strlen(line) - 1] == ';' && (d |= 0xF000000))
 			break ;
 		ft_memdel((void**)&line);
 	}
-	if (line)
-		ft_memdel((void**)&line);
+	line ? ft_memdel((void**)&line) : (void)0;
 	if (d != 0xFFFFFFF)
-		msg_exit("Bad format in Cylinder, around line %d\n", line_nb);
-	return (cylinder);
+		msg_exit("Bad format in Cone, around line %d\n", line_nb);
+	return (cone);
 }
 
-t_obj	parse_sphere(int fd, unsigned int *line_nb)
+t_obj		parse_cylinder(int fd, unsigned int *line_nb)
+{
+	char	*line;
+	int		d;
+	t_obj	cyl;
+
+	d = 0;
+	cyl.distfun = &dist_cylinder;
+	cyl.normfun = &norm_cylinder;
+	while (get_next_line(fd, &line) > 0 && ++*line_nb)
+	{
+		if (!ft_strncmp(line, "\t\t.origin", 9) && (d |= 0xF000))
+			cyl.this.cylinder.org = parse_f3(line + 9, *line_nb);
+		else if (!ft_strncmp(line, "\t\t.end", 6) && (d |= 0xF0000))
+			cyl.this.cylinder.end = parse_f3(line + 6, *line_nb);
+		else if (!ft_strncmp(line, "\t\t.radius", 9) && (d |= 0xF00000))
+			cyl.this.cylinder.radius = parse_f(line + 9, *line_nb);
+		else if (!tobj_parse(&cyl, line, &d, *line_nb) && !is_comment(line))
+			break ;
+		if (line[ft_strlen(line) - 1] == ';' && (d |= 0xF000000))
+			break ;
+		ft_memdel((void**)&line);
+	}
+	line ? ft_memdel((void**)&line) : (void)0;
+	if (d != 0xFFFFFFF)
+		msg_exit("Bad format in Cylinder, around line %d\n", line_nb);
+	return (cyl);
+}
+
+t_obj		parse_sphere(int fd, unsigned int *line_nb)
 {
 	char	*line;
 	int		d;
 	t_obj	sphere;
 
 	d = 0;
-	line = NULL;
 	sphere.distfun = &dist_sphere;
 	sphere.normfun = &norm_sphere;
 	while (get_next_line(fd, &line) > 0 && ++*line_nb)
@@ -105,14 +100,13 @@ t_obj	parse_sphere(int fd, unsigned int *line_nb)
 	return (sphere);
 }
 
-t_obj	parse_plane(int fd, unsigned int *line_nb)
+t_obj		parse_plane(int fd, unsigned int *line_nb)
 {
 	char	*line;
 	int		done;
 	t_obj	plane;
 
 	done = 0;
-	line = NULL;
 	plane.distfun = &dist_plane;
 	plane.normfun = &norm_plane;
 	while (get_next_line(fd, &line) > 0 && ++*line_nb)
@@ -121,7 +115,8 @@ t_obj	parse_plane(int fd, unsigned int *line_nb)
 			plane.this.plane.orig = parse_f3(line + 9, *line_nb);
 		else if (!ft_strncmp(line, "\t\t.normal", 9) && (done |= 0xF0000))
 			plane.this.plane.norm = parse_f3(line + 9, *line_nb);
-		else if (!tobj_parse(&plane, line, &done, *line_nb) && !is_comment(line))
+		else if (!tobj_parse(&plane, line, &done, *line_nb)
+				&& !is_comment(line))
 			break ;
 		if (line[ft_strlen(line) - 1] == ';' && (done |= 0xF00000))
 			break ;
@@ -134,14 +129,13 @@ t_obj	parse_plane(int fd, unsigned int *line_nb)
 	return (plane);
 }
 
-t_obj	parse_disk(int fd, unsigned int *line_nb)
+t_obj		parse_disk(int fd, unsigned int *line_nb)
 {
 	char	*line;
 	int		done;
 	t_obj	disk;
 
 	done = 0;
-	line = NULL;
 	disk.distfun = &dist_disk;
 	disk.normfun = &norm_plane;
 	while (get_next_line(fd, &line) > 0 && ++*line_nb)
