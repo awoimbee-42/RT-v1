@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/09 22:49:07 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/24 17:50:32 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/26 07:24:44 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,13 @@ t_flt3	flt3_divf(t_flt3 a, const float b)
 	a.x /= b;
 	a.y /= b;
 	a.z /= b;
+	return (a);
+}
+
+t_flt3	flt3_addf(t_flt3 a, const float b)
+{
+	a.x += b;
+	a.y += b;
+	a.z += b;
 	return (a);
 }

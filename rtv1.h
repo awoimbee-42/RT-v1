@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/25 22:29:02 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/26 15:17:36 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,11 +233,12 @@ typedef struct	s_thread
 	struct s_env	*env;
 	int				line_start;
 	int				line_end;
+	unsigned int	*px_start;
 }				t_thread;
 
 typedef struct	s_env
 {
-	struct s_sdl	*sdl;
+	struct s_sdl	sdl;
 	struct s_disp	disp;
 	struct s_ray	camera;
 	int				objs_nb;
@@ -273,7 +274,7 @@ void		parse_scene(t_env *env, char *filename);
 */
 void			usage(void);
 void			read_argv(t_env *env, char **argv, int argc);
-void			init(t_env *env, t_sdl *sdl);
+void			init(t_env *env);
 
 /*
 **	operators/flt3_opX.c
@@ -291,6 +292,7 @@ float			flt3_dot(const t_flt3 a, const t_flt3 b);
 float			flt3_mod(const t_flt3 a);
 t_flt3			flt3_normalize(t_flt3 a);
 t_flt3			flt3_cross(t_flt3 a, const t_flt3 b);
+t_flt3			flt3_addf(t_flt3 a, const float b);
 
 /*
 **	t_obj/dist.c
@@ -319,7 +321,7 @@ t_vec3			get_reflection(t_vec3 d, const t_vec3 n);
 /*
 **	camera_ope.c
 */
-void			apply_camera_rot(const t_env *v, t_vec3 *s);
+void			apply_camera_rot(const t_env *env, t_vec3 *s);
 void			move_camera(t_env *env, int dir);
 
 /*

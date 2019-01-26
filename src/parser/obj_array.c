@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:28:36 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/23 00:53:23 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/26 07:11:25 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,7 @@ int			tobj_parse(t_obj *obj, char *line, int *done,
 	if (!ft_strncmp(line, "\t\t.diffuse", 10) && (*done |= 0xF))
 		obj->diffuse = parse_f(line + 10, line_nb);
 	else if (!ft_strncmp(line, "\t\t.specular", 11) && (*done |= 0xF0))
-	{
 		obj->specular = parse_f(line + 11, line_nb);
-		printf("My spec %f\n", obj->specular);
-	}
 	else if (!ft_strncmp(line, "\t\t.color", 8) && (*done |= 0xF00))
 		obj->color = parse_f3(line + 8, line_nb);
 	else

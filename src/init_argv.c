@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:12:01 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/25 15:55:14 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/26 15:18:06 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 void	usage(void)
 {
 	ft_fprintf(2,
-		"<bold>Usage : ./rtv1 [-res x y] file</bold>\n"
+		"<bold>Usage : ./rtv1 <scene_file></bold>\n"
 		"\tother stuff\n"
 		"\t\tmore stuff\n");
 	exit(EXIT_FAILURE);
@@ -45,22 +45,40 @@ void	read_argv(t_env *env, char **argv, int argc)
 	}
 }
 
-void	init(t_env *env, t_sdl *sdl)
+void	init_threads(t_env *env)
 {
+	int i;
+	
+	i = -1;
+	while (++i < THREAD_NB)
+	{
+		env->threads[i].env = env;
+		env->threads[i].line_start = (i * env->disp.res.y) / THREAD_NB;
+		env->threads[i].line_end = (((i + 1) * env->disp.res.y) / THREAD_NB);
+		env->threads[i].px_start =
+			&env->sdl.img[env->threads[i].line_start * env->disp.res.x];
+	}
+}
+
+void	init_sdl(t_env *env)
+{
+	t_sdl	*sdl;
+
+	sdl = &env->sdl;
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)
 		error(SDL_ERR);
-	env->disp = (t_disp)
-	{
-		.res = (t_int2){WIN_W, WIN_H},
-		.aspect_ratio = (float)WIN_W / WIN_H,
-		.tfov = tan(75. / 2. * M_PI / 180.)
-	};
-	env->camera = (t_ray)
-	{
-		(t_vec3){1., 1., 0.},
-		(t_vec3){0., 0., 0.}
-	};
-	env->bckgrnd_col = (t_fcolor){0.05, 0.05, 0.05};
-	env->sdl = sdl;
-	env->keys_pressed = 0;
+	if (!(sdl->win = SDL_CreateWindow( "RT-V1", 0, 0,
+		env->disp.res.x, env->disp.res.y, SDL_WINDOW_SHOWN)))
+		error(SDL_ERR);
+	sdl->renderer = SDL_CreateRenderer(sdl->win, -1, SDL_RENDERER_ACCELERATED);
+	sdl->texture = SDL_CreateTexture(sdl->renderer, SDL_PIXELFORMAT_ARGB8888,
+			SDL_TEXTUREACCESS_STREAMING, env->disp.res.x, env->disp.res.y);
+	if (!(sdl->img = malloc(env->disp.res.x * env->disp.res.y * sizeof(int))))
+		error(MALLOC_ERR);
+}
+
+void	init(t_env *env)
+{
+	init_sdl(env);
+	init_threads(env);
 }
