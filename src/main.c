@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:36:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/25 18:21:31 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/25 23:50:01 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,16 @@ int		main(int argc, char **argv)
 		SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, env.disp.res.x, env.disp.res.y);
 	if (!(sdl.img = malloc(env.disp.res.x * env.disp.res.y * sizeof(int))))
 		error(MALLOC_ERR);
+
+
+	int i = -1;
+	while (++i < THREAD_NB)
+	{
+		env.threads[i].env = &env;
+		env.threads[i].line_start = (i * env.disp.res.y) / THREAD_NB;
+		env.threads[i].line_end = (((i + 1) * env.disp.res.y) / THREAD_NB);
+	}
+
 	render(&env);
 	loop(&env);
 	return (0);
