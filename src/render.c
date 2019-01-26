@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/25 22:53:32 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/26 16:24:40 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,28 +44,10 @@ t_fcolor			get_specular(const t_fcolor light, const t_vec3 dir
 	double		theta;
 	double		is_bright;
 
-	theta = acos(flt3_dot(dir, light_dir) / (flt3_mod(dir) * flt3_mod(light_dir)));
-	if (theta < specular / 2)
-		theta /= 0.4;
-	//else if (theta > 2 * M_PI - 0.4)
-	//	theta = (theta - 2 * M_PI + 0.4) / -0.4;
-	else
-		return ((t_vec3){0, 0, 0});
-	is_bright = 1 / (theta * theta * theta);
+	theta = acos(fmax(flt3_dot(dir, light_dir), 0) / (flt3_mod(dir)
+				* flt3_mod(light_dir)));
+	is_bright = specular * (1 / (theta * theta * theta));
 	return ((t_vec3){is_bright, is_bright, is_bright});
-}
-
-t_fcolor                        get_diffuse(const t_fcolor light, const t_vec3 dir
-	, const t_vec3 norm, float diffuse)
-{
-	double	theta;
-
-	theta = acos(flt3_dot(dir, norm) / (flt3_mod(dir) * flt3_mod(norm)));
-	if (theta > M_PI / 2 - 0.2)
-		theta = 1 - diffuse * (1 - fabs(M_PI / 2. - theta) / 0.2);
-	else
-		return ((t_vec3){1, 1, 1});
-	return ((t_vec3){theta, theta, theta});
 }
 
 //https://stackoverflow.com/questions/15619830/raytracing-how-to-combine-diffuse-and-specular-color
@@ -89,13 +71,18 @@ t_fcolor		fast_diffuse(const t_env *env, const t_ray hit, const t_obj obj
 		near_obj = nearest_obj(env, ray);
 		if (light_dist < near_obj.dist)
 		{
-			light = flt3_add(light, light_drop(env->light_arr[i].intensity, light_dist));
+			float d = flt3_dot(norm, ray.dir) * obj.diffuse;
+			if (d < 0.)
+				d *= -1.;
+			light = flt3_add(light, flt3_multf(light_drop(env->light_arr[i].intensity, light_dist), d));
+
+
+			//light = flt3_add(light, light_drop(env->light_arr[i].intensity, light_dist));
 			light = flt3_add(light, get_specular(light, hit.dir, ray.dir
 				, obj.specular));
-			//light = flt3_add(env->bckgrnd_col, flt3_mult(flt3_sub(light, env->bckgrnd_col), get_diffuse(light, ray.dir, norm, obj.diffuse)));
 		}
 	}
-	flt3_divf(light, env->light_nb);
+	//flt3_divf(light, env->light_nb);
 	return (light);
 }
 

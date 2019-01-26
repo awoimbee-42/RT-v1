@@ -40,6 +40,6 @@ objects[1] :
 lights[1] :
 {
 	Light
-		.position = {10, 6, -6}
+		.position = {15, 15, -6}
 		.intensity = {500, 500, 500};
 }

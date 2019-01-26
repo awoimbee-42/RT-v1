@@ -15,7 +15,7 @@ RICARD >>> PASTIS
          `-------------------+
 
 env
-	.background_light = {0.2, 0.2, 0.2};
+	.background_light = {0.02, 0.02, 0.02};
 
 display
 	.width = 400
@@ -34,7 +34,7 @@ objects[5] :
 		.radius = 2.
 		.color = {1, 1, 1}
 		.specular = 0.4
-		.diffuse = 0.7;
+		.diffuse = 1;
 	Cylinder
 		.origin = {0., 0., 12.}
 		.end = {2.5, 2., 12.}
@@ -47,7 +47,7 @@ objects[5] :
 		.radius = 2
 		.color = {0.2, 0.4, 0.8}
 		.specular = 0.5
-		.diffuse = 0.5;
+		.diffuse = 1;
 	Disk
 		.origin = {0.8, 2.1, 8}
 		.normal = {0, 0, -1}
@@ -59,7 +59,7 @@ objects[5] :
 		.origin = {0, -2, 9}
 		.normal = {0, 1, 0}
 		.color = {0.5, 0, 0}
-		.specular = 0.9
+		.specular = 0
 		.diffuse = 0.2;
 }
 

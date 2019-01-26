@@ -15,7 +15,7 @@ RICARD >>> PASTIS
          `-------------------+
 
 env
-	.background_light = {0., 0., 0.};
+	.background_light = {0.2, 0.2, 0.2};
 
 display
 	.width = 600
