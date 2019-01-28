@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/09 22:48:12 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/25 17:53:22 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/28 11:14:00 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,12 @@
 
 t_vec3		norm_sphere(const union u_object *obj, const t_vec3 hit)
 {
-	return (flt3_divf(flt3_sub(hit, obj->sphere.orig), obj->sphere.radius));
+	t_vec3 pute;
+
+	pute = hit;
+	flt3_sub(&pute, &obj->sphere.orig);
+	flt3_divf(&pute, obj->sphere.radius);
+	return (pute);
 }
 
 t_vec3		norm_plane(const union u_object *obj, const t_vec3 hit)
@@ -26,12 +31,25 @@ t_vec3		norm_plane(const union u_object *obj, const t_vec3 hit)
 t_vec3		norm_cylinder(const union u_object *obj, const t_vec3 hit)
 {
 	t_vec3		diff;
+	t_vec3 pute;
 
-	diff = flt3_sub(obj->cylinder.end, obj->cylinder.org);
-	return (flt3_cross(diff, flt3_cross(flt3_sub(hit, obj->cylinder.org), diff)));
+	diff = obj->cylinder.end;
+	flt3_sub(&diff, &obj->cylinder.org);
+	
+	pute = hit;
+	flt3_sub(&pute, &obj->cylinder.org);
+	flt3_cross(&pute, &diff);
+	flt3_cross(&diff, &pute);
+	return (diff);
 }
 
 t_vec3		norm_cone(const union u_object *obj, const t_vec3 hit)
 {
-        return (flt3_cross(obj->cone.dir, flt3_cross(flt3_sub(hit, obj->cone.org), obj->cone.dir)));
+	t_vec3 pute;
+
+	pute = hit;
+	flt3_sub(&pute, &obj->cone.org);
+	flt3_cross(&pute, &obj->cone.dir);
+	flt3_cross(&pute, &obj->cone.dir);
+        return (pute);
 }

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/28 07:11:27 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/28 11:07:36 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,17 +282,17 @@ void			init(t_env *env);
 **			benchmarking shows that void divf(t_vec3*a, (...)) is not
 **			faster that the implementation here
 */
-t_flt3			flt3_add(t_flt3 a, const t_flt3 b);
-t_flt3			flt3_sub(t_flt3 a, const t_flt3 b);
-t_flt3			flt3_mult(t_flt3 a, const t_flt3 b);
-t_flt3			flt3_multf(t_flt3 a, const float b);
-t_flt3			flt3_div(t_flt3 a, const t_flt3 b);
-t_flt3			flt3_divf(t_flt3 a, const float b);
-float			flt3_dot(const t_flt3 a, const t_flt3 b);
-float			flt3_mod(const t_flt3 a);
-t_flt3			flt3_normalize(t_flt3 a);
-t_flt3			flt3_cross(t_flt3 a, const t_flt3 b);
-t_flt3			flt3_addf(t_flt3 a, const float b);
+void			flt3_add(t_flt3 *a, const t_flt3 *b);
+void			flt3_sub(t_flt3 *a, const t_flt3 *b);
+void			flt3_mult(t_flt3 *a, const t_flt3 *b);
+void			flt3_multf(t_flt3 *a, const float b);
+void			flt3_div(t_flt3 *a, const t_flt3 *b);
+void			flt3_divf(t_flt3 *a, const float b);
+float			flt3_dot(const t_flt3 *a, const t_flt3 *b);
+float			flt3_mod(const t_flt3 *a);
+void			flt3_normalize(t_flt3 *a);
+void			flt3_cross(t_flt3 *a, const t_flt3 *b);
+void			flt3_addf(t_flt3 *a, const float b);
 
 /*
 **	t_obj/dist.c
@@ -315,8 +315,8 @@ t_vec3                  norm_cone(const union u_object *obj, const t_vec3 hit);
 **	operators/special_op.c
 */
 unsigned int	srgb(t_fcolor color);
-t_fcolor		light_drop(const t_fcolor light, const float dist);
-t_fcolor		tone_map(const t_fcolor px);
+void		light_drop(t_fcolor *light, const float dist);
+void		tone_map(t_fcolor *px);
 float			points_dist(const t_coords p1, const t_coords p2);
 t_vec3			get_reflection(t_vec3 d, const t_vec3 n);
 

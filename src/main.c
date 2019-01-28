@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:36:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/26 15:14:30 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/28 11:18:48 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ int		main(int argc, char **argv)
 		usage();
 	parse_scene(env, argv[1]);
 	init(env);
-
-	render(env);
+	for (int i = 0; i < 900; ++i)
+		render(env);
+	exit(EXIT_SUCCESS);
 	loop(env);
 	return (0);
 }

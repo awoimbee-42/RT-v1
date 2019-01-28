@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/11 18:26:31 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/25 17:59:29 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/28 11:17:52 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,25 @@
 
 t_vec3			get_reflection(t_vec3 d, const t_vec3 n)
 {
-	return (flt3_sub(d, flt3_multf(n, 2. * flt3_dot(d, n))));
+	t_vec3 pute;
+
+	pute = n;
+	flt3_multf(&pute, 2. * flt3_dot(&d, &n));
+
+	flt3_sub(&d, &pute);
+	return (d);
 }
 
-t_fcolor		light_drop(const t_fcolor light, const float dist)
+void		light_drop(t_fcolor *light, const float dist)
 {
 	float		dist2;
 
 	dist2 = dist * dist;
-	return (
-		(t_fcolor){
-			light.x / dist2,
-			light.y / dist2,
-			light.z / dist2
-		});
+	
+			light->x /= dist2;
+			light->y /= dist2;
+			light->z /= dist2;
+	
 }
 
 unsigned int	srgb(const t_fcolor color)
@@ -39,9 +44,12 @@ unsigned int	srgb(const t_fcolor color)
 			+ (0U << 24));
 }
 
-t_fcolor	tone_map(const t_fcolor px)
+void	tone_map(t_fcolor *px)
 {
-	return (flt3_div(px, flt3_add(px, (t_fcolor){1, 1, 1})));
+	t_vec3 pute;
+	pute = *px;
+	flt3_addf(&pute, 1);
+	flt3_div(px, &pute);
 }
 
 float	points_dist(const t_coords p1, const t_coords p2)
