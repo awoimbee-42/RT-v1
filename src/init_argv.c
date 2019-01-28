@@ -6,14 +6,12 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:12:01 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/28 06:31:09 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/28 15:50:41 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 #include "../libft/libft.h"
-
-//LOTS OF TODOS IN HERE
 
 void	usage(void)
 {
@@ -45,7 +43,7 @@ void	read_argv(t_env *env, char **argv, int argc)
 void	init_threads(t_env *env)
 {
 	int i;
-	
+
 	i = -1;
 	while (++i < THREAD_NB)
 	{
@@ -62,9 +60,9 @@ void	init_sdl(t_env *env)
 	t_sdl	*sdl;
 
 	sdl = &env->sdl;
-	if(SDL_Init(SDL_INIT_VIDEO) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		error(SDL_ERR);
-	if (!(sdl->win = SDL_CreateWindow( "RT-V1", 0, 0,
+	if (!(sdl->win = SDL_CreateWindow("RT-V1", 0, 0,
 		env->disp.res.x, env->disp.res.y, SDL_WINDOW_SHOWN)))
 		error(SDL_ERR);
 	sdl->renderer = SDL_CreateRenderer(sdl->win, -1, SDL_RENDERER_ACCELERATED);

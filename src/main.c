@@ -6,13 +6,14 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:36:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/28 11:56:39 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/28 15:48:53 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
 //sizeof(t_env) == 448 ! :O
+
 int		main(int argc, char **argv)
 {
 	t_env	*env;
@@ -23,7 +24,7 @@ int		main(int argc, char **argv)
 		usage();
 	parse_scene(env, argv[1]);
 	init(env);
-	// for (int i = 0; i < 900; ++i)
+	// for (int i = 0; i < 1000; ++i)
 	// 	render(env);
 	// exit(EXIT_SUCCESS);
 	render(env);
@@ -42,7 +43,7 @@ void	error(int err_nb)
 	exit(EXIT_FAILURE);
 }
 
-void			exit_cleanly(t_env *env)
+void	exit_cleanly(t_env *env)
 {
 	SDL_DestroyTexture(env->sdl.texture);
 	SDL_DestroyRenderer(env->sdl.renderer);
