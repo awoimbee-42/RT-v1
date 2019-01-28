@@ -6,18 +6,13 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:09:52 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/28 07:03:30 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/28 16:56:48 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 #include "parser.h"
 #include "libft.h"
-
-#include "libft.h"
-#include <stdlib.h>
-#include <unistd.h>
-
 
 void		missing_clause_in_file(const char *clause, const int line)
 {
@@ -34,14 +29,14 @@ void		missing_clause_in_file(const char *clause, const int line)
 **	 msg_exit will interpret memory as pointing to the specified datatype.
 */
 
-char	*skip_whitespaces(char *str)
+char		*skip_whitespaces(char *str)
 {
 	while (*str == ' ' || *str == '\t')
 		++str;
 	return (str);
 }
 
-int		is_comment(char *line)
+int			is_comment(char *line)
 {
 	line = skip_whitespaces(line);
 	if (*line == '\0' || *line == '#')

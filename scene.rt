@@ -15,11 +15,11 @@ RICARD >>> PASTIS
          `-------------------+
 
 env
-	.background_light = {0.02, 0.02, 0.02};
+	.background_light = {.02, 0.02, 0.02};
 
 display
-	.width = 400
-	.height = 400
+	.width = 800
+	.height = 600
 	.fov = 75;
 
 camera

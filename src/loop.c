@@ -6,45 +6,69 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/21 00:40:33 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/28 10:25:57 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/28 22:09:53 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-#include <stdio.h>
+void		check_keys(t_env *env)
+{
+	int_least8_t	redrw;
+
+	redrw = 0;
+	env->keys_pressed & BT_W && (redrw = 1) ? move_camera(env, 0) : 0;
+	env->keys_pressed & BT_A && (redrw = 1) ? move_camera(env, 2) : 0;
+	env->keys_pressed & BT_S && (redrw = 1) ? move_camera(env, 1) : 0;
+	env->keys_pressed & BT_D && (redrw = 1) ? move_camera(env, 3) : 0;
+	env->keys_pressed & BT_RIGHT && (redrw = 1) ? env->camera.dir.y -= 0.1 : 0;
+	env->keys_pressed & BT_LEFT && (redrw = 1) ? env->camera.dir.y += 0.1 : 0;
+	env->keys_pressed & BT_UP && (redrw = 1) ? env->camera.dir.x += 0.1 : 0;
+	env->keys_pressed & BT_DOWN && (redrw = 1) ? env->camera.dir.x -= 0.1 : 0;
+	env->keys_pressed & BT_Q && (redrw = 1) ? env->camera.org.y -= 0.25 : 0;
+	env->keys_pressed & BT_E && (redrw = 1) ? env->camera.org.y += 0.25 : 0;
+	if (redrw)
+		render(env);
+}
+
+void		check_controller(t_env *env, SDL_GameController *controller)
+{
+	int_least8_t	redrw;
+
+	redrw = 0;
+	SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTY) < -20000 && (redrw = 1) ? move_camera(env, 0) : 0;
+	SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTY) > 20000 && (redrw = 1) ? move_camera(env, 1) : 0;
+	SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTX) < -20000 && (redrw = 1) ? move_camera(env, 2) : 0;
+	SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTX) > 20000 && (redrw = 1) ? move_camera(env, 3) : 0;
+	SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_RIGHTY) < -20000 && (redrw = 1) ? env->camera.dir.x += 0.1 : 0;
+	SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_RIGHTY) > 20000 && (redrw = 1) ? env->camera.dir.x -= 0.1 : 0;
+	SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_RIGHTX) < -20000 && (redrw = 1) ? env->camera.dir.y += 0.1 : 0;
+	SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_RIGHTX) > 20000 && (redrw = 1) ? env->camera.dir.y -= 0.1 : 0;
+	SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_TRIGGERLEFT) > 20000 && (redrw = 1) ? env->camera.org.y -= 0.25 : 0;
+	SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_TRIGGERRIGHT) > 20000 && (redrw = 1) ? env->camera.org.y += 0.25 : 0;
+	if (redrw > 0)
+		render(env);
+}
 
 void		loop(t_env *env, SDL_GameController *controller)
 {
 	SDL_Event	event;
-	int			rrdr;
 
 	while (1)
 	{
-		rrdr = 0;
+		usleep(500);
 		if (SDL_PollEvent(&event))
 		{
 			if (event.type == SDL_QUIT)
 				exit_cleanly(env);
-			else if (event.type == SDL_KEYDOWN)// && !event.key.repeat)
+			else if (event.type == SDL_KEYDOWN && !event.key.repeat)
 				key_pressed(event.key.keysym.sym, env);
 			else if (event.type == SDL_KEYUP)
 				key_released(event.key.keysym.sym, env);
 			continue;
 		}
-		(env->keys_pressed & BT_W || SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_DPAD_UP)) && (rrdr = 1)? move_camera(env, 0) : 0;
-		env->keys_pressed & BT_A && (rrdr = 1)? move_camera(env, 2) : 0;
-		env->keys_pressed & BT_S && (rrdr = 1)? move_camera(env, 1) : 0;
-		env->keys_pressed & BT_D && (rrdr = 1)? move_camera(env, 3) : 0;
-
-		env->keys_pressed & BT_RIGHT && (rrdr = 1) ? env->camera.dir.y -= 0.1 : 0;
-		env->keys_pressed & BT_LEFT && (rrdr = 1) ? env->camera.dir.y += 0.1 : 0;
-		env->keys_pressed & BT_UP && (rrdr = 1) ? env->camera.dir.x += 0.1 : 0;
-		env->keys_pressed & BT_DOWN && (rrdr = 1) ? env->camera.dir.x -= 0.1 : 0;
-		env->keys_pressed & BT_Q && (rrdr = 1) ? env->camera.org.y -= 0.25 : 0;
-		env->keys_pressed & BT_E && (rrdr = 1) ? env->camera.org.y += 0.25 : 0;
-		if (rrdr)
-			render(env);
+		check_keys(env);
+		check_controller(env, controller);
 	}
 }
 

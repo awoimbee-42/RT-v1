@@ -6,13 +6,14 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:36:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/28 10:22:23 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/28 21:55:40 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
 //sizeof(t_env) == 448 ! :O
+
 int		main(int argc, char **argv)
 {
 	t_env	*env;
@@ -24,15 +25,14 @@ int		main(int argc, char **argv)
 	parse_scene(env, argv[1]);
 	init(env);
 
-
-
 	SDL_GameController *controller;
 	controller = NULL;
 	if (SDL_IsGameController(0))
 		controller = SDL_GameControllerOpen(0);
 
-
-
+	// for (int i = 0; i < 1000; ++i)
+	// 	render(env);
+	// exit(EXIT_SUCCESS);
 	render(env);
 	loop(env, controller);
 	return (0);
@@ -49,7 +49,7 @@ void	error(int err_nb)
 	exit(EXIT_FAILURE);
 }
 
-void			exit_cleanly(t_env *env)
+void	exit_cleanly(t_env *env)
 {
 	// SDL_GameControllerClose()
 	SDL_DestroyTexture(env->sdl.texture);

@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/01/26 17:06:51 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/01/28 15:51:33 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRC_NAME =	main.c							\
 			\
 			operators/flt3_op0.c				\
 			operators/flt3_op1.c				\
+			operators/flt3_op2.c				\
 			operators/special_op.c				\
 			\
 			parser/env_disp_cam.c				\

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera_ope.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpoirier <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 12:32:57 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/01/25 19:21:29 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/28 11:14:52 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,16 @@ void			move_camera(t_env *env, int dir)
 	unit = (t_vec3) {0., 0., 0.5};
 	apply_camera_rot(env, &unit);
 	if (dir == 0)
-		env->camera.org = flt3_add(env->camera.org, unit);
+		flt3_add(&env->camera.org, &unit);
 	else if (dir == 1)
-		env->camera.org = flt3_sub(env->camera.org, unit);
+		flt3_sub(&env->camera.org, &unit);
 	else
 	{
 		rotate_2d(&unit, M_PI / 2, 1);
 		unit.y = 0;
 		if (dir == 2)
-			env->camera.org = flt3_add(env->camera.org, unit);
+			flt3_add(&env->camera.org, &unit);
 		else
-			env->camera.org = flt3_sub(env->camera.org, unit);
+			flt3_sub(&env->camera.org, &unit);
 	}
 }

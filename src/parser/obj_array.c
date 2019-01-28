@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:28:36 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/28 09:20:28 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/28 16:52:12 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,7 @@ void		parse_objects(int fd, t_env *env, char *line)
 			env->objs_arr[obj_nb] = parse_cylinder(fd, &env->keys_pressed);
 		else if (!ft_strcmp(line, "\tCone") && --obj_nb >= 0)
 			env->objs_arr[obj_nb] = parse_cone(fd, &env->keys_pressed);
-		else if (!ft_strcmp(line, "}") && (done = 1))
-			break ;
-		else
+		else if ((!ft_strcmp(line, "}") && (done = 1)) || 1)
 			break ;
 	}
 	if (obj_nb != 0)

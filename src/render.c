@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/26 16:57:09 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/28 16:57:08 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 **		the rays hitting objects on their origin point.
 */
 
-t_id_dist		nearest_obj(const t_env *env, const t_ray ray)
+static t_id_dist	nearest_obj(const t_env *env, const t_ray *ray)
 {
 	t_id_dist		nearest;
 	t_id_dist		tmp;
@@ -38,8 +38,8 @@ t_id_dist		nearest_obj(const t_env *env, const t_ray ray)
 	return (nearest);
 }
 
-float			get_specular(const t_vec3 dir,
-					const t_vec3 light_dir, const float specular)
+static float		get_specular(const t_vec3 *dir,
+					const t_vec3 *light_dir, const float specular)
 {
 	double		theta;
 	double		is_bright;
@@ -50,62 +50,43 @@ float			get_specular(const t_vec3 dir,
 	return (is_bright);
 }
 
-t_fcolor		fast_diffuse(const t_env *env, const t_ray hit, const t_obj obj
-	, const t_vec3 norm)
+static t_fcolor		fast_diffuse(const t_env *env, t_ray *hit,
+									t_obj *obj, t_vec3 *norm)
 {
 	float			light_dist;
 	t_fcolor		light;
 	t_id_dist		near_obj;
-	int 			i;
+	int				i;
 	t_ray			ray;
+	t_vec3			tmp;
+	float			d;
 
 	light = env->bckgrnd_col;
 	i = -1;
-	ray.org = hit.org;
+	ray.org = hit->org;
 	while (++i < env->light_nb)
 	{
-		ray.dir = flt3_sub(env->light_arr[i].pos, hit.org);
-		ray.dir = flt3_normalize(ray.dir);
-		light_dist = flt3_mod(flt3_sub(env->light_arr[i].pos, hit.org));
-		near_obj = nearest_obj(env, ray);
+		ray.dir = env->light_arr[i].pos;
+		flt3_sub(&ray.dir, &hit->org);
+		light_dist = flt3_mod(&ray.dir);
+		flt3_normalize(&ray.dir);
+		near_obj = nearest_obj(env, &ray);
 		if (light_dist < near_obj.dist)
 		{
-			float d = flt3_dot(norm, ray.dir) * obj.diffuse;
-			if (d < 0.)
-				d *= -1.;
-			light = flt3_add(light, flt3_multf(light_drop(env->light_arr[i].intensity, light_dist), d));
-
-
-			//light = flt3_add(light, light_drop(env->light_arr[i].intensity, light_dist));
-			light = flt3_addf(light,
-					get_specular(hit.dir, ray.dir, obj.specular));
+			d = fabs(flt3_dot(norm, &ray.dir) * obj->diffuse);
+			tmp = env->light_arr[i].intensity;
+			flt3_add(&light, flt3_multf(light_drop(&tmp, light_dist), d));
+			flt3_addf(&light, get_specular(&hit->dir, &ray.dir, obj->specular));
 		}
 	}
-	//flt3_divf(light, env->light_nb);
 	return (light);
 }
 
-// t_fcolor			real_diffuse(const t_env *env, const t_ray hit_norm)
-// {
-// 	float			light_dist;
-// 	t_fcolor		light;
-// 	t_id_dist		near_obj;
-
-// 	light = (t_fcolor){0, 0, 0};
-// 	// shoot rays in a cone shape, then add the fast_diffuse <- need matrix multiplicsation
-// 		// diffuse_ray(vector + 45 deg on x)
-// 		// diffuse_ray(vector - 45 deg on x)
-// 		// diffuse_ray(vector + 45 deg on y)
-// 		// diffuse_ray(vector - 45 deg on x)
-
-// 	return (light);
-// }
-
-t_fcolor			trace_ray(const t_env *env, const t_ray ray, const int bounce)
+t_fcolor			trace_ray(const t_env *env, const t_ray *ray,
+								const int bounce)
 {
 	t_id_dist		obj;
 	t_ray			hit_reflect;
-	t_fcolor		emit_col;
 	t_vec3			norm;
 
 	/*if (bounce == 0)
@@ -114,45 +95,50 @@ t_fcolor			trace_ray(const t_env *env, const t_ray ray, const int bounce)
 	obj = nearest_obj(env, ray);
 	if (obj.id == -1)
 		return (env->bckgrnd_col);
-	// printf("dist: %f\n", obj.dist);
 	if (!bounce)
 		return (env->objs_arr[obj.id].color);
-	hit_reflect.org = flt3_add(flt3_multf(ray.dir, obj.dist), ray.org);
-	norm = flt3_normalize(env->objs_arr[obj.id].normfun(&env->objs_arr[obj.id].this, hit_reflect.org));		
-	hit_reflect.dir = get_reflection(ray.dir, norm);
-	emit_col = flt3_mult(fast_diffuse(env, hit_reflect, env->objs_arr[obj.id], norm),
-						env->objs_arr[obj.id].color);
-	return (emit_col);
+	hit_reflect.org = ray->dir;
+	flt3_multf(&hit_reflect.org, obj.dist);
+	flt3_add(&hit_reflect.org, &ray->org);
+	norm = env->objs_arr[obj.id]
+			.normfun(&env->objs_arr[obj.id].this, &hit_reflect.org);
+	flt3_normalize(&norm);
+	hit_reflect.dir = get_reflection(ray->dir, norm);
+	hit_reflect.dir = fast_diffuse(env, &hit_reflect,
+								&env->objs_arr[obj.id], &norm);
+	flt3_mult(&hit_reflect.dir,
+						&env->objs_arr[obj.id].color);
+	return (hit_reflect.dir);
 }
 
 /*
 **	launch_ray() shoots the rays from the 'camera' onto the 'lens'
 **	screen_point are the coordinates of the point of the screen that the ray
-**		hits
+**		hits == the ray direction
 */
 
-t_fcolor			launch_ray(const int x, const int y, const t_env *env)
+uint32_t		launch_ray(const int x, const int y, const t_env *env)
 {
 	t_vec3			screen_point;
 
-	screen_point = (t_vec3) //ray direction / point on the 'screen' in world coords
+	screen_point = (t_vec3)
 	{
-		 (2.0 * (x + 0.5) / (float)env->disp.res.x - 1.0) * env->disp.tfov * env->disp.aspect_ratio,
+		(2.0 * (x + 0.5) / (float)env->disp.res.x - 1.0)
+			* env->disp.tfov * env->disp.aspect_ratio,
 		(1.0 - 2.0 * (y + 0.5) / (float)env->disp.res.y) * env->disp.tfov,
 		1.0
 	};
-	// multiply by world matrix here <<<
-
 	apply_camera_rot(env, &screen_point);
-
-	screen_point = flt3_normalize(screen_point);
-	return (trace_ray(env, (t_ray){env->camera.org, screen_point}, 1));
+	flt3_normalize(&screen_point);
+	screen_point = trace_ray(env, &(t_ray){env->camera.org, screen_point}, 1);
+	tone_map(&screen_point);
+	return (srgb(&screen_point));
 }
 
 static int			render_line(void *vthread)
 {
 	t_thread		*thread;
-	unsigned int	*tmp_img;
+	uint32_t		*tmp_img;
 	int				u;
 	int				v;
 
@@ -163,7 +149,7 @@ static int			render_line(void *vthread)
 	{
 		u = -1;
 		while (++u < thread->env->disp.res.x)
-			*tmp_img++ = srgb(tone_map(launch_ray(u, v, thread->env)));
+			*tmp_img++ = launch_ray(u, v, thread->env);
 		++v;
 	}
 	return (0);
@@ -175,11 +161,13 @@ void				render(t_env *env)
 
 	i = -1;
 	while (++i < THREAD_NB)
-		env->threads[i].ptr = SDL_CreateThread(&render_line, "", &env->threads[i]);
+		env->threads[i].ptr = SDL_CreateThread(&render_line, "",
+												&env->threads[i]);
 	i = -1;
 	while (++i < THREAD_NB)
 		SDL_WaitThread(env->threads[i].ptr, NULL);
-	SDL_UpdateTexture(env->sdl.texture, NULL, env->sdl.img, env->disp.res.x * sizeof(int));
+	SDL_UpdateTexture(env->sdl.texture, NULL, env->sdl.img,
+						env->disp.res.x * sizeof(int));
 	SDL_RenderCopy(env->sdl.renderer, env->sdl.texture, NULL, NULL);
 	SDL_RenderPresent(env->sdl.renderer);
 }

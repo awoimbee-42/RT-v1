@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/28 10:23:07 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/28 21:53:43 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <stdlib.h>
-# include <stdio.h> //perror strerror
+# include <stdio.h>
 # include <math.h>
 # include <limits.h>
 
@@ -25,10 +25,7 @@
 # include "SDL2/SDL_thread.h"
 # include "SDL2/SDL_gamecontroller.h"
 
-# define THREAD_NB 10
-
-# define WIN_W 1280
-# define WIN_H 720
+# define THREAD_NB 15
 
 # define SDL_ERR	1
 # define MALLOC_ERR	2
@@ -65,7 +62,6 @@ struct s_img;
 struct s_mlx;
 
 struct s_light;
-enum e_material;
 union u_object;
 struct s_obj;
 
@@ -149,7 +145,7 @@ typedef struct	s_sdl
 	SDL_Renderer	*renderer;
 	SDL_Texture		*texture;
 	SDL_Window		*win;
-    SDL_Surface		*surface;
+	SDL_Surface		*surface;
 }				t_sdl;
 
 /*
@@ -170,14 +166,8 @@ typedef struct	s_light
 **	##########################################
 */
 
-typedef enum	e_material
-{
-	MAT,
-	GLOSS
-}				t_material;
-
-typedef float(*t_distfun)(const union u_object*, const t_ray);
-typedef t_vec3(*t_normfun)(const union u_object*, const t_vec3);
+typedef float(*t_distfun)(const union u_object*, const t_ray*);
+typedef t_vec3(*t_normfun)(const union u_object*, const t_vec3*);
 
 union			u_object
 {
@@ -202,20 +192,19 @@ union			u_object
 		t_vec3			org;
 		t_vec3			end;
 		float			radius;
-	}					cylinder;
+	}				cylinder;
 	struct		s_cone
 	{
 		t_vec3			org;
 		t_vec3			dir;
 		float			angle;
-	}					cone;
+	}				cone;
 };
 
 typedef struct	s_obj
 {
 	t_distfun		distfun;
 	t_normfun		normfun;
-	// enum e_material	material;
 	float			diffuse;
 	float			specular;
 	t_fcolor		color;
@@ -247,7 +236,7 @@ typedef struct	s_env
 	int				light_nb;
 	struct s_light	*light_arr;
 	t_fcolor		bckgrnd_col;
-	unsigned int	keys_pressed;
+	uint32_t		keys_pressed;
 	t_thread		threads[THREAD_NB];
 }				t_env;
 
@@ -268,7 +257,7 @@ void			error(int	err_nb);
 /*
 **	./parser/scene.c
 */
-void		parse_scene(t_env *env, const char *filename);
+void			parse_scene(t_env *env, const char *filename);
 
 /*
 **	init_argv.c
@@ -283,42 +272,41 @@ void			init(t_env *env);
 **			benchmarking shows that void divf(t_vec3*a, (...)) is not
 **			faster that the implementation here
 */
-t_flt3			flt3_add(t_flt3 a, const t_flt3 b);
-t_flt3			flt3_sub(t_flt3 a, const t_flt3 b);
-t_flt3			flt3_mult(t_flt3 a, const t_flt3 b);
-t_flt3			flt3_multf(t_flt3 a, const float b);
-t_flt3			flt3_div(t_flt3 a, const t_flt3 b);
-t_flt3			flt3_divf(t_flt3 a, const float b);
-float			flt3_dot(const t_flt3 a, const t_flt3 b);
-float			flt3_mod(const t_flt3 a);
-t_flt3			flt3_normalize(t_flt3 a);
-t_flt3			flt3_cross(t_flt3 a, const t_flt3 b);
-t_flt3			flt3_addf(t_flt3 a, const float b);
+t_flt3			*flt3_add(t_flt3 *a, const t_flt3 *b);
+t_flt3			*flt3_sub(t_flt3 *a, const t_flt3 *b);
+t_flt3			*flt3_mult(t_flt3 *a, const t_flt3 *b);
+t_flt3			*flt3_multf(t_flt3 *a, const float b);
+t_flt3			*flt3_div(t_flt3 *a, const t_flt3 *b);
+t_flt3			*flt3_divf(t_flt3 *a, const float b);
+float			flt3_dot(const t_flt3 *a, const t_flt3 *b);
+float			flt3_mod(const t_flt3 *a);
+t_flt3			*flt3_normalize(t_flt3 *a);
+t_flt3			*flt3_cross(t_flt3 *a, const t_flt3 *b);
+t_flt3			*flt3_addf(t_flt3 *a, const float b);
 
 /*
 **	t_obj/dist.c
 */
-float			dist_sphere(const union u_object *obj, const t_ray ray);
-float			dist_plane(const union u_object *obj, const t_ray ray);
-float			dist_disk(const union u_object *obj, const t_ray ray);
-float			dist_cylinder(const union u_object *obj, const t_ray ray);
-float                   dist_cone(const union u_object *obj, const t_ray ray);
+float			dist_sphere(const union u_object *obj, const t_ray *ray);
+float			dist_plane(const union u_object *obj, const t_ray *ray);
+float			dist_disk(const union u_object *obj, const t_ray *ray);
+float			dist_cylinder(const union u_object *obj, const t_ray *ray);
+float			dist_cone(const union u_object *obj, const t_ray *ray);
 
 /*
 **	t_obj/norm.c
 */
-t_vec3			norm_sphere(const union u_object *obj, const t_vec3 hit);
-t_vec3			norm_plane(const union u_object *obj, const t_vec3 hit);
-t_vec3			norm_cylinder(const union u_object *obj, const t_vec3 hit);
-t_vec3                  norm_cone(const union u_object *obj, const t_vec3 hit);
+t_vec3			norm_sphere(const union u_object *obj, const t_vec3 *hit);
+t_vec3			norm_plane(const union u_object *obj, const t_vec3 *hit);
+t_vec3			norm_cylinder(const union u_object *obj, const t_vec3 *hit);
+t_vec3			norm_cone(const union u_object *obj, const t_vec3 *hit);
 
 /*
 **	operators/special_op.c
 */
-unsigned int	srgb(t_fcolor color);
-t_fcolor		light_drop(const t_fcolor light, const float dist);
-t_fcolor		tone_map(const t_fcolor px);
-float			points_dist(const t_coords p1, const t_coords p2);
+unsigned int	srgb(const t_fcolor *color);
+t_fcolor		*light_drop(t_fcolor *light, const float dist);
+void			tone_map(t_fcolor *px);
 t_vec3			get_reflection(t_vec3 d, const t_vec3 n);
 
 /*
