@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/21 00:40:33 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/25 23:07:50 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/28 10:25:57 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 #include <stdio.h>
 
-void		loop(t_env *env)
+void		loop(t_env *env, SDL_GameController *controller)
 {
 	SDL_Event	event;
-	int			rerender;
+	int			rrdr;
 
 	while (1)
 	{
-		rerender = 0;
+		rrdr = 0;
 		if (SDL_PollEvent(&event))
 		{
 			if (event.type == SDL_QUIT)
@@ -32,18 +32,18 @@ void		loop(t_env *env)
 				key_released(event.key.keysym.sym, env);
 			continue;
 		}
-		env->keys_pressed & BT_W && (rerender = 1)? move_camera(env, 0) : 0;
-		env->keys_pressed & BT_A && (rerender = 1)? move_camera(env, 2) : 0;
-		env->keys_pressed & BT_S && (rerender = 1)? move_camera(env, 1) : 0;
-		env->keys_pressed & BT_D && (rerender = 1)? move_camera(env, 3) : 0;
+		(env->keys_pressed & BT_W || SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_DPAD_UP)) && (rrdr = 1)? move_camera(env, 0) : 0;
+		env->keys_pressed & BT_A && (rrdr = 1)? move_camera(env, 2) : 0;
+		env->keys_pressed & BT_S && (rrdr = 1)? move_camera(env, 1) : 0;
+		env->keys_pressed & BT_D && (rrdr = 1)? move_camera(env, 3) : 0;
 
-		env->keys_pressed & BT_RIGHT && (rerender = 1) ? env->camera.dir.y -= 0.1 : 0;
-		env->keys_pressed & BT_LEFT && (rerender = 1) ? env->camera.dir.y += 0.1 : 0;
-		env->keys_pressed & BT_UP && (rerender = 1) ? env->camera.dir.x += 0.1 : 0;
-		env->keys_pressed & BT_DOWN && (rerender = 1) ? env->camera.dir.x -= 0.1 : 0;
-		env->keys_pressed & BT_Q && (rerender = 1) ? env->camera.org.y -= 0.25 : 0;
-		env->keys_pressed & BT_E && (rerender = 1) ? env->camera.org.y += 0.25 : 0;
-		if (rerender)
+		env->keys_pressed & BT_RIGHT && (rrdr = 1) ? env->camera.dir.y -= 0.1 : 0;
+		env->keys_pressed & BT_LEFT && (rrdr = 1) ? env->camera.dir.y += 0.1 : 0;
+		env->keys_pressed & BT_UP && (rrdr = 1) ? env->camera.dir.x += 0.1 : 0;
+		env->keys_pressed & BT_DOWN && (rrdr = 1) ? env->camera.dir.x -= 0.1 : 0;
+		env->keys_pressed & BT_Q && (rrdr = 1) ? env->camera.org.y -= 0.25 : 0;
+		env->keys_pressed & BT_E && (rrdr = 1) ? env->camera.org.y += 0.25 : 0;
+		if (rrdr)
 			render(env);
 	}
 }

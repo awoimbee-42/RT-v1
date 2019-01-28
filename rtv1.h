@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/28 07:11:27 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/28 10:23:07 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@
 
 # include "libft.h"
 # include "SDL2/SDL.h"
-#include "SDL2/SDL_thread.h"
+# include "SDL2/SDL_thread.h"
+# include "SDL2/SDL_gamecontroller.h"
 
 # define THREAD_NB 10
 
@@ -329,7 +330,7 @@ void			move_camera(t_env *env, int dir);
 /*
 **	keys_handlers.c
 */
-void			loop(t_env *env);
+void			loop(t_env *env, SDL_GameController *controller);
 void			key_pressed(SDL_Keycode key, t_env *env);
 void			key_released(SDL_Keycode key, t_env *env);
 

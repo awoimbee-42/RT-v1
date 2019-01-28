@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:12:01 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/28 06:31:09 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/28 10:14:18 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	init_sdl(t_env *env)
 	t_sdl	*sdl;
 
 	sdl = &env->sdl;
-	if(SDL_Init(SDL_INIT_VIDEO) < 0)
+	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER) < 0)
 		error(SDL_ERR);
 	if (!(sdl->win = SDL_CreateWindow( "RT-V1", 0, 0,
 		env->disp.res.x, env->disp.res.y, SDL_WINDOW_SHOWN)))

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:36:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/26 15:14:30 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/28 10:22:23 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,17 @@ int		main(int argc, char **argv)
 	parse_scene(env, argv[1]);
 	init(env);
 
+
+
+	SDL_GameController *controller;
+	controller = NULL;
+	if (SDL_IsGameController(0))
+		controller = SDL_GameControllerOpen(0);
+
+
+
 	render(env);
-	loop(env);
+	loop(env, controller);
 	return (0);
 }
 
@@ -42,6 +51,7 @@ void	error(int err_nb)
 
 void			exit_cleanly(t_env *env)
 {
+	// SDL_GameControllerClose()
 	SDL_DestroyTexture(env->sdl.texture);
 	SDL_DestroyRenderer(env->sdl.renderer);
 	free(env->sdl.img);
