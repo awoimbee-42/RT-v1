@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:28:36 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/26 07:11:25 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/28 09:20:28 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,8 @@ static int	create_array(t_env *env, char *line)
 {
 	int		obj_nb;
 
-	while (*line != '\0' && *line != '[')
-		++line;
-	if (!*line || !*++line)
+	line = skip_whitespaces(line + 7);
+	if (*line != '[' || !ft_isdigit(*++line))
 		msg_exit("Bad format line %d\n", &env->keys_pressed);
 	obj_nb = ft_atoi_mv(&line);
 	if (ft_strncmp(line, "] :", 3) != 0 || obj_nb < 0 || obj_nb > MAX_OBJS)
@@ -81,5 +80,6 @@ void		parse_objects(int fd, t_env *env, char *line)
 	if (obj_nb != 0)
 		msg_exit("Wrong number of objects in definition\n", 0);
 	if (!done)
-		msg_exit("Fuckyou, okay ?", 0); // mashallah
+		msg_exit("You didn't close the damn bracket for the objects,"
+				"around line %d !", &env->keys_pressed);
 }

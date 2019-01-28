@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:12:01 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/26 15:18:06 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/28 06:31:09 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,7 @@
 
 void	usage(void)
 {
-	ft_fprintf(2,
-		"<bold>Usage : ./rtv1 <scene_file></bold>\n"
-		"\tother stuff\n"
-		"\t\tmore stuff\n");
+	ft_fprintf(2, "<bold>Usage : ./rtv1 <scene_file></bold>\n");
 	exit(EXIT_FAILURE);
 }
 

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/26 15:17:36 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/28 07:11:27 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,7 +267,7 @@ void			error(int	err_nb);
 /*
 **	./parser/scene.c
 */
-void		parse_scene(t_env *env, char *filename);
+void		parse_scene(t_env *env, const char *filename);
 
 /*
 **	init_argv.c

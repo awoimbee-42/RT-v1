@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/23 20:34:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/25 03:28:15 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/28 07:10:29 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,6 @@ int				ft_printf(const char *restrict format, ...);
 int				ft_fprintf(int fd, const char *restrict format, ...);
 int				ft_sprintf(char *str, const char *restrict format, ...);
 
-void			msg_exit(const char *msg, void *data);
+void			msg_exit(const char *msg, const void *data);
 
 #endif

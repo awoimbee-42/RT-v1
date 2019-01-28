@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 14:13:17 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/25 23:17:17 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/28 07:10:05 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 **	 msg_exit will interpret memory as pointing to the specified datatype.
 */
 
-void	msg_exit(const char *msg, void *data)
+void	msg_exit(const char *msg, const void *data)
 {
 	size_t	len;
 	char	*var;

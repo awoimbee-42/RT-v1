@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 12:55:57 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/24 15:33:37 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/28 07:11:02 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,12 @@
 # define FILE_HEADER		"RICARD >>> PASTIS\n"
 # define FILE_HEADER_LEN	18
 
-int			is_comment(char *line);
 
-void		parse_scene(t_env *env, char *filename);
+void		missing_clause_in_file(const char *clause, const int line);
+int			is_comment(char *line);
+char		*skip_whitespaces(char *str);
+
+void		parse_scene(t_env *env, const char *filename);
 void		parse_env(int fd, t_env *env);
 void		parse_disp(int fd, t_env *env);
 void		parse_camera(int fd, t_env *env);
@@ -43,7 +46,7 @@ t_obj		parse_sphere(int fd, unsigned int *line_nb);
 t_obj		parse_plane(int fd, unsigned int *line_nb);
 t_obj		parse_disk(int fd, unsigned int *line_nb);
 t_obj		parse_cylinder(int fd, unsigned int *line_nb);
-t_obj           parse_cone(int fd, unsigned int *line_nb);
+t_obj		parse_cone(int fd, unsigned int *line_nb);
 
 void		parse_open_bracket(int fd, unsigned int *line_nb);
 float		parse_f(char *str, unsigned int line_nb);
