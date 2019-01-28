@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/28 11:08:44 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/28 11:54:10 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 **		the rays hitting objects on their origin point.
 */
 
-t_id_dist		nearest_obj(const t_env *env, const t_ray ray)
+static t_id_dist	nearest_obj(const t_env *env, const t_ray *ray)
 {
 	t_id_dist		nearest;
 	t_id_dist		tmp;
@@ -38,7 +38,7 @@ t_id_dist		nearest_obj(const t_env *env, const t_ray ray)
 	return (nearest);
 }
 
-float			get_specular(const t_vec3 dir,
+static float		get_specular(const t_vec3 dir,
 					const t_vec3 light_dir, const float specular)
 {
 	double		theta;
@@ -50,7 +50,7 @@ float			get_specular(const t_vec3 dir,
 	return (is_bright);
 }
 
-t_fcolor		fast_diffuse(const t_env *env, const t_ray hit, const t_obj obj
+static t_fcolor		fast_diffuse(const t_env *env, const t_ray hit, const t_obj obj
 	, const t_vec3 norm)
 {
 	float			light_dist;
@@ -69,7 +69,7 @@ t_fcolor		fast_diffuse(const t_env *env, const t_ray hit, const t_obj obj
 		flt3_sub(&ray.dir, &hit.org);
 		light_dist = flt3_mod(&ray.dir);
 		flt3_normalize(&ray.dir);
-		near_obj = nearest_obj(env, ray);
+		near_obj = nearest_obj(env, &ray);
 		if (light_dist < near_obj.dist)
 		{
 			float d = flt3_dot(&norm, &ray.dir) * obj.diffuse;
@@ -116,7 +116,7 @@ t_fcolor			trace_ray(const t_env *env, const t_ray ray, const int bounce)
 	/*if (bounce == 0)
 		return (env->bckgrnd_col);
 	*/
-	obj = nearest_obj(env, ray);
+	obj = nearest_obj(env, &ray);
 	if (obj.id == -1)
 		return (env->bckgrnd_col);
 	// printf("dist: %f\n", obj.dist);

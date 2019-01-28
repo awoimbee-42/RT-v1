@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/28 11:07:36 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/28 11:55:51 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ typedef enum	e_material
 	GLOSS
 }				t_material;
 
-typedef float(*t_distfun)(const union u_object*, const t_ray);
+typedef float(*t_distfun)(const union u_object*, const t_ray*);
 typedef t_vec3(*t_normfun)(const union u_object*, const t_vec3);
 
 union			u_object
@@ -297,11 +297,11 @@ void			flt3_addf(t_flt3 *a, const float b);
 /*
 **	t_obj/dist.c
 */
-float			dist_sphere(const union u_object *obj, const t_ray ray);
-float			dist_plane(const union u_object *obj, const t_ray ray);
-float			dist_disk(const union u_object *obj, const t_ray ray);
-float			dist_cylinder(const union u_object *obj, const t_ray ray);
-float                   dist_cone(const union u_object *obj, const t_ray ray);
+float			dist_sphere(const union u_object *obj, const t_ray *ray);
+float			dist_plane(const union u_object *obj, const t_ray *ray);
+float			dist_disk(const union u_object *obj, const t_ray *ray);
+float			dist_cylinder(const union u_object *obj, const t_ray *ray);
+float                   dist_cone(const union u_object *obj, const t_ray *ray);
 
 /*
 **	t_obj/norm.c
