@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/21 00:40:33 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/29 17:12:18 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/29 18:11:06 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void		check_controller(t_env *env, SDL_GameController *cntrlr)
 	int_least8_t	redrw;
 
 	redrw = 0;
-	
 	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_LEFTY) < -20000
 	&& (redrw = 1) ? move_camera(env, 0) : 0;
 	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_LEFTY) > 20000
@@ -57,9 +56,14 @@ void		check_controller(t_env *env, SDL_GameController *cntrlr)
 	&& (redrw = 1) ? env->camera.org.y -= 0.25 : 0;
 	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_TRIGGERRIGHT) > 20000
 	&& (redrw = 1) ? env->camera.org.y += 0.25 : 0;
-	if (redrw > 0)
+	if (redrw != 0)
 		render(env);
 }
+
+/*
+**	if we where able to, we would put usleep(500); in the while
+**		to stop hogging the cpu...
+*/
 
 void		loop(t_env *env, SDL_GameController *controller)
 {
@@ -67,7 +71,6 @@ void		loop(t_env *env, SDL_GameController *controller)
 
 	while (1)
 	{
-		usleep(500);
 		if (SDL_PollEvent(&event))
 		{
 			if (event.type == SDL_QUIT)
@@ -78,7 +81,6 @@ void		loop(t_env *env, SDL_GameController *controller)
 				key_released(event.key.keysym.sym, env);
 			continue;
 		}
-		// else
 		check_keys(env);
 		check_controller(env, controller);
 	}

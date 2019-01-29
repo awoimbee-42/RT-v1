@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 12:38:31 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/29 16:29:00 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/29 18:09:04 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,12 @@ static int	init_parser(int *done, t_env *env, const char *filename)
 	return (fd);
 }
 
+static void	missing_clause_in_file(const char *clause, const int line)
+{
+	ft_fprintf(2, "{red}Missing `%s` clause around line %d{eoc}\n"
+		"\t(replaced by default values)\n", clause, line);
+}
+
 static void	prt_scene_miss_info(const int done)
 {
 	if (!(done & 0xF))
@@ -52,6 +58,7 @@ static void	prt_scene_miss_info(const int done)
 		missing_clause_in_file("objects", 1);
 	if (!(done & 0xF0000))
 		missing_clause_in_file("lights", 1);
+	exit(EXIT_FAILURE);
 }
 
 /*
@@ -80,9 +87,7 @@ void		parse_scene(t_env *env, const char *filename)
 			parse_lights(fd, env, line);
 		ft_memdel((void**)&line);
 	}
-	if (line)
-		ft_memdel((void**)&line);
-	if (done != 0xFFFFF)
-		prt_scene_miss_info(done);
+	ft_memdel((void**)&line);
+	done != 0xFFFFF ? prt_scene_miss_info(done) : 0;
 	env->keys_pressed = 0;
 }

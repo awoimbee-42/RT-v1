@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 12:55:57 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/29 16:29:07 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/29 18:09:18 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
 # define FILE_HEADER		"RICARD >>> PASTIS\n"
 # define FILE_HEADER_LEN	18
 
-void		missing_clause_in_file(const char *clause, const int line);
 int			is_comment(char *line);
 char		*skip_whitespaces(char *str);
 

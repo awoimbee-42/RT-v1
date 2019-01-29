@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 18:33:26 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/29 16:57:39 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/29 18:02:32 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,8 @@ t_obj		parse_cone(int fd, uint32_t *line_nb)
 			break ;
 		ft_memdel((void**)&line);
 	}
-	line ? ft_memdel((void**)&line) : (void)0;
-	if (d != 0xFFFFFFF)
-		msg_exit("Bad format in Cone, around line %d\n", line_nb);
+	ft_memdel((void**)&line);
+	d != 0xFFFFFFF ? msg_exit("Bad format in Cone near line %d\n", line_nb) : 0;
 	flt3_normalize(&cone.this.cone.dir);
 	return (cone);
 }

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:36:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/29 17:15:04 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/29 18:00:43 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	error(int err_nb)
 
 void	exit_cleanly(t_env *env)
 {
-	// SDL_GameControllerClose()
+	env->controller ? SDL_GameControllerClose(env->controller) : (void)0;
 	SDL_DestroyTexture(env->sdl.texture);
 	SDL_DestroyRenderer(env->sdl.renderer);
 	free(env->sdl.img);

@@ -6,19 +6,13 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:09:52 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/29 16:28:59 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/29 18:08:47 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 #include "parser.h"
 #include "libft.h"
-
-void		missing_clause_in_file(const char *clause, const int line)
-{
-	ft_fprintf(2, "{red}Missing `%s` clause around line %d{eoc}\n"
-				"\t(replaced by default values)\n", clause, line);
-}
 
 /*
 **	msg_exit : a printf for crashing cleanly.

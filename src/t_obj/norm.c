@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/09 22:48:12 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/29 17:37:03 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/29 18:09:54 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ t_vec3		norm_cylinder(const union u_object *obj, const t_vec3 *hit)
 
 	diff = obj->cylinder.end;
 	flt3_sub(&diff, &obj->cylinder.org);
-	
 	tmp = *hit;
 	flt3_sub(&tmp, &obj->cylinder.org);
 	flt3_cross(&tmp, &diff);

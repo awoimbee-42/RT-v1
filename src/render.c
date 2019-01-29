@@ -6,14 +6,13 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/29 17:31:39 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/29 18:03:51 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-t_fcolor			trace_ray(const t_env *env, const t_ray *ray,
-								const int bounce)
+t_fcolor	trace_ray(const t_env *env, const t_ray *ray, const int bounce)
 {
 	t_id_dist		obj;
 	t_ray			hit_reflect;
@@ -43,7 +42,7 @@ t_fcolor			trace_ray(const t_env *env, const t_ray *ray,
 **		hits == the ray direction
 */
 
-uint32_t		launch_ray(const int x, const int y, const t_env *env)
+uint32_t	launch_ray(const int x, const int y, const t_env *env)
 {
 	t_vec3			screen_point;
 
@@ -61,7 +60,7 @@ uint32_t		launch_ray(const int x, const int y, const t_env *env)
 	return (srgb(&screen_point));
 }
 
-static int			render_line(void *vthread)
+static int	render_line(void *vthread)
 {
 	t_thread		*thread;
 	uint32_t		*tmp_img;
@@ -81,7 +80,7 @@ static int			render_line(void *vthread)
 	return (0);
 }
 
-void				render(t_env *env)
+void		render(t_env *env)
 {
 	int			i;
 
