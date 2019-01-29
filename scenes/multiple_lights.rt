@@ -18,8 +18,8 @@ env
 	.background_light = {0.4, 0.4, 0.4};
 
 display
-	.width = 1000
-	.height = 1000
+	.width = 800
+	.height = 800
 	.fov = 70;
 
 camera
@@ -39,76 +39,76 @@ objects[16] :
 		.end = {-5, 2., -2.}
 		.radius = 1.4
 		.color = {0.8, 0.8, 0.8}
-		.specular = 0.4
+		.specular = 0.1
 		.diffuse = 0.7;
 	Cylinder
 		.origin = {-5., 0., 10.}
 		.end = {-5, 2., 10.}
 		.radius = 1.4
 		.color = {0.8, 0.8, 0.8}
-		.specular = 0.4
+		.specular = 0.1
 		.diffuse = 0.7;
 	Cylinder
 		.origin = {5., 0., -2.}
 		.end = {5, 2., -2.}
 		.radius = 1.4
 		.color = {0.8, 0.8, 0.8}
-		.specular = 0.4
+		.specular = 0.1
 		.diffuse = 0.7;
 	Cylinder
 		.origin = {5., 0., 10.}
 		.end = {5, 2., 10.}
 		.radius = 1.4
 		.color = {0.8, 0.8, 0.8}
-		.specular = 0.4
+		.specular = 0.1
 		.diffuse = 0.7;
 	Sphere
 		.origin = {-5., 0, 10.}
 		.radius = 2.1
 		.color = {0.8, 0.8, 0.8}
-		.specular = 0.4
+		.specular = 0.1
 		.diffuse = 0.7;
 	Sphere
 		.origin = {5., 0, 10.}
 		.radius = 2.1
 		.color = {0.8, 0.8, 0.8}
-		.specular = 0.4
+		.specular = 0.1
 		.diffuse = 0.7;
 	Sphere
 		.origin = {-5., 0, -2.}
 		.radius = 2.1
 		.color = {0.8, 0.8, 0.8}
-		.specular = 0.4
+		.specular = 0.1
 		.diffuse = 0.7;
 	Sphere
 		.origin = {5, 0, -2}
 		.radius = 2.1
 		.color = {0.8, 0.8, 0.8}
-		.specular = 0.4
+		.specular = 0.1
 		.diffuse = 0.7;
 	Sphere
 		.origin = {-5., 10, 10.}
 		.radius = 2.1
 		.color = {0.8, 0.8, 0.8}
-		.specular = 0.4
+		.specular = 0.1
 		.diffuse = 0.7;
 	Sphere
 		.origin = {5., 10, 10.}
 		.radius = 2.1
 		.color = {0.8, 0.8, 0.8}
-		.specular = 0.4
+		.specular = 0.1
 		.diffuse = 0.7;
 	Sphere
 		.origin = {-5., 10, -2.}
 		.radius = 2.1
 		.color = {0.8, 0.8, 0.8}
-		.specular = 0.4
+		.specular = 0.1
 		.diffuse = 0.7;
 	Sphere
 		.origin = {5, 10, -2}
 		.radius = 2.1
 		.color = {0.8, 0.8, 0.8}
-		.specular = 0.4
+		.specular = 0.1
 		.diffuse = 0.7;
 	Plane
 		.origin = {0, 0, 0}
@@ -130,15 +130,12 @@ objects[16] :
 		.diffuse = 0.2;
 }
 
-lights[3] :
+lights[2] :
 {
 	Light
-		.position = {-9, 7, -7}
-		.intensity = {100, 100, 100};
+		.position = {-12, 7, -10}
+		.intensity = {1000, 1000, 1000};
 	Light
-		.position = {9, 7, -7}
-		.intensity = {100, 100, 100};
-	Light
-		.position = {0, 7, -7}
-		.intensity = {100, 100, 100};
+		.position = {12, 7, -10}
+		.intensity = {1000, 1000, 1000};
 }

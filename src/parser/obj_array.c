@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:28:36 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/28 16:52:12 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/29 16:52:18 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,6 @@ void		parse_objects(int fd, t_env *env, char *line)
 		else if ((!ft_strcmp(line, "}") && (done = 1)) || 1)
 			break ;
 	}
-	if (obj_nb != 0)
-		msg_exit("Wrong number of objects in definition\n", 0);
-	if (!done)
-		msg_exit("You didn't close the damn bracket for the objects,"
-				"around line %d !", &env->keys_pressed);
+	obj_nb != 0 ? msg_exit("Wrong number of objects in def\n", 0) : (void)0;
+	!done ? msg_exit("U didn't close bracket for objects!", 0) : (void)0;
 }

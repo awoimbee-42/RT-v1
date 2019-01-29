@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:12:01 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/28 21:55:20 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/29 17:05:30 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,8 @@
 
 void	usage(void)
 {
-	ft_fprintf(2, "<bold>Usage : ./rtv1 <scene_file></bold>\n");
+	ft_fprintf(2, "<bold>Usage : ./rtv1 file</bold>\n");
 	exit(EXIT_FAILURE);
-}
-
-void	read_argv(t_env *env, char **argv, int argc)
-{
-	int		i;
-
-	i = 0;
-	while (++i < argc)
-	{
-		if (ft_strcmp(argv[i], "-res") == 0 && i + 2 < argc)
-		{
-			env->disp.res.x = ft_atoi(argv[++i]);
-			env->disp.res.y = ft_atoi(argv[++i]);
-			if (env->disp.res.x < 10 || env->disp.res.y < 10
-			|| env->disp.res.x < env->disp.res.y)
-				msg_exit("Bad resolution", 0);
-			env->disp.aspect_ratio = env->disp.res.x / env->disp.res.y;
-		}
-		else
-			usage();
-	}
 }
 
 void	init_threads(t_env *env)
@@ -60,7 +39,7 @@ void	init_sdl(t_env *env)
 	t_sdl	*sdl;
 
 	sdl = &env->sdl;
-	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER) < 0)
 		error(SDL_ERR);
 	if (!(sdl->win = SDL_CreateWindow("RT-V1", 0, 0,
 		env->disp.res.x, env->disp.res.y, SDL_WINDOW_SHOWN)))

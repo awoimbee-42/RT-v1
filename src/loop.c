@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/21 00:40:33 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/28 22:09:53 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/29 17:12:18 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,32 @@ void		check_keys(t_env *env)
 		render(env);
 }
 
-void		check_controller(t_env *env, SDL_GameController *controller)
+void		check_controller(t_env *env, SDL_GameController *cntrlr)
 {
 	int_least8_t	redrw;
 
 	redrw = 0;
-	SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTY) < -20000 && (redrw = 1) ? move_camera(env, 0) : 0;
-	SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTY) > 20000 && (redrw = 1) ? move_camera(env, 1) : 0;
-	SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTX) < -20000 && (redrw = 1) ? move_camera(env, 2) : 0;
-	SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTX) > 20000 && (redrw = 1) ? move_camera(env, 3) : 0;
-	SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_RIGHTY) < -20000 && (redrw = 1) ? env->camera.dir.x += 0.1 : 0;
-	SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_RIGHTY) > 20000 && (redrw = 1) ? env->camera.dir.x -= 0.1 : 0;
-	SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_RIGHTX) < -20000 && (redrw = 1) ? env->camera.dir.y += 0.1 : 0;
-	SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_RIGHTX) > 20000 && (redrw = 1) ? env->camera.dir.y -= 0.1 : 0;
-	SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_TRIGGERLEFT) > 20000 && (redrw = 1) ? env->camera.org.y -= 0.25 : 0;
-	SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_TRIGGERRIGHT) > 20000 && (redrw = 1) ? env->camera.org.y += 0.25 : 0;
+	
+	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_LEFTY) < -20000
+	&& (redrw = 1) ? move_camera(env, 0) : 0;
+	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_LEFTY) > 20000
+	&& (redrw = 1) ? move_camera(env, 1) : 0;
+	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_LEFTX) < -20000
+	&& (redrw = 1) ? move_camera(env, 2) : 0;
+	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_LEFTX) > 20000
+	&& (redrw = 1) ? move_camera(env, 3) : 0;
+	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_RIGHTY) < -20000
+	&& (redrw = 1) ? env->camera.dir.x += 0.1 : 0;
+	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_RIGHTY) > 20000
+	&& (redrw = 1) ? env->camera.dir.x -= 0.1 : 0;
+	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_RIGHTX) < -20000
+	&& (redrw = 1) ? env->camera.dir.y += 0.1 : 0;
+	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_RIGHTX) > 20000
+	&& (redrw = 1) ? env->camera.dir.y -= 0.1 : 0;
+	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_TRIGGERLEFT) > 20000
+	&& (redrw = 1) ? env->camera.org.y -= 0.25 : 0;
+	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_TRIGGERRIGHT) > 20000
+	&& (redrw = 1) ? env->camera.org.y += 0.25 : 0;
 	if (redrw > 0)
 		render(env);
 }
@@ -67,6 +78,7 @@ void		loop(t_env *env, SDL_GameController *controller)
 				key_released(event.key.keysym.sym, env);
 			continue;
 		}
+		// else
 		check_keys(env);
 		check_controller(env, controller);
 	}

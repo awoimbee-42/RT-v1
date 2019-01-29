@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/01/28 15:51:33 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/01/29 16:44:48 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME	=	rtv1
 
 CC = gcc
 
-CFLAGS	=	-Wall -Wextra -Ofast -ffast-math -flto=full -msse#-mavx -fopt-info-vec-all #-Werror -O3 -ffast-math
+CFLAGS	=	-Wall -Wextra -Werror -Ofast -ffast-math -flto=full -msse
 
 SRC_NAME =	main.c							\
 			init_argv.c						\
@@ -23,6 +23,7 @@ SRC_NAME =	main.c							\
 			t_obj/dist.c					\
 			t_obj/norm.c					\
 			camera_ope.c					\
+			light_ope.c						\
 			\
 			operators/flt3_op0.c				\
 			operators/flt3_op1.c				\

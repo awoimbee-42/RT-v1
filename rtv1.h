@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/28 21:53:43 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/29 17:14:31 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ struct s_env;
 
 typedef struct	s_id_dist
 {
-	int				id;
-	float			dist;
+	int					id;
+	float				dist;
 }				t_id_dist;
 
 /*
@@ -87,15 +87,15 @@ typedef struct	s_id_dist
 
 typedef struct	s_float3
 {
-	float			x;
-	float			y;
-	float			z;
+	float				x;
+	float				y;
+	float				z;
 }				t_flt3;
 
 typedef struct	s_float2
 {
-	float			x;
-	float			y;
+	float				x;
+	float				y;
 }				t_flt2;
 
 typedef struct	s_int2
@@ -118,8 +118,8 @@ typedef t_flt3	t_coords;
 
 typedef struct	s_ray
 {
-	t_coords		org;
-	t_vec3			dir;
+	t_coords			org;
+	t_vec3				dir;
 }				t_ray;
 
 /*
@@ -128,9 +128,9 @@ typedef struct	s_ray
 
 typedef struct	s_disp
 {
-	struct s_int2	res;
-	float			aspect_ratio;
-	float			tfov;
+	struct s_int2		res;
+	float				aspect_ratio;
+	float				tfov;
 }				t_disp;
 
 /*
@@ -141,11 +141,11 @@ typedef struct	s_disp
 
 typedef struct	s_sdl
 {
-	unsigned int	*img;
-	SDL_Renderer	*renderer;
-	SDL_Texture		*texture;
-	SDL_Window		*win;
-	SDL_Surface		*surface;
+	unsigned int		*img;
+	SDL_Renderer		*renderer;
+	SDL_Texture			*texture;
+	SDL_Window			*win;
+	SDL_Surface			*surface;
 }				t_sdl;
 
 /*
@@ -156,8 +156,8 @@ typedef struct	s_sdl
 
 typedef struct	s_light
 {
-	t_coords		pos;
-	t_fcolor		intensity;
+	t_coords			pos;
+	t_fcolor			intensity;
 }				t_light;
 
 /*
@@ -175,40 +175,40 @@ union			u_object
 	{
 		t_vec3			orig;
 		float			radius;
-	}				sphere;
+	}			sphere;
 	struct		s_plane
 	{
 		t_vec3			orig;
 		t_vec3			norm;
-	}				plane;
+	}			plane;
 	struct		s_disk
 	{
 		t_vec3			orig;
 		t_vec3			norm;
 		float			radius2;
-	}				disk;
+	}			disk;
 	struct		s_cylinder
 	{
 		t_vec3			org;
 		t_vec3			end;
 		float			radius;
-	}				cylinder;
+	}			cylinder;
 	struct		s_cone
 	{
 		t_vec3			org;
 		t_vec3			dir;
 		float			angle;
-	}				cone;
+	}			cone;
 };
 
 typedef struct	s_obj
 {
-	t_distfun		distfun;
-	t_normfun		normfun;
-	float			diffuse;
-	float			specular;
-	t_fcolor		color;
-	union u_object	this;
+	t_distfun			distfun;
+	t_normfun			normfun;
+	float				diffuse;
+	float				specular;
+	t_fcolor			color;
+	union u_object		this;
 }				t_obj;
 
 /*
@@ -219,25 +219,26 @@ typedef struct	s_obj
 
 typedef struct	s_thread
 {
-	SDL_Thread		*ptr;
-	struct s_env	*env;
-	int				line_start;
-	int				line_end;
-	unsigned int	*px_start;
+	SDL_Thread			*ptr;
+	struct s_env		*env;
+	int					line_start;
+	int					line_end;
+	unsigned int		*px_start;
 }				t_thread;
 
 typedef struct	s_env
 {
-	struct s_sdl	sdl;
-	struct s_disp	disp;
-	struct s_ray	camera;
-	int				objs_nb;
-	struct s_obj	*objs_arr;
-	int				light_nb;
-	struct s_light	*light_arr;
-	t_fcolor		bckgrnd_col;
-	uint32_t		keys_pressed;
-	t_thread		threads[THREAD_NB];
+	struct s_sdl		sdl;
+	struct s_disp		disp;
+	struct s_ray		camera;
+	int					objs_nb;
+	struct s_obj		*objs_arr;
+	int					light_nb;
+	struct s_light		*light_arr;
+	t_fcolor			bckgrnd_col;
+	uint32_t			keys_pressed;
+	SDL_GameController	*controller;
+	t_thread			threads[THREAD_NB];
 }				t_env;
 
 /*
@@ -268,9 +269,6 @@ void			init(t_env *env);
 
 /*
 **	operators/flt3_opX.c
-**		for future references -> passing by value is OK here,
-**			benchmarking shows that void divf(t_vec3*a, (...)) is not
-**			faster that the implementation here
 */
 t_flt3			*flt3_add(t_flt3 *a, const t_flt3 *b);
 t_flt3			*flt3_sub(t_flt3 *a, const t_flt3 *b);
@@ -307,7 +305,16 @@ t_vec3			norm_cone(const union u_object *obj, const t_vec3 *hit);
 unsigned int	srgb(const t_fcolor *color);
 t_fcolor		*light_drop(t_fcolor *light, const float dist);
 void			tone_map(t_fcolor *px);
-t_vec3			get_reflection(t_vec3 d, const t_vec3 n);
+t_vec3			get_reflection(t_vec3 d, t_vec3 n);
+
+/*
+**	light_ope.c
+*/
+t_id_dist		nearest_obj(const t_env *env, const t_ray *ray);
+float			get_specular(const t_vec3 *dir, const t_vec3 *light_dir,
+	const float specular);
+t_fcolor		fast_diffuse(const t_env *env, t_ray *hit, t_obj *obj,
+	t_vec3 *norm);
 
 /*
 **	camera_ope.c

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 22:02:07 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/28 16:58:44 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/29 16:32:43 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,6 @@ float		dist_cone(const union u_object *obj, const t_ray *ray)
 	diff.x = (-par.y - sqrt(dir_dot)) / (2 * par.x);
 	diff.y = (-par.y + sqrt(dir_dot)) / (2 * par.x);
 	if (diff.y > 0.1)
-			return (diff.y);
+		return (diff.y);
 	return (diff.x);
 }
