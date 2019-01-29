@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/09 22:48:12 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/29 17:03:20 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/29 17:37:03 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,6 @@ t_vec3		norm_cone(const union u_object *obj, const t_vec3 *hit)
 	tmp = *hit;
 	flt3_sub(&tmp, &obj->cone.org);
 	flt3_cross(&tmp, &obj->cone.dir);
-	flt3_cross(&tmp, &obj->cone.dir);
+	flt3_multf(flt3_cross(&tmp, &obj->cone.dir), -1.);
 	return (tmp);
 }

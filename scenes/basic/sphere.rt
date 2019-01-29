@@ -30,7 +30,7 @@ objects[1] :
 {
 	Sphere
 		.origin = {0, 0, 0}
-		.radius = 2
+		.radius = 4
 		.color = {0.9, 0.02, 0.02}
 		.specular = 0.5
 		.diffuse = 1;
@@ -39,6 +39,6 @@ objects[1] :
 lights[1] :
 {
 	Light
-		.position = {10, 6, -6}
+		.position = {0, 0, -1}
 		.intensity = {500, 500, 500};
 }

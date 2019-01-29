@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 19:09:32 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/01/29 17:08:42 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/29 17:29:08 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ t_fcolor	fast_diffuse(const t_env *env, t_ray *hit,
 	int				i;
 	t_ray			ray;
 	t_vec3			tmp;
-	float			d;
 
 	light = env->bckgrnd_col;
 	i = -1;
@@ -68,9 +67,9 @@ t_fcolor	fast_diffuse(const t_env *env, t_ray *hit,
 		near_obj = nearest_obj(env, &ray);
 		if (light_dist < near_obj.dist)
 		{
-			d = fabs(flt3_dot(norm, &ray.dir) * obj->diffuse);
 			tmp = env->light_arr[i].intensity;
-			flt3_add(&light, flt3_multf(light_drop(&tmp, light_dist), d));
+			flt3_add(&light, flt3_multf(light_drop(&tmp, light_dist), 
+						fmax(flt3_dot(norm, &ray.dir) * obj->diffuse, 0.)));
 			flt3_addf(&light, get_specular(&hit->dir, &ray.dir, obj->specular));
 		}
 	}
