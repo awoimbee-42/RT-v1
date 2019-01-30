@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:28:36 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/29 16:52:18 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/30 16:54:44 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,9 @@ static int	create_array(t_env *env, char *line)
 	return (obj_nb);
 }
 
-void		parse_objects(int fd, t_env *env, char *line)
+void		parse_objects(int fd, t_env *env, char *line, int obj_nb)
 {
 	int		done;
-	int		obj_nb;
 
 	done = 0;
 	obj_nb = create_array(env, line);
@@ -74,7 +73,9 @@ void		parse_objects(int fd, t_env *env, char *line)
 			env->objs_arr[obj_nb] = parse_cone(fd, &env->keys_pressed);
 		else if ((!ft_strcmp(line, "}") && (done = 1)) || 1)
 			break ;
+		ft_memdel((void*)&line);
 	}
+	ft_memdel((void*)&line);
 	obj_nb != 0 ? msg_exit("Wrong number of objects in def\n", 0) : (void)0;
 	!done ? msg_exit("U didn't close bracket for objects!", 0) : (void)0;
 }

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 12:55:57 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/29 18:09:18 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/30 16:55:09 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void		parse_env(int fd, t_env *env);
 void		parse_disp(int fd, t_env *env);
 void		parse_camera(int fd, t_env *env);
 
-void		parse_objects(int fd, t_env *env, char *line);
+void		parse_objects(int fd, t_env *env, char *line, int norminette);
 void		parse_lights(int fd, t_env *env, char *line);
 
 int			tobj_parse(t_obj *obj, char *line, int *done,

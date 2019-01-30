@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 19:09:32 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/01/29 18:04:28 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/30 16:30:11 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,12 @@ t_fcolor	fast_diffuse(const t_env *env, t_ray *hit,
 	t_id_dist		near_obj;
 	int				i;
 	t_ray			ray;
-	t_vec3			tmp;
 
 	light = env->bckgrnd_col;
 	i = -1;
-	ray.org = hit->org;
 	while (++i < env->light_nb)
 	{
+		ray.org = hit->org;
 		ray.dir = env->light_arr[i].pos;
 		flt3_sub(&ray.dir, &hit->org);
 		light_dist = flt3_mod(&ray.dir);
@@ -67,8 +66,8 @@ t_fcolor	fast_diffuse(const t_env *env, t_ray *hit,
 		near_obj = nearest_obj(env, &ray);
 		if (light_dist < near_obj.dist)
 		{
-			tmp = env->light_arr[i].intensity;
-			flt3_add(&light, flt3_multf(light_drop(&tmp, light_dist),
+			ray.org = env->light_arr[i].intensity;
+			flt3_add(&light, flt3_multf(light_drop(&ray.org, light_dist),
 						fmax(flt3_dot(norm, &ray.dir) * obj->diffuse, 0.)));
 			flt3_addf(&light, get_specular(&hit->dir, &ray.dir, obj->specular));
 		}

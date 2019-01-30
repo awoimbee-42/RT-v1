@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 16:11:46 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/29 16:31:38 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/30 16:50:35 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,11 @@ void			parse_lights(int fd, t_env *env, char *line)
 	{
 		if (!ft_strcmp(line, "\tLight") && --lights_nb >= 0)
 			env->light_arr[lights_nb] = parse_light(fd, &env->keys_pressed);
-		else if (!ft_strcmp(line, "}") && (done = 1))
+		else if ((!ft_strcmp(line, "}") && (done = 1)) || 1)
 			break ;
-		else
-			break ;
+		ft_memdel((void*)&line);
 	}
+	ft_memdel((void*)&line);
 	if (lights_nb != 0)
 		msg_exit("Wrong number of lights in definition\n", 0);
 	if (!done)

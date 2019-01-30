@@ -130,12 +130,15 @@ objects[16] :
 		.diffuse = 0.2;
 }
 
-lights[2] :
+lights[3] :
 {
 	Light
 		.position = {-12, 7, -10}
 		.intensity = {1000, 1000, 1000};
 	Light
 		.position = {12, 7, -10}
+		.intensity = {1000, 1000, 1000};
+	Light
+		.position = {0, 7, -10}
 		.intensity = {1000, 1000, 1000};
 }

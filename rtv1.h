@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/29 17:14:31 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/30 16:26:08 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,6 +239,7 @@ typedef struct	s_env
 	uint32_t			keys_pressed;
 	SDL_GameController	*controller;
 	t_thread			threads[THREAD_NB];
+	int					i;
 }				t_env;
 
 /*

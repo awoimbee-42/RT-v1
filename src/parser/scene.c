@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 12:38:31 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/29 18:09:04 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/30 16:54:41 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ static void	prt_scene_miss_info(const int done)
 		missing_clause_in_file("objects", 1);
 	if (!(done & 0xF0000))
 		missing_clause_in_file("lights", 1);
-	exit(EXIT_FAILURE);
 }
 
 /*
@@ -82,7 +81,7 @@ void		parse_scene(t_env *env, const char *filename)
 		else if (!ft_strcmp(line, "camera") && (done |= 0xF00))
 			parse_camera(fd, env);
 		else if (!ft_strncmp(line, "objects", 7) && (done |= 0xF000))
-			parse_objects(fd, env, line);
+			parse_objects(fd, env, line, done);
 		else if (!ft_strncmp(line, "lights", 6) && (done |= 0xF0000))
 			parse_lights(fd, env, line);
 		ft_memdel((void**)&line);
