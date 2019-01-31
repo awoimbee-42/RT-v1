@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:36:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/29 18:00:43 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/31 02:05:15 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ int		main(int argc, char **argv)
 {
 	t_env	*env;
 
-	if (!(env = malloc(sizeof(t_env))))
-		error(MALLOC_ERR);
 	if (argc != 2)
 		usage();
+	if (!(env = malloc(sizeof(t_env))))
+		error(MALLOC_ERR);
 	parse_scene(env, argv[1]);
 	init(env);
 	env->controller = NULL;
