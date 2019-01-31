@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:28:36 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/30 16:54:44 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/31 01:18:12 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ int			tobj_parse(t_obj *obj, char *line, int *done,
 							unsigned int line_nb)
 {
 	if (!ft_strncmp(line, "\t\t.diffuse", 10) && (*done |= 0xF))
-		obj->diffuse = parse_f(line + 10, line_nb);
+		obj->diffuse = parse_f(line + 10, line_nb, 0.f);
 	else if (!ft_strncmp(line, "\t\t.specular", 11) && (*done |= 0xF0))
-		obj->specular = parse_f(line + 11, line_nb);
+		obj->specular = parse_f(line + 11, line_nb, 0.f);
 	else if (!ft_strncmp(line, "\t\t.color", 8) && (*done |= 0xF00))
-		obj->color = parse_f3(line + 8, line_nb);
+		obj->color = parse_f3(line + 8, line_nb, 0.f);
 	else
 		return (0);
 	return (1);

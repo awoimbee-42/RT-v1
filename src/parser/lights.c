@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 16:11:46 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/30 16:50:35 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/31 00:41:59 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,16 @@ static t_light	parse_light(int fd, unsigned int *line_nb)
 	while (get_next_line(fd, &line) > 0 && ++*line_nb)
 	{
 		if (!ft_strncmp(line, "\t\t.position", 11) && (done |= 0xF))
-			light.pos = parse_f3(line + 11, *line_nb);
+			light.pos = parse_f3(line + 11, *line_nb, -1e36f);
 		else if (!ft_strncmp(line, "\t\t.intensity", 12) && (done |= 0xF0))
-			light.intensity = parse_f3(line + 12, *line_nb);
+			light.intensity = parse_f3(line + 12, *line_nb, 0.f);
 		else if (*line != '\0')
 			break ;
-		if (line[ft_strlen(line) - 1] == ';' && (done |= 0xF00))
+		if (ft_strstr(line, ";") && (done |= 0xF00))
 			break ;
 		ft_memdel((void**)&line);
 	}
-	if (line)
-		ft_memdel((void**)&line);
+	ft_memdel((void**)&line);
 	if (done != 0xFFF)
 		msg_exit("Bad format in Light, around line %d\n", line_nb);
 	return (light);

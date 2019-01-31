@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:18:42 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/23 00:58:39 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/31 01:07:31 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,14 @@ void	parse_env(int fd, t_env *env)
 	while (get_next_line(fd, &line) > 0 && ++env->keys_pressed)
 	{
 		if (!ft_strncmp(line, "\t.background_light", 18))
-			env->bckgrnd_col = parse_f3(line + 18, env->keys_pressed);
+			env->bckgrnd_col = parse_f3(line + 18, env->keys_pressed, 0.f);
 		else if (!is_comment(line))
 			break ;
-		if (line[ft_strlen(line) - 1] == ';' && (done = 1))
+		if (ft_strstr(line, ";") && (done = 1))
 			break ;
 		ft_memdel((void**)&line);
 	}
-	if (line)
-		ft_memdel((void**)&line);
+	ft_memdel((void**)&line);
 	if (!done)
 		msg_exit("Bad format in env, around line %d\n", &env->keys_pressed);
 }
@@ -47,19 +46,18 @@ void	parse_disp(int fd, t_env *env)
 	while (get_next_line(fd, &line) > 0 && ++env->keys_pressed)
 	{
 		if (!ft_strncmp(line, "\t.width", 7) && (done |= 0xF))
-			env->disp.res.x = parse_f(line + 7, env->keys_pressed);
+			env->disp.res.x = parse_f(line + 7, env->keys_pressed, 100);
 		else if (!ft_strncmp(line, "\t.height", 8) && (done |= 0xF0))
-			env->disp.res.y = parse_f(line + 8, env->keys_pressed);
+			env->disp.res.y = parse_f(line + 8, env->keys_pressed, 100);
 		else if (!ft_strncmp(line, "\t.fov", 5) && (done |= 0xF00))
-			env->disp.tfov = parse_f(line + 5, env->keys_pressed);
+			env->disp.tfov = fmin(parse_f(line + 5, env->keys_pressed, 20), 99);
 		else if (!is_comment(line))
 			break ;
-		if (line[ft_strlen(line) - 1] == ';' && (done |= 0xF000))
+		if (ft_strstr(line, ";") && (done |= 0xF000))
 			break ;
 		ft_memdel((void**)&line);
 	}
-	if (line)
-		ft_memdel((void**)&line);
+	ft_memdel((void**)&line);
 	if (done != 0xFFFF)
 		msg_exit("Bad format in display, around line %d\n", &env->keys_pressed);
 	env->disp.aspect_ratio = (float)env->disp.res.x / env->disp.res.y;
@@ -76,17 +74,16 @@ void	parse_camera(int fd, t_env *env)
 	while (get_next_line(fd, &line) > 0 && ++env->keys_pressed)
 	{
 		if (!ft_strncmp(line, "\t.pos", 5) && (done |= 0xF))
-			env->camera.org = parse_f3(line + 5, env->keys_pressed);
+			env->camera.org = parse_f3(line + 5, env->keys_pressed, -1e37f);
 		else if (!ft_strncmp(line, "\t.dir", 5) && (done |= 0xF0))
-			env->camera.dir = parse_f3(line + 5, env->keys_pressed);
+			env->camera.dir = parse_f3(line + 5, env->keys_pressed, -10);
 		else if (!is_comment(line))
 			break ;
-		if (line[ft_strlen(line) - 1] == ';' && (done |= 0xF00))
+		if (ft_strstr(line, ";") && (done |= 0xF00))
 			break ;
 		ft_memdel((void**)&line);
 	}
-	if (line)
-		ft_memdel((void**)&line);
-	if (done != 0xFFF)
+	ft_memdel((void**)&line);
+	if (done != 0xFFF || flt3_mod(&env->camera.dir) > 20)
 		msg_exit("Bad format in camera, around line %d\n", &env->keys_pressed);
 }

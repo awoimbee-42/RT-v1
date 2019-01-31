@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 12:55:57 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/30 16:55:09 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/01/31 00:04:39 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_obj		parse_cylinder(int fd, unsigned int *line_nb);
 t_obj		parse_cone(int fd, unsigned int *line_nb);
 
 void		parse_open_bracket(int fd, unsigned int *line_nb);
-float		parse_f(char *str, unsigned int line_nb);
-t_flt3		parse_f3(char *str, unsigned int line_nb);
+float		parse_f(char *str, unsigned int line_nb, float min);
+t_flt3		parse_f3(char *str, unsigned int line_nb, float min);
 
 #endif

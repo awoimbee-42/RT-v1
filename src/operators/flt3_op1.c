@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/09 22:49:07 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/28 15:49:12 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/31 01:45:13 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,13 @@ float	flt3_mod(const t_flt3 *a)
 	return (sqrtf(flt3_dot(a, a)));
 }
 
+/*
+**	WILL return a NaN vector when you pass a null vector
+*/
+
 t_flt3	*flt3_normalize(t_flt3 *a)
 {
-	const float	length = flt3_mod(a);
-
-	flt3_divf(a, length);
+	flt3_divf(a, sqrt(a->x * a->x + a->y * a->y + a->z * a->z));
 	return (a);
 }
 

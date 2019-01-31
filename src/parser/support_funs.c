@@ -6,22 +6,13 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:09:52 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/29 18:08:47 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/31 00:49:38 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 #include "parser.h"
 #include "libft.h"
-
-/*
-**	msg_exit : a printf for crashing cleanly.
-**	USAGE : msg_exit("error %[d, s]...", memory)
-**		%s = string (char*)
-**		%d = int
-**	When %[...] is read,
-**	 msg_exit will interpret memory as pointing to the specified datatype.
-*/
 
 char		*skip_whitespaces(char *str)
 {
@@ -43,7 +34,7 @@ int			is_comment(char *line)
 **		line_nb is only given to be printed when errors occur
 */
 
-t_flt3		parse_f3(char *str, unsigned int line_nb)
+t_flt3		parse_f3(char *str, unsigned int line_nb, float min)
 {
 	t_flt3	res;
 
@@ -53,18 +44,18 @@ t_flt3		parse_f3(char *str, unsigned int line_nb)
 		|| *(str = skip_whitespaces(str + 1)) == 0)
 		msg_exit("error around '=' sign line %d!\n", &line_nb);
 	res.x = ft_atof_mv(&str);
-	if (*(str = skip_whitespaces(str)) != ',' || !*++str)
-		msg_exit("',' not found line %d\n", &line_nb);
+	if (res.x < min || *(str = skip_whitespaces(str)) != ',' || !*++str)
+		msg_exit("',' not found or bad value line %d\n", &line_nb);
 	res.y = ft_atof_mv(&str);
-	if (*(str = skip_whitespaces(str)) != ',' || !*++str)
-		msg_exit("',' not found line %d\n", &line_nb);
+	if (res.y < min || *(str = skip_whitespaces(str)) != ',' || !*++str)
+		msg_exit("',' not found or bad value line %d\n", &line_nb);
 	res.z = ft_atof_mv(&str);
-	if (*(str = skip_whitespaces(str)) != '}')
-		msg_exit("'}' not found line %d\n", &line_nb);
+	if (res.z < min || *(str = skip_whitespaces(str)) != '}')
+		msg_exit("'}' not found or bad value line %d\n", &line_nb);
 	return (res);
 }
 
-float		parse_f(char *str, unsigned int line_nb)
+float		parse_f(char *str, unsigned int line_nb, float min)
 {
 	float	res;
 
@@ -72,6 +63,8 @@ float		parse_f(char *str, unsigned int line_nb)
 		msg_exit("'=' sign not found line %d!\n", &line_nb);
 	++str;
 	res = ft_atof_mv(&str);
+	if (res < min)
+		msg_exit("What exactly are you trying to do here ? line %d", &line_nb);
 	if (!is_comment(str = skip_whitespaces(str)) && *str != ';')
 		msg_exit("Garbage at end of line %d\n", &line_nb);
 	return (res);
