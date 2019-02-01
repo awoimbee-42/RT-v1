@@ -53,7 +53,7 @@ LDLIBS = -lft -lSDL2 -lm
 
 LDFLAGS = -Llibft -LSDL2/lib
 
-CFLAGS += -I./ -I./SDL2/include/ -I./libft
+CFLAGS += -I./ -I./sdl2/include/ -I./libft
 
 SDL_OPTIONS =	-q						\
 				--prefix=$$sdl2path		\
@@ -63,9 +63,9 @@ SDL_OPTIONS =	-q						\
 
 all : $(NAME)
 
-SDL2/lib/libSDL2.a :
+sdl2/lib/libSDL2.a :
 	@printf "$(YLW)Making SDL2...$(EOC)\n"
-	@cd SDL2;															\
+	@cd sdl2;															\
 		sdl2path=`pwd`;													\
 		printf "$(INV)Creating build env...$(EOC)\n";					\
 		mkdir -p build;													\
@@ -80,7 +80,7 @@ libft/libft.a :
 	@printf "$(YLW)Making libft...$(EOC)\n"
 	@make -s -j -C libft/
 
-$(NAME) : libft/libft.a SDL2/lib/libSDL2.a $(OBJ) rtv1.h
+$(NAME) : libft/libft.a sdl2/lib/libSDL2.a $(OBJ) rtv1.h
 	@printf "$(GRN)Linking $(NAME)...$(EOC)\n"
 	$(CC) $(OBJ) -o $@ $(LDFLAGS) $(LDLIBS)
 
@@ -95,7 +95,7 @@ $(OBJ_PATH)/%.o : $(SRC_PATH)/%.c | $(OBJ_PATH)
 
 libclean :
 	@printf "$(YLW)Cleaning SDL2...$(EOC)\n"
-	@rm -rf SDL2/build SDL2/lib SDL2/share SDL2/bin SDL2/include
+	@rm -rf sdl2/build sdl2/lib sdl2/share sdl2/bin sdl2/include
 	@printf "$(YLW)Cleaning libft...$(EOC)\n"
 	@make -s fclean -C libft
 
