@@ -4,8 +4,8 @@ rtv1
 .vscode
 *.gen
 .DS_Store
-SDL2/bin
-SDL2/include
-SDL2/lib
-SDL2/share
-SDL2/build
+sdl2/bin
+sdl2/include
+sdl2/lib
+sdl2/share
+sdl2/build
