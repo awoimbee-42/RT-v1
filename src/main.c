@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:36:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/31 02:05:15 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/06 21:26:42 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,6 @@ int		main(int argc, char **argv)
 		error(MALLOC_ERR);
 	parse_scene(env, argv[1]);
 	init(env);
-	env->controller = NULL;
-	if (SDL_IsGameController(0))
-		env->controller = SDL_GameControllerOpen(0);
 	render(env);
 	loop(env, env->controller);
 	return (0);
