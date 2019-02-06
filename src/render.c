@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/29 18:03:51 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/06 23:06:50 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,23 @@ uint32_t	launch_ray(const int x, const int y, const t_env *env)
 	return (srgb(&screen_point));
 }
 
+int			thing(int color1, int color2)
+{
+	char	*c1;
+	char	*c2;
+	int		ret;
+	char	*cret;
+
+	c1 = (char*)&color1;
+	c2 = (char*)&color2;
+	cret = (char*)&ret;
+	cret[0] = ((int)c1[0] + (int)c2[0]) / 2;
+	cret[1] = ((int)c1[1] + (int)c2[1]) / 2;
+	cret[2] = ((int)c1[2] + (int)c2[2]) / 2;
+	return (ret);
+
+}
+
 static int	render_line(void *vthread)
 {
 	t_thread		*thread;
@@ -72,11 +89,32 @@ static int	render_line(void *vthread)
 	tmp_img = &thread->env->sdl.img[v * thread->env->disp.res.x];
 	while (v < thread->line_end)
 	{
-		u = -1;
-		while (++u < thread->env->disp.res.x)
-			*tmp_img++ = launch_ray(u, v, thread->env);
-		++v;
+		u = 0;
+		while (u < thread->env->disp.res.x)
+		{
+			*tmp_img = launch_ray(u, v, thread->env);
+			// if (u + 2 < thread->env->disp.res.x)
+			// {
+			// 	*(tmp_img + 2) = launch_ray(u + 2, v, thread->env);
+			// 	++tmp_img;
+			// 	*tmp_img = thing(*(tmp_img - 1), *(tmp_img + 1));
+			// 	tmp_img += 2;
+			// 	u += 3;
+			// }
+
+			// else
+			{
+				u += 2;
+				tmp_img += 2;
+			}
+		}
+		if (u != thread->env->disp.res.x)
+			tmp_img -= 1;
+		tmp_img += thread->env->disp.res.x;
+		v += 2;
 	}
+		if (v != thread->line_end)
+			tmp_img += thread->env->disp.res.x;
 	return (0);
 }
 
@@ -91,6 +129,8 @@ void		render(t_env *env)
 	i = -1;
 	while (++i < THREAD_NB)
 		SDL_WaitThread(env->threads[i].ptr, NULL);
+	// ft_memmove(env->sdl.img + 1, env->sdl.img, env->disp.res.x * sizeof(int));
+	// ft_memmove(env->sdl.img + 1, env->sdl.img, 1);
 	SDL_UpdateTexture(env->sdl.texture, NULL, env->sdl.img,
 						env->disp.res.x * sizeof(int));
 	SDL_RenderCopy(env->sdl.renderer, env->sdl.texture, NULL, NULL);
