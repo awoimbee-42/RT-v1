@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/07 16:57:36 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/02/07 17:35:09 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,6 +279,7 @@ t_flt3			*flt3_div(t_flt3 *a, const t_flt3 *b);
 t_flt3			*flt3_divf(t_flt3 *a, const float b);
 float			flt3_dot(const t_flt3 *a, const t_flt3 *b);
 float			flt3_mod(const t_flt3 *a);
+float			flt3_mod2(const t_flt3 *a);
 t_flt3			*flt3_normalize(t_flt3 *a);
 t_flt3			*flt3_cross(t_flt3 *a, const t_flt3 *b);
 t_flt3			*flt3_addf(t_flt3 *a, const float b);
