@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/30 16:26:08 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/02/07 16:57:36 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -313,7 +313,7 @@ t_vec3			get_reflection(t_vec3 d, t_vec3 n);
 */
 t_id_dist		nearest_obj(const t_env *env, const t_ray *ray);
 float			get_specular(const t_vec3 *dir, const t_vec3 *light_dir,
-	const float specular);
+	const float specular, const float k);
 t_fcolor		fast_diffuse(const t_env *env, t_ray *hit, t_obj *obj,
 	t_vec3 *norm);
 

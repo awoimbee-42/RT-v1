@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 19:09:32 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/01/30 16:30:11 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/02/07 17:01:21 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_id_dist	nearest_obj(const t_env *env, const t_ray *ray)
 }
 
 float		get_specular(const t_vec3 *dir,
-	const t_vec3 *light_dir, const float specular)
+	const t_vec3 *light_dir, const float specular, const float light)
 {
 	double			theta;
 	double			is_bright;
@@ -42,7 +42,7 @@ float		get_specular(const t_vec3 *dir,
 	theta = acos(fmax(flt3_dot(dir, light_dir), 0) / (flt3_mod(dir)
 				* flt3_mod(light_dir)));
 	is_bright = specular * (1 / (theta * theta * theta));
-	return (is_bright);
+	return (is_bright * light / 10000.);
 }
 
 t_fcolor	fast_diffuse(const t_env *env, t_ray *hit,
@@ -69,7 +69,7 @@ t_fcolor	fast_diffuse(const t_env *env, t_ray *hit,
 			ray.org = env->light_arr[i].intensity;
 			flt3_add(&light, flt3_multf(light_drop(&ray.org, light_dist),
 						fmax(flt3_dot(norm, &ray.dir) * obj->diffuse, 0.)));
-			flt3_addf(&light, get_specular(&hit->dir, &ray.dir, obj->specular));
+			flt3_addf(&light, get_specular(&hit->dir, &ray.dir, obj->specular, env->light_arr[i].intensity.x));
 		}
 	}
 	return (light);

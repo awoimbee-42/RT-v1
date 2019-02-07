@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:18:42 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/31 01:07:31 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/07 16:43:53 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ void	parse_disp(int fd, t_env *env)
 	while (get_next_line(fd, &line) > 0 && ++env->keys_pressed)
 	{
 		if (!ft_strncmp(line, "\t.width", 7) && (done |= 0xF))
-			env->disp.res.x = parse_f(line + 7, env->keys_pressed, 100);
+			env->disp.res.x = fmin(parse_f(line + 7, env->keys_pressed, 100),
+					2000);
 		else if (!ft_strncmp(line, "\t.height", 8) && (done |= 0xF0))
 			env->disp.res.y = parse_f(line + 8, env->keys_pressed, 100);
 		else if (!ft_strncmp(line, "\t.fov", 5) && (done |= 0xF00))

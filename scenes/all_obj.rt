@@ -15,29 +15,29 @@ RICARD >>> PASTIS
          `-------------------+
 
 env
-	.background_light = {0.4, 0.4, 0.4};
+	.background_light = {0., 0., 0.};
 
 display
-	.width = 800								#Minimumm Width = 100		NO UPPER LIMIT
-	.height = 800								#Minimum Height = 100		NO UPPER LIMIT
+	.width = 8000								#Minimumm Width = 100		
+	.height = 800								#Minimum Height = 100		
 	.fov = 75;									#FOV goes from 20 to 100
 
 camera
-	.pos = {0., 5., -8.}						#min pos = -1e36			NO UPPER LIMIT
+	.pos = {0., 5., -8.}						#min pos = -1e36			
 	.dir = {0, 0, 0};							#Angle of the camera around each axis; clamped to more than reasonable values
 
 objects[6] :
 {
 	Sphere
-		.origin = {0., 1., 8.}					#Minimum is near FLT_MIN	NO UPPER LIMIT
+		.origin = {0., 1., 8.}					#Minimum is near FLT_MIN	
 		.radius = 3								#Minimum is 0
 		.color = {1, 0.02, 0.02}
 		.specular = 0.1							#Minimum is 0, no max
 		.diffuse = 1;							#Minimum is 0, no max
 	Cone
 		.origin = {4, 2, 9}
-		.dir = {-1, 1, 0}						# doesnt do weird shit with null vector for.... reasons ?
-		.angle = 0.6							# 0.01 <= angle <= 1.3
+		.dir = {-1, 1, 0}						
+		.angle = 0.3						# 0.01 <= angle <= 1.3
 		.color = {1, 1, 0.02}					#Can be more than 1 : permits florescent colors ALSO : 0 means ZERO, 0 != 0.0000000001 !!!!!!!
 		.specular = 0.1
 		.diffuse = 1;
@@ -63,7 +63,7 @@ objects[6] :
 	Plane
 		.origin = {0, 15, 0}
 		.normal = {0, -1, 0}
-		.color = {0.5, 0, 0}
+		.color = {0.5, 0.1, 0.1}
 		.specular = 0
 		.diffuse = 0.2;
 }
@@ -72,5 +72,5 @@ lights[1] :
 {
 	Light
 		.position = {12, 7, -10}
-		.intensity = {1000, 1000, 1000};
+		.intensity = {10000, 10000, 10000};
 }
