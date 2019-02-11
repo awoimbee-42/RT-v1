@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:12:01 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/06 21:25:05 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/11 17:57:51 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,5 @@ void	init(t_env *env)
 	init_sdl(env);
 	init_threads(env);
 	env->controller = SDL_IsGameController(0) ?
-			SDL_GameControllerOpen(0) : NULL; 
+			SDL_GameControllerOpen(0) : NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/30 16:26:08 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/02/07 17:35:09 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,6 +279,7 @@ t_flt3			*flt3_div(t_flt3 *a, const t_flt3 *b);
 t_flt3			*flt3_divf(t_flt3 *a, const float b);
 float			flt3_dot(const t_flt3 *a, const t_flt3 *b);
 float			flt3_mod(const t_flt3 *a);
+float			flt3_mod2(const t_flt3 *a);
 t_flt3			*flt3_normalize(t_flt3 *a);
 t_flt3			*flt3_cross(t_flt3 *a, const t_flt3 *b);
 t_flt3			*flt3_addf(t_flt3 *a, const float b);
@@ -313,7 +314,7 @@ t_vec3			get_reflection(t_vec3 d, t_vec3 n);
 */
 t_id_dist		nearest_obj(const t_env *env, const t_ray *ray);
 float			get_specular(const t_vec3 *dir, const t_vec3 *light_dir,
-	const float specular);
+	const float specular, const float k);
 t_fcolor		fast_diffuse(const t_env *env, t_ray *hit, t_obj *obj,
 	t_vec3 *norm);
 

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 19:09:32 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/01/30 16:30:11 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/02/07 17:49:21 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_id_dist	nearest_obj(const t_env *env, const t_ray *ray)
 }
 
 float		get_specular(const t_vec3 *dir,
-	const t_vec3 *light_dir, const float specular)
+	const t_vec3 *light_dir, const float specular, const float light)
 {
 	double			theta;
 	double			is_bright;
@@ -42,7 +42,21 @@ float		get_specular(const t_vec3 *dir,
 	theta = acos(fmax(flt3_dot(dir, light_dir), 0) / (flt3_mod(dir)
 				* flt3_mod(light_dir)));
 	is_bright = specular * (1 / (theta * theta * theta));
-	return (is_bright);
+	return (is_bright * light / 10000.);
+}
+
+float		lghtobj_dst(const t_env *env, const int i, t_ray *ray[2],
+	t_id_dist *near_obj)
+{
+	float			light_dist;
+
+	ray[0]->org = ray[1]->org;
+	ray[0]->dir = env->light_arr[i].pos;
+	flt3_sub(&ray[0]->dir, &ray[1]->org);
+	light_dist = flt3_mod(&ray[0]->dir);
+	flt3_normalize(&ray[0]->dir);
+	*near_obj = nearest_obj(env, ray[0]);
+	return (light_dist);
 }
 
 t_fcolor	fast_diffuse(const t_env *env, t_ray *hit,
@@ -54,22 +68,19 @@ t_fcolor	fast_diffuse(const t_env *env, t_ray *hit,
 	int				i;
 	t_ray			ray;
 
-	light = env->bckgrnd_col;
 	i = -1;
+	light = env->bckgrnd_col;
 	while (++i < env->light_nb)
 	{
-		ray.org = hit->org;
-		ray.dir = env->light_arr[i].pos;
-		flt3_sub(&ray.dir, &hit->org);
-		light_dist = flt3_mod(&ray.dir);
-		flt3_normalize(&ray.dir);
-		near_obj = nearest_obj(env, &ray);
+		light_dist = lghtobj_dst(env, i, (t_ray*[2]){&ray, hit}, &near_obj);
 		if (light_dist < near_obj.dist)
 		{
 			ray.org = env->light_arr[i].intensity;
-			flt3_add(&light, flt3_multf(light_drop(&ray.org, light_dist),
-						fmax(flt3_dot(norm, &ray.dir) * obj->diffuse, 0.)));
-			flt3_addf(&light, get_specular(&hit->dir, &ray.dir, obj->specular));
+			flt3_addf(flt3_add(&light, flt3_multf(
+						light_drop(&ray.org, light_dist),
+						fmax(flt3_dot(norm, &ray.dir) * obj->diffuse, 0.))),
+				get_specular(&hit->dir, &ray.dir, obj->specular,
+					flt3_mod(&env->light_arr[i].intensity)));
 		}
 	}
 	return (light);

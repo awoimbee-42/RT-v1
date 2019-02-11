@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/01/30 16:33:17 by cpoirier         ###   ########.fr        #
+#    Updated: 2019/02/07 17:47:29 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -95,7 +95,7 @@ $(OBJ_PATH)/%.o : $(SRC_PATH)/%.c | $(OBJ_PATH)
 
 libclean :
 	@printf "$(YLW)Cleaning SDL2...$(EOC)\n"
-	@rm -rf sdl2/build sdl2/lib sdl2/share sdl2/bin sdl2/include
+	@rm -rf sdl2/build
 	@printf "$(YLW)Cleaning libft...$(EOC)\n"
 	@make -s fclean -C libft
 
@@ -104,6 +104,7 @@ objclean :
 	@printf "$(RED)$(OBJ_PATH) removed$(EOC)\n"
 
 outclean :
+	@rm -rf sdl2/lib sdl2/share sdl2/bin sdl2/include
 	@rm -f $(NAME)
 	@printf "$(RED)$(NAME) removed$(EOC)\n"
 
