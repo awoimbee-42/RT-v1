@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:12:01 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/07 17:38:49 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/07 17:58:50 by cpoirier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	init_threads(t_env *env)
 		env->threads[i].env = env;
 		env->threads[i].line_start = (i * env->disp.res.y) / THREAD_NB;
 		env->threads[i].line_end = (((i + 1) * env->disp.res.y) / THREAD_NB);
-		env->threads[i].px_start
-			= &env->sdl.img[env->threads[i].line_start * env->disp.res.x];
+		env->threads[i].px_start =
+			&env->sdl.img[env->threads[i].line_start * env->disp.res.x];
 	}
 }
 

@@ -18,7 +18,7 @@ env
 	.background_light = {0., 0., 0.};
 
 display
-	.width = 8000								#Minimumm Width = 100		
+	.width = 800								#Minimumm Width = 100		
 	.height = 800								#Minimum Height = 100		
 	.fov = 75;									#FOV goes from 20 to 100
 
