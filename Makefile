@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/02/07 17:47:29 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/02/11 18:41:29 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME	=	rtv1
 
 CC = gcc
 
-CFLAGS	=	-Wall -Wextra -Werror #-Ofast -ffast-math -flto=full -msse
+CFLAGS	=	-Wall -Wextra -Werror -Ofast -ffast-math -flto=full -msse
 
 SRC_NAME =	main.c							\
 			init_argv.c						\
@@ -82,7 +82,7 @@ libft/libft.a :
 
 $(NAME) : libft/libft.a sdl2/lib/libSDL2.a $(OBJ) rtv1.h
 	@printf "$(GRN)Linking $(NAME)...$(EOC)\n"
-	$(CC) $(OBJ) -o $@ $(LDFLAGS) $(LDLIBS)
+	$(CC) $(CFLAGS) $(OBJ) -o $@ $(LDFLAGS) $(LDLIBS)
 
 $(OBJ_PATH) :
 	@mkdir -p $(OBJ_PATH) 2> /dev/null
@@ -104,17 +104,17 @@ objclean :
 	@printf "$(RED)$(OBJ_PATH) removed$(EOC)\n"
 
 outclean :
-	@rm -rf sdl2/lib sdl2/share sdl2/bin sdl2/include
 	@rm -f $(NAME)
 	@printf "$(RED)$(NAME) removed$(EOC)\n"
 
 clean	:	libclean	objclean
 fclean	:	clean		outclean
+	@rm -rf sdl2/lib sdl2/share sdl2/bin sdl2/include
 re		:	fclean		all
 sfclean	:	objclean	outclean
 sre		:	sfclean		$(NAME)
 
-.PHONY: all libclean objclean clean re fclean sfclean sre
+.PHONY: all libclean objclean outclean clean fclean re sfclean sre
 
 RED = \033[1;31m
 GRN = \033[1;32m
