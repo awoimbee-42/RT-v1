@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/07 17:35:09 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/12 17:14:22 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ struct s_env;
 
 /*
 **	###############################
-**	#        FUCKING TRASH        #
+**	#           NOT TRASH         #
 **	###############################
 */
 
@@ -85,14 +85,14 @@ typedef struct	s_id_dist
 **	###################################
 */
 
-typedef struct	s_float3
+typedef struct	s_flt3
 {
 	float				x;
 	float				y;
 	float				z;
 }				t_flt3;
 
-typedef struct	s_float2
+typedef struct	s_flt2
 {
 	float				x;
 	float				y;
