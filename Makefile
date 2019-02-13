@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/02/11 18:41:29 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/02/13 14:41:44 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,9 +51,9 @@ OBJ = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
 
 LDLIBS = -lft -lSDL2 -lm
 
-LDFLAGS = -Llibft -LSDL2/lib
+LDFLAGS = -Llibft -Lsdl2/lib
 
-CFLAGS += -I./ -I./sdl2/include/ -I./libft
+CFLAGS += -I ./ -isystem ./sdl2/include/ -I ./libft
 
 SDL_OPTIONS =	-q						\
 				--prefix=$$sdl2path		\
