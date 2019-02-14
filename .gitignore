@@ -9,3 +9,5 @@ sdl2/include
 sdl2/lib
 sdl2/share
 sdl2/build
+*.exe
+*.dll

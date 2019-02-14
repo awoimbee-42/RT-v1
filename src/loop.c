@@ -83,6 +83,7 @@ void		loop(t_env *env, SDL_GameController *controller)
 		}
 		check_keys(env);
 		check_controller(env, controller);
+		usleep(5000);
 	}
 }
 

@@ -49,11 +49,11 @@ OBJ_PATH =	obj
 SRC = $(addprefix $(SRC_PATH)/,$(SRC_NAME))
 OBJ = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
 
-LDLIBS = -lft -lSDL2 -lm
+LDLIBS = -lft -lm -ldl -lrt -lSDL2 -lpthread
 
 LDFLAGS = -Llibft -Lsdl2/lib
 
-CFLAGS += -I ./ -isystem ./sdl2/include/ -I ./libft
+CFLAGS += -I./ -isystem./sdl2/include/ -I./libft
 
 SDL_OPTIONS =	-q						\
 				--prefix=$$sdl2path		\

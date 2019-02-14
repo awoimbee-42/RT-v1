@@ -21,11 +21,12 @@
 # include <limits.h>
 
 # include "libft.h"
+# define SDL_MAIN_HANDLED
 # include "SDL2/SDL.h"
 # include "SDL2/SDL_thread.h"
 # include "SDL2/SDL_gamecontroller.h"
 
-# define THREAD_NB 15
+# define THREAD_NB 20
 
 # define SDL_ERR	1
 # define MALLOC_ERR	2
