@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/02/13 14:41:44 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/02/19 01:46:48 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME	=	rtv1
 
 CC = gcc
 
-CFLAGS	=	-Wall -Wextra -Werror -Ofast -ffast-math -flto=full -msse
+CFLAGS	=	-Wall -Wextra -Werror -Ofast -march=native
 
 SRC_NAME =	main.c							\
 			init_argv.c						\
@@ -66,6 +66,7 @@ all : $(NAME)
 sdl2/lib/libSDL2.a :
 	@printf "$(YLW)Making SDL2...$(EOC)\n"
 	@cd sdl2;															\
+		export CC="gcc -march=native"									\
 		sdl2path=`pwd`;													\
 		printf "$(INV)Creating build env...$(EOC)\n";					\
 		mkdir -p build;													\
@@ -84,7 +85,7 @@ $(NAME) : libft/libft.a sdl2/lib/libSDL2.a $(OBJ) rtv1.h
 	@printf "$(GRN)Linking $(NAME)...$(EOC)\n"
 	$(CC) $(CFLAGS) $(OBJ) -o $@ $(LDFLAGS) $(LDLIBS)
 
-$(OBJ_PATH) :
+$(OBJ_PATH) : sdl2/lib/libSDL2.a
 	@mkdir -p $(OBJ_PATH) 2> /dev/null
 	@mkdir -p $(addprefix $(OBJ_PATH)/,$(SRC_FOLDERS)) 2> /dev/null
 	@printf "$(GRN)Building with \"$(CFLAGS)\":$(EOC)\n"
@@ -110,9 +111,11 @@ outclean :
 clean	:	libclean	objclean
 fclean	:	clean		outclean
 	@rm -rf sdl2/lib sdl2/share sdl2/bin sdl2/include
-re		:	fclean		all
+re		:	fclean
+	make -sj all
 sfclean	:	objclean	outclean
-sre		:	sfclean		$(NAME)
+sre		:	sfclean
+	make -sj $(NAME)
 
 .PHONY: all libclean objclean outclean clean fclean re sfclean sre
 
