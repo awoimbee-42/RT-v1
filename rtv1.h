@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/30 16:26:08 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/02/24 23:40:14 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ typedef struct	s_disp
 typedef struct	s_sdl
 {
 	unsigned int		*img;
+	uint32_t			(*img1_4th)[4];
 	SDL_Renderer		*renderer;
 	SDL_Texture			*texture;
 	SDL_Window			*win;

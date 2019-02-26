@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:12:01 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/06 21:25:05 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/24 23:44:40 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,17 @@ void	init_sdl(t_env *env)
 	sdl->renderer = SDL_CreateRenderer(sdl->win, -1, SDL_RENDERER_PRESENTVSYNC);
 	sdl->texture = SDL_CreateTexture(sdl->renderer, SDL_PIXELFORMAT_ARGB8888,
 			SDL_TEXTUREACCESS_STREAMING, env->disp.res.x, env->disp.res.y);
-	if (!(sdl->img = malloc(env->disp.res.x * env->disp.res.y * sizeof(int))))
+	if (!(sdl->img = malloc(env->disp.res.x * env->disp.res.y * sizeof(int)))
+		|| !(sdl->img1_4th = malloc(env->disp.res.x / 4 * env->disp.res.y / 4
+					* sizeof(*sdl->img1_4th))))
 		error(MALLOC_ERR);
+	for (int x = 0; x < env->disp.res.x; ++x)
+	{
+		for (int y = 0; y < env->disp.res.y; ++y)
+		{
+			aposdfdsfsfsd;
+		}
+	}
 }
 
 void	init(t_env *env)
@@ -56,5 +65,5 @@ void	init(t_env *env)
 	init_sdl(env);
 	init_threads(env);
 	env->controller = SDL_IsGameController(0) ?
-			SDL_GameControllerOpen(0) : NULL; 
+			SDL_GameControllerOpen(0) : NULL;
 }

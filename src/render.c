@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/06 23:06:50 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/24 23:37:37 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,17 +62,18 @@ uint32_t	launch_ray(const int x, const int y, const t_env *env)
 
 int			thing(int color1, int color2)
 {
-	char	*c1;
-	char	*c2;
+	// char	*c1;
+	// char	*c2;
+	// int		ret;
 	int		ret;
-	char	*cret;
 
-	c1 = (char*)&color1;
-	c2 = (char*)&color2;
-	cret = (char*)&ret;
-	cret[0] = ((int)c1[0] + (int)c2[0]) / 2;
-	cret[1] = ((int)c1[1] + (int)c2[1]) / 2;
-	cret[2] = ((int)c1[2] + (int)c2[2]) / 2;
+	// c1 = (char*)&color1;
+	// c2 = (char*)&color2;
+	// cret = (char*)&ret;
+	ret = (((color1 + color2) / 2) & 0xFF0000) + (((color1 + color2) / 2) & 0xFF00) + (((color1 + color2) / 2) & 0xFF) + 0xFF000000;
+	// cret[0] = ((int)c1[0] + (int)c2[0]) / 2;
+	// cret[1] = ((int)c1[1] + (int)c2[1]) / 2;
+	// cret[2] = ((int)c1[2] + (int)c2[2]) / 2;
 	return (ret);
 
 }
@@ -92,17 +93,16 @@ static int	render_line(void *vthread)
 		u = 0;
 		while (u < thread->env->disp.res.x)
 		{
+			*tmp_img = thing(*(tmp_img - thread->env->disp.res.x -1), *(tmp_img - thread->env->disp.res.x +1));
+			++tmp_img;
+			++u;
+		}
+		++v;
+		u = 0;
+		while (u < thread->env->disp.res.x)
+		{
 			*tmp_img = launch_ray(u, v, thread->env);
-			// if (u + 2 < thread->env->disp.res.x)
-			// {
-			// 	*(tmp_img + 2) = launch_ray(u + 2, v, thread->env);
-			// 	++tmp_img;
-			// 	*tmp_img = thing(*(tmp_img - 1), *(tmp_img + 1));
-			// 	tmp_img += 2;
-			// 	u += 3;
-			// }
-
-			// else
+			*(tmp_img+1) = thing(*(tmp_img - 1), *(tmp_img + 1));
 			{
 				u += 2;
 				tmp_img += 2;
@@ -110,8 +110,8 @@ static int	render_line(void *vthread)
 		}
 		if (u != thread->env->disp.res.x)
 			tmp_img -= 1;
-		tmp_img += thread->env->disp.res.x;
-		v += 2;
+		// tmp_img += thread->env->disp.res.x;
+		++v;
 	}
 		if (v != thread->line_end)
 			tmp_img += thread->env->disp.res.x;
