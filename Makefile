@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/01/30 16:33:17 by cpoirier         ###   ########.fr        #
+#    Updated: 2019/02/26 19:31:14 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME	=	rtv1
 
 CC = gcc
 
-CFLAGS	=	-Wall -Wextra -Werror #-Ofast -ffast-math -flto=full -msse
+CFLAGS	=	-Wall -Wextra -Werror -Ofast -march=native
 
 SRC_NAME =	main.c							\
 			init_argv.c						\
@@ -49,11 +49,11 @@ OBJ_PATH =	obj
 SRC = $(addprefix $(SRC_PATH)/,$(SRC_NAME))
 OBJ = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
 
-LDLIBS = -lft -lSDL2 -lm
+LDLIBS = -lft -lm -ldl -lSDL2 -lpthread
 
-LDFLAGS = -Llibft -LSDL2/lib
+LDFLAGS = -Llibft -Lsdl2/lib
 
-CFLAGS += -I./ -I./sdl2/include/ -I./libft
+CFLAGS += -I./ -isystem./sdl2/include/ -I./libft
 
 SDL_OPTIONS =	-q						\
 				--prefix=$$sdl2path		\
@@ -66,6 +66,7 @@ all : $(NAME)
 sdl2/lib/libSDL2.a :
 	@printf "$(YLW)Making SDL2...$(EOC)\n"
 	@cd sdl2;															\
+		export CC="gcc -march=native"									\
 		sdl2path=`pwd`;													\
 		printf "$(INV)Creating build env...$(EOC)\n";					\
 		mkdir -p build;													\
@@ -82,9 +83,9 @@ libft/libft.a :
 
 $(NAME) : libft/libft.a sdl2/lib/libSDL2.a $(OBJ) rtv1.h
 	@printf "$(GRN)Linking $(NAME)...$(EOC)\n"
-	$(CC) $(OBJ) -o $@ $(LDFLAGS) $(LDLIBS)
+	$(CC) $(CFLAGS) $(OBJ) -o $@ $(LDFLAGS) $(LDLIBS)
 
-$(OBJ_PATH) :
+$(OBJ_PATH) : sdl2/lib/libSDL2.a
 	@mkdir -p $(OBJ_PATH) 2> /dev/null
 	@mkdir -p $(addprefix $(OBJ_PATH)/,$(SRC_FOLDERS)) 2> /dev/null
 	@printf "$(GRN)Building with \"$(CFLAGS)\":$(EOC)\n"
@@ -95,7 +96,7 @@ $(OBJ_PATH)/%.o : $(SRC_PATH)/%.c | $(OBJ_PATH)
 
 libclean :
 	@printf "$(YLW)Cleaning SDL2...$(EOC)\n"
-	@rm -rf sdl2/build sdl2/lib sdl2/share sdl2/bin sdl2/include
+	@rm -rf sdl2/build
 	@printf "$(YLW)Cleaning libft...$(EOC)\n"
 	@make -s fclean -C libft
 
@@ -109,11 +110,14 @@ outclean :
 
 clean	:	libclean	objclean
 fclean	:	clean		outclean
-re		:	fclean		all
+	@rm -rf sdl2/lib sdl2/share sdl2/bin sdl2/include
+re		:	fclean
+	make -sj all
 sfclean	:	objclean	outclean
-sre		:	sfclean		$(NAME)
+sre		:	sfclean
+	make -sj $(NAME)
 
-.PHONY: all libclean objclean clean re fclean sfclean sre
+.PHONY: all libclean objclean outclean clean fclean re sfclean sre
 
 RED = \033[1;31m
 GRN = \033[1;32m

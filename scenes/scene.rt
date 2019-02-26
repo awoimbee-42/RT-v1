@@ -29,8 +29,7 @@ camera
 objects[5] :
 {
 	Sphere
-		.origin = {0., 0., 5.}	#comments ! but they cannot end with ';'
-			#but hey, it works !
+		.origin = {0., 0., 5.}	#comments !
 		.radius = 2.
 		.color = {1, 1, 1}
 		.specular = 0.4

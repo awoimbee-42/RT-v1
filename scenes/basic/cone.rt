@@ -41,5 +41,5 @@ lights[1] :
 {
 	Light
 		.position = {15, 15, -6}
-		.intensity = {500, 500, 500};
+		.intensity = {5000, 5000, 5000};
 }

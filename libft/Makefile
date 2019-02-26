@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/16 11:55:20 by awoimbee          #+#    #+#              #
-#    Updated: 2019/01/25 23:12:18 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/02/07 18:01:18 by cpoirier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -94,7 +94,7 @@ $(NAME)	: $(OBJS)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c | $(OBJ_PATH)
 	@printf "%-50s\r" "$(CC) $@"
-	@$(CC) $(CFLAGS) -O3 -o $@ -c $<
+	@$(CC) $(CFLAGS) -o $@ -c $<
 
 so	: all
 	@printf "$(CC) (...) -shared -o $(NAME:.a=.so)\n"
