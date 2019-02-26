@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:12:01 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/24 23:44:40 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/26 19:28:59 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,9 @@ void	init_threads(t_env *env)
 
 void	init_sdl(t_env *env)
 {
-	t_sdl	*sdl;
+	t_sdl		*sdl;
+	t_int2		px;
+	t_px_sqr	*pxp;
 
 	sdl = &env->sdl;
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER) < 0)
@@ -48,15 +50,19 @@ void	init_sdl(t_env *env)
 	sdl->texture = SDL_CreateTexture(sdl->renderer, SDL_PIXELFORMAT_ARGB8888,
 			SDL_TEXTUREACCESS_STREAMING, env->disp.res.x, env->disp.res.y);
 	if (!(sdl->img = malloc(env->disp.res.x * env->disp.res.y * sizeof(int)))
-		|| !(sdl->img1_4th = malloc(env->disp.res.x / 4 * env->disp.res.y / 4
-					* sizeof(*sdl->img1_4th))))
+		|| !(sdl->big_pxs = malloc(env->disp.res.x / 4 * env->disp.res.y / 4
+					* sizeof(*sdl->big_pxs))))
 		error(MALLOC_ERR);
-	for (int x = 0; x < env->disp.res.x; ++x)
+	px = (t_int2){0, 0};
+	pxp = sdl->big_pxs;
+	while (++px.y < env->disp.res.y - 1)
 	{
-		for (int y = 0; y < env->disp.res.y; ++y)
-		{
-			aposdfdsfsfsd;
-		}
+		px.x = 0;
+		while (++px.x < env->disp.res.x - 1)
+			*pxp = (t_px_sqr){
+				&env->sdl.img[px.y * env->disp.res.x + px.x - 1],
+				&env->sdl.img[(px.y - 1) * env->disp.res.x + px.x - 1],
+				&env->sdl.img[(px.y + 1) * env->disp.res.x + px.x - 1]};
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/24 23:40:14 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/26 19:25:07 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,10 +139,17 @@ typedef struct	s_disp
 **	#############################
 */
 
+typedef struct s_px_sqr
+{
+	uint32_t			*left;
+	uint32_t			*top_left;
+	uint32_t			*bot_left;
+}				t_px_sqr;
+
 typedef struct	s_sdl
 {
 	unsigned int		*img;
-	uint32_t			(*img1_4th)[4];
+	t_px_sqr			*big_pxs;
 	SDL_Renderer		*renderer;
 	SDL_Texture			*texture;
 	SDL_Window			*win;
