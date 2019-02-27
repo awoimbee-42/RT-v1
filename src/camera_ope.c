@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 12:32:57 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/01/28 11:14:52 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/27 19:02:04 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,20 @@ static void		rotate_2d(t_vec3 *restrict v, const float angle, const int axis)
 	if (axis == 0)
 	{
 		tmp = v->z;
-		v->z = cos(angle) * v->z - sin(angle) * v->y;
-		v->y = cos(angle) * v->y + sin(angle) * tmp;
+		v->z = cosf(angle) * v->z - sinf(angle) * v->y;
+		v->y = cosf(angle) * v->y + sinf(angle) * tmp;
 	}
 	else if (axis == 1)
 	{
 		tmp = v->x;
-		v->x = cos(angle) * v->x - sin(angle) * v->z;
-		v->z = cos(angle) * v->z + sin(angle) * tmp;
+		v->x = cosf(angle) * v->x - sinf(angle) * v->z;
+		v->z = cosf(angle) * v->z + sinf(angle) * tmp;
 	}
 	else
 	{
 		tmp = v->x;
-		v->x = cos(angle) * v->x - sin(angle) * v->y;
-		v->y = cos(angle) * v->y + sin(angle) * tmp;
+		v->x = cosf(angle) * v->x - sinf(angle) * v->y;
+		v->y = cosf(angle) * v->y + sinf(angle) * tmp;
 	}
 }
 

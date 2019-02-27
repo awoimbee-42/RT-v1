@@ -6,13 +6,13 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/26 20:11:11 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/27 19:47:39 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-t_fcolor	trace_ray(const t_env *env, const t_ray *ray, const int bounce)
+static t_fcolor	trace_ray(const t_env *env, const t_ray *ray, const int bounce)
 {
 	t_id_dist		obj;
 	t_ray			hit_reflect;
@@ -42,7 +42,7 @@ t_fcolor	trace_ray(const t_env *env, const t_ray *ray, const int bounce)
 **		hits == the ray direction
 */
 
-uint32_t	launch_ray(const int x, const int y, const t_env *env)
+static uint32_t	launch_ray(const int x, const int y, const t_env *env)
 {
 	t_vec3			screen_point;
 
@@ -60,25 +60,7 @@ uint32_t	launch_ray(const int x, const int y, const t_env *env)
 	return (srgb(&screen_point));
 }
 
-int			thing(int color1, int color2)
-{
-	// char	*c1;
-	// char	*c2;
-	// int		ret;
-	int		ret;
-
-	// c1 = (char*)&color1;
-	// c2 = (char*)&color2;
-	// cret = (char*)&ret;
-	ret = (((color1 + color2) / 2) & 0xFF0000) + (((color1 + color2) / 2) & 0xFF00) + (((color1 + color2) / 2) & 0xFF) + 0xFF000000;
-	// cret[0] = ((int)c1[0] + (int)c2[0]) / 2;
-	// cret[1] = ((int)c1[1] + (int)c2[1]) / 2;
-	// cret[2] = ((int)c1[2] + (int)c2[2]) / 2;
-	return (ret);
-
-}
-
-static int	render_line(void *vthread)
+static int		render_line(void *vthread)
 {
 	t_thread		*thread;
 	t_px_sqr		*tmp_img;
@@ -87,29 +69,27 @@ static int	render_line(void *vthread)
 
 	thread = (t_thread*)vthread;
 	v = thread->line_start;
-	tmp_img = &thread->env->sdl.big_pxs[((v - 2) / 3 * (thread->env->disp.res.x - 2) / 3) ];
+	tmp_img = &thread->env->sdl.big_pxs[((v - 3) / 5 * (thread->env->disp.res.x - 5) / 5) ];
 	while (v < thread->line_end)
 	{
-		u = 1;
+		u = 3;
 		while (u < thread->env->disp.res.x - 3)
 		{
 			uint32_t	c = launch_ray(u, v, thread->env);
-			tmp_img->top_left[0] = c;
-			tmp_img->top_left[1] = c;
-			tmp_img->top_left[2] = c;
-
-			ft_memcpy(tmp_img->left, &tmp_img->top_left[0], 3 * sizeof(int));
-			ft_memcpy(tmp_img->bot_left, &tmp_img->top_left[0], 3 * sizeof(int));
+			// fprintf(stderr, "v: %d\t\tu: %d\n", v, u);
+			ft_mem32set(tmp_img->top_left, c, 5);
+			ft_mem32set(tmp_img->left, c, 5);
+			ft_mem32set(tmp_img->bot_left, c, 5);
 			++tmp_img;
-			u += 3;
+			u += 5;
 		}
 		// tmp_img -= (thread->env->disp.res.x - u) % 3;
-		v += 3;
+		v += 5;
 	}
 	return (0);
 }
 
-void		render(t_env *env)
+void			render(t_env *env)
 {
 	int			i;
 

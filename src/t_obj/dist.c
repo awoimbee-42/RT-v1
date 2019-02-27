@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 22:02:07 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/29 16:32:43 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/27 18:59:30 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,19 @@ float		dist_sphere(const union u_object *obj, const t_ray *ray)
 	float		a;
 	float		b;
 	float		c;
-	float		delta;
+	float		sdelta;
 
 	oc = ray->org;
 	flt3_sub(&oc, &obj->sphere.orig);
 	a = flt3_dot(&ray->dir, &ray->dir);
-	b = 2.0 * flt3_dot(&ray->dir, &oc);
+	b = -(2.f * flt3_dot(&ray->dir, &oc));
 	c = flt3_dot(&oc, &oc) - (obj->sphere.radius * obj->sphere.radius);
-	delta = b * b - 4 * a * c;
-	if (delta < 0)
+	sdelta = sqrtf(b * b - 4 * a * c);
+	if (sdelta != sdelta)
 		return (-1);
-	if ((c = (-b - sqrt(delta)) / (2 * a)) > 0.1)
+	if ((c = (b - sdelta) / (a * 2)) > 0.1)
 		return (c);
-	return ((-b + sqrt(delta)) / (2 * a));
+	return ((b + sdelta) / (a * 2));
 }
 
 float		dist_plane(const union u_object *obj, const t_ray *ray)
@@ -103,23 +103,23 @@ float		dist_cone(const union u_object *obj, const t_ray *ray)
 {
 	t_vec3		diff;
 	t_vec3		par;
-	double		cos2;
-	double		dir_dot;
-	double		org_dot;
+	float		cos2;
+	float		dir_dot;
+	float		org_dot;
 
 	diff = ray->org;
 	flt3_sub(&diff, &obj->cone.org);
 	dir_dot = flt3_dot(&ray->dir, &obj->cone.dir);
 	org_dot = flt3_dot(&diff, &obj->cone.dir);
-	cos2 = cos(obj->cone.angle) * cos(obj->cone.angle);
+	cos2 = cosf(obj->cone.angle) * cosf(obj->cone.angle);
 	par.x = dir_dot * dir_dot - cos2;
 	par.y = 2 * (dir_dot * org_dot - flt3_dot(&ray->dir, &diff) * cos2);
 	par.z = org_dot * org_dot - flt3_dot(&diff, &diff) * cos2;
 	dir_dot = par.y * par.y - 4 * par.x * par.z;
 	if (dir_dot < 0)
 		return (-1);
-	diff.x = (-par.y - sqrt(dir_dot)) / (2 * par.x);
-	diff.y = (-par.y + sqrt(dir_dot)) / (2 * par.x);
+	diff.x = (-par.y - sqrtf(dir_dot)) / (2 * par.x);
+	diff.y = (-par.y + sqrtf(dir_dot)) / (2 * par.x);
 	if (diff.y > 0.1)
 		return (diff.y);
 	return (diff.x);
