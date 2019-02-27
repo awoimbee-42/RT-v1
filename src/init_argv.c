@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:12:01 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/27 19:40:55 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/27 20:12:53 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	init_sdl(t_env *env)
 		}
 		px.y += 5;
 	}
+	env->px_skip = 10;
 }
 
 void	init(t_env *env)

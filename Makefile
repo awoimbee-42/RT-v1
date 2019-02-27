@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/02/27 19:10:00 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/02/27 20:57:49 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME	=	rtv1
 
 CC = gcc
 
-CFLAGS	=	-Wall -Wextra -g3 -Ofast -march=native #-Werror
+CFLAGS	=	-Wall -Wextra -Ofast -march=native #-Werror
 
 SRC_NAME =	main.c							\
 			init_argv.c						\

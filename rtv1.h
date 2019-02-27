@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/26 19:30:50 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/27 21:08:40 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@
 # include "SDL2/SDL_thread.h"
 # include "SDL2/SDL_gamecontroller.h"
 
-# define THREAD_NB 20
+# define MX_SKP		5000
+# define NB_PX_SKIP	5
+# define THREAD_NB	20
 
 # define SDL_ERR	1
 # define MALLOC_ERR	2
@@ -248,7 +250,7 @@ typedef struct	s_env
 	uint32_t			keys_pressed;
 	SDL_GameController	*controller;
 	t_thread			threads[THREAD_NB];
-	int					i;
+	int					px_skip;
 }				t_env;
 
 /*
@@ -257,7 +259,7 @@ typedef struct	s_env
 **	###########################
 */
 
-void			render(t_env *env);
+int				render(t_env *env);
 
 /*
 **	main.c

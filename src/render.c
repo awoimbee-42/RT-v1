@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/27 19:47:39 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/27 21:19:53 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,47 +63,54 @@ static uint32_t	launch_ray(const int x, const int y, const t_env *env)
 static int		render_line(void *vthread)
 {
 	t_thread		*thread;
-	t_px_sqr		*tmp_img;
+	uint32_t		*tmp_img;
 	int				u;
 	int				v;
 
 	thread = (t_thread*)vthread;
 	v = thread->line_start;
-	tmp_img = &thread->env->sdl.big_pxs[((v - 3) / 5 * (thread->env->disp.res.x - 5) / 5) ];
+	tmp_img = &thread->env->sdl.img[v * thread->env->disp.res.x];
 	while (v < thread->line_end)
 	{
-		u = 3;
-		while (u < thread->env->disp.res.x - 3)
+		u = 0;
+		while (u < thread->env->disp.res.x)
 		{
-			uint32_t	c = launch_ray(u, v, thread->env);
-			// fprintf(stderr, "v: %d\t\tu: %d\n", v, u);
-			ft_mem32set(tmp_img->top_left, c, 5);
-			ft_mem32set(tmp_img->left, c, 5);
-			ft_mem32set(tmp_img->bot_left, c, 5);
-			++tmp_img;
-			u += 5;
+			if (!*tmp_img)
+				*tmp_img = launch_ray(u, v, thread->env);
+			tmp_img += thread->env->px_skip;
+			u += thread->env->px_skip;
 		}
-		// tmp_img -= (thread->env->disp.res.x - u) % 3;
-		v += 5;
+		tmp_img -= u - thread->env->disp.res.x;
+		tmp_img += (thread->env->disp.res.x) * (thread->env->px_skip - 1);
+		v += thread->env->px_skip;
 	}
 	return (0);
 }
 
-void			render(t_env *env)
+int				render(t_env *env)
 {
 	int			i;
 
-	i = -1;
-	while (++i < THREAD_NB)
-		env->threads[i].ptr = SDL_CreateThread(&render_line, "",
-												&env->threads[i]);
-	i = -1;
-	while (++i < THREAD_NB)
-		SDL_WaitThread(env->threads[i].ptr, NULL);
-	// ft_memmove(env->sdl.img + 1, env->sdl.img, env->disp.res.x * sizeof(int));
-	// ft_memmove(env->sdl.img + 1, env->sdl.img, 1);
-	SDL_UpdateTexture(env->sdl.texture, NULL, env->sdl.img,
-						env->disp.res.x * sizeof(int));
-	SDL_RenderCopy(env->sdl.renderer, env->sdl.texture, NULL, NULL);
-	SDL_RenderPresent(env->sdl.renderer);
+
+	env->px_skip = NB_PX_SKIP;
+	while (env->px_skip > 0 && env->px_skip < MX_SKP - 2)
+	{
+		i = -1;
+		while (++i < THREAD_NB)
+			env->threads[i].ptr = SDL_CreateThread(&render_line, "",
+													&env->threads[i]);
+		i = -1;
+		while (++i < THREAD_NB)
+			SDL_WaitThread(env->threads[i].ptr, NULL);
+		if (env->px_skip == MX_SKP)
+			break ;
+		SDL_UpdateTexture(env->sdl.texture, NULL, env->sdl.img,
+							env->disp.res.x * sizeof(int));
+		SDL_RenderCopy(env->sdl.renderer, env->sdl.texture, NULL, NULL);
+		SDL_RenderPresent(env->sdl.renderer);
+		env->px_skip -= 2;
+	}
+	env->px_skip = NB_PX_SKIP;
+	ft_bzero(env->sdl.img, env->disp.res.y * env->disp.res.x * sizeof(uint32_t));
+	return (0);
 }

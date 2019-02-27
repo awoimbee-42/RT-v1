@@ -6,13 +6,13 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 19:09:32 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/02/27 19:00:26 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/27 20:35:13 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-t_id_dist	nearest_obj(const t_env *env, const t_ray *ray)
+t_id_dist			nearest_obj(const t_env *env, const t_ray *ray)
 {
 	t_id_dist		nearest;
 	t_id_dist		tmp;
@@ -33,7 +33,7 @@ t_id_dist	nearest_obj(const t_env *env, const t_ray *ray)
 	return (nearest);
 }
 
-float		get_specular(const t_vec3 *dir,
+float				get_specular(const t_vec3 *dir,
 	const t_vec3 *light_dir, const float specular, const float light)
 {
 	float			theta;
@@ -45,7 +45,7 @@ float		get_specular(const t_vec3 *dir,
 	return (is_bright * light / 10000.);
 }
 
-inline float	lghtobj_dst(const t_env *env, const int i, t_ray *ray[2],
+static inline float	lghtobj_dst(const t_env *env, const int i, t_ray *ray[2],
 	t_id_dist *near_obj)
 {
 	float			light_dist;
@@ -59,7 +59,7 @@ inline float	lghtobj_dst(const t_env *env, const int i, t_ray *ray[2],
 	return (light_dist);
 }
 
-t_fcolor	fast_diffuse(const t_env *env, t_ray *hit,
+t_fcolor			fast_diffuse(const t_env *env, t_ray *hit,
 	t_obj *obj, t_vec3 *norm)
 {
 	float			light_dist;
