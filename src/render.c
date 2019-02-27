@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/24 23:37:37 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/26 20:11:11 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,40 +81,31 @@ int			thing(int color1, int color2)
 static int	render_line(void *vthread)
 {
 	t_thread		*thread;
-	uint32_t		*tmp_img;
+	t_px_sqr		*tmp_img;
 	int				u;
 	int				v;
 
 	thread = (t_thread*)vthread;
 	v = thread->line_start;
-	tmp_img = &thread->env->sdl.img[v * thread->env->disp.res.x];
+	tmp_img = &thread->env->sdl.big_pxs[((v - 2) / 3 * (thread->env->disp.res.x - 2) / 3) ];
 	while (v < thread->line_end)
 	{
-		u = 0;
-		while (u < thread->env->disp.res.x)
+		u = 1;
+		while (u < thread->env->disp.res.x - 3)
 		{
-			*tmp_img = thing(*(tmp_img - thread->env->disp.res.x -1), *(tmp_img - thread->env->disp.res.x +1));
+			uint32_t	c = launch_ray(u, v, thread->env);
+			tmp_img->top_left[0] = c;
+			tmp_img->top_left[1] = c;
+			tmp_img->top_left[2] = c;
+
+			ft_memcpy(tmp_img->left, &tmp_img->top_left[0], 3 * sizeof(int));
+			ft_memcpy(tmp_img->bot_left, &tmp_img->top_left[0], 3 * sizeof(int));
 			++tmp_img;
-			++u;
+			u += 3;
 		}
-		++v;
-		u = 0;
-		while (u < thread->env->disp.res.x)
-		{
-			*tmp_img = launch_ray(u, v, thread->env);
-			*(tmp_img+1) = thing(*(tmp_img - 1), *(tmp_img + 1));
-			{
-				u += 2;
-				tmp_img += 2;
-			}
-		}
-		if (u != thread->env->disp.res.x)
-			tmp_img -= 1;
-		// tmp_img += thread->env->disp.res.x;
-		++v;
+		// tmp_img -= (thread->env->disp.res.x - u) % 3;
+		v += 3;
 	}
-		if (v != thread->line_end)
-			tmp_img += thread->env->disp.res.x;
 	return (0);
 }
 

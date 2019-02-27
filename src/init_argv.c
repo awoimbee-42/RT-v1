@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:12:01 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/26 19:30:42 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/26 19:47:02 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,19 +50,23 @@ void	init_sdl(t_env *env)
 	sdl->texture = SDL_CreateTexture(sdl->renderer, SDL_PIXELFORMAT_ARGB8888,
 			SDL_TEXTUREACCESS_STREAMING, env->disp.res.x, env->disp.res.y);
 	if (!(sdl->img = malloc(env->disp.res.x * env->disp.res.y * sizeof(int)))
-		|| !(sdl->big_pxs = malloc(env->disp.res.x / 4 * env->disp.res.y / 4
+		|| !(sdl->big_pxs = malloc(env->disp.res.x / 3 * env->disp.res.y / 3
 					* sizeof(*sdl->big_pxs))))
 		error(MALLOC_ERR);
-	px = (t_int2){0, 0};
+	px = (t_int2){1, 1};
 	pxp = sdl->big_pxs;
-	while (++px.y < env->disp.res.y - 1)
+	while (px.y < env->disp.res.y - 1)
 	{
-		px.x = 0;
-		while (++px.x < env->disp.res.x - 1)
-			*pxp = (t_px_sqr){
+		px.x = 1;
+		while (px.x < env->disp.res.x - 1)
+		{
+			*(pxp++) = (t_px_sqr){
 				&env->sdl.img[px.y * env->disp.res.x + px.x - 1],
 				&env->sdl.img[(px.y - 1) * env->disp.res.x + px.x - 1],
 				&env->sdl.img[(px.y + 1) * env->disp.res.x + px.x - 1]};
+			px.x += 3;
+		}
+		px.y += 3;
 	}
 }
 
