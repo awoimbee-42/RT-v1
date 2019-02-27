@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 19:09:32 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/02/07 17:49:21 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/27 19:00:26 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_id_dist	nearest_obj(const t_env *env, const t_ray *ray)
 	while (++tmp.id < env->objs_nb)
 	{
 		tmp.dist = env->objs_arr[tmp.id]
-						.distfun(&env->objs_arr[tmp.id].this, ray);
+			.distfun(&env->objs_arr[tmp.id].this, ray);
 		if (tmp.dist < nearest.dist && tmp.dist > 0.001)
 		{
 			nearest.id = tmp.id;
@@ -36,16 +36,16 @@ t_id_dist	nearest_obj(const t_env *env, const t_ray *ray)
 float		get_specular(const t_vec3 *dir,
 	const t_vec3 *light_dir, const float specular, const float light)
 {
-	double			theta;
-	double			is_bright;
+	float			theta;
+	float			is_bright;
 
-	theta = acos(fmax(flt3_dot(dir, light_dir), 0) / (flt3_mod(dir)
+	theta = acosf(fmaxf(flt3_dot(dir, light_dir), 0) / (flt3_mod(dir)
 				* flt3_mod(light_dir)));
 	is_bright = specular * (1 / (theta * theta * theta));
 	return (is_bright * light / 10000.);
 }
 
-float		lghtobj_dst(const t_env *env, const int i, t_ray *ray[2],
+inline float	lghtobj_dst(const t_env *env, const int i, t_ray *ray[2],
 	t_id_dist *near_obj)
 {
 	float			light_dist;
@@ -78,7 +78,7 @@ t_fcolor	fast_diffuse(const t_env *env, t_ray *hit,
 			ray.org = env->light_arr[i].intensity;
 			flt3_addf(flt3_add(&light, flt3_multf(
 						light_drop(&ray.org, light_dist),
-						fmax(flt3_dot(norm, &ray.dir) * obj->diffuse, 0.))),
+						fmaxf(flt3_dot(norm, &ray.dir) * obj->diffuse, 0.))),
 				get_specular(&hit->dir, &ray.dir, obj->specular,
 					flt3_mod(&env->light_arr[i].intensity)));
 		}
