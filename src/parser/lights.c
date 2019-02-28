@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 16:11:46 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/31 00:41:59 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/28 20:02:37 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,11 @@ static int		create_array(t_env *env, char *line)
 	while (*line != '\0' && *line != '[')
 		++line;
 	if (!*line || !*++line)
-		msg_exit("Bad format line %d\n", &env->keys_pressed);
+		msg_exit("Bad format line %d\n", &env->keys);
 	lights_nb = ft_atoi_mv(&line);
 	if (ft_strncmp(line, "] :", 3) != 0 || lights_nb < 0
 		|| lights_nb > MAX_LIGHTS)
-		msg_exit("Bad character after size line %d\n", &env->keys_pressed);
+		msg_exit("Bad character after size line %d\n", &env->keys);
 	if (!(env->light_arr = malloc(sizeof(t_light) * (lights_nb + 1))))
 		error(MALLOC_ERR);
 	env->light_arr[lights_nb] = (t_light){(t_coords){0, 0, 0},
@@ -66,11 +66,11 @@ void			parse_lights(int fd, t_env *env, char *line)
 	done = 0;
 	lights_nb = create_array(env, line);
 	env->light_nb = lights_nb;
-	parse_open_bracket(fd, &env->keys_pressed);
-	while (get_next_line(fd, &line) > 0 && ++env->keys_pressed)
+	parse_open_bracket(fd, &env->keys);
+	while (get_next_line(fd, &line) > 0 && ++env->keys)
 	{
 		if (!ft_strcmp(line, "\tLight") && --lights_nb >= 0)
-			env->light_arr[lights_nb] = parse_light(fd, &env->keys_pressed);
+			env->light_arr[lights_nb] = parse_light(fd, &env->keys);
 		else if ((!ft_strcmp(line, "}") && (done = 1)) || 1)
 			break ;
 		ft_memdel((void*)&line);

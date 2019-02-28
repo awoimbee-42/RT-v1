@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 12:38:31 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/30 16:54:41 by cpoirier         ###   ########.fr       */
+/*   Updated: 2019/02/28 20:02:37 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	init_parser(int *done, t_env *env, const char *filename)
 	int		fd;
 	char	buff[FILE_HEADER_LEN];
 
-	env->keys_pressed = 0;
+	env->keys = 0;
 	scene_defaults(env);
 	*done = 0;
 	if ((fd = open(filename, O_RDONLY)) == -1)
@@ -61,7 +61,7 @@ static void	prt_scene_miss_info(const int done)
 }
 
 /*
-**	Let's use env->keys_pressed as line nb because why not ?
+**	Let's use env->keys as line nb because why not ?
 */
 
 void		parse_scene(t_env *env, const char *filename)
@@ -72,7 +72,7 @@ void		parse_scene(t_env *env, const char *filename)
 
 	line = NULL;
 	fd = init_parser(&done, env, filename);
-	while (get_next_line(fd, &line) > 0 && ++env->keys_pressed)
+	while (get_next_line(fd, &line) > 0 && ++env->keys)
 	{
 		if (!ft_strcmp(line, "env") && (done |= 0xF))
 			parse_env(fd, env);
@@ -88,5 +88,5 @@ void		parse_scene(t_env *env, const char *filename)
 	}
 	ft_memdel((void**)&line);
 	done != 0xFFFFF ? prt_scene_miss_info(done) : 0;
-	env->keys_pressed = 0;
+	env->keys = 0;
 }

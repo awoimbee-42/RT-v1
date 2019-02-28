@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/28 19:41:00 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/28 20:02:07 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,7 +253,7 @@ typedef struct	s_env
 	int					light_nb;
 	struct s_light		*light_arr;
 	t_fcolor			bckgrnd_col;
-	uint32_t			keys_pressed;
+	uint32_t			keys;
 	SDL_GameController	*controller;
 	SDL_Thread			*rndr;
 	t_thread			threads[THREAD_NB];

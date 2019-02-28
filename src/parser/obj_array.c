@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:28:36 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/31 01:18:12 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/28 20:02:37 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ static int	create_array(t_env *env, char *line)
 
 	line = skip_whitespaces(line + 7);
 	if (*line != '[' || !ft_isdigit(*++line))
-		msg_exit("Bad format line %d\n", &env->keys_pressed);
+		msg_exit("Bad format line %d\n", &env->keys);
 	obj_nb = ft_atoi_mv(&line);
 	if (ft_strncmp(line, "] :", 3) != 0 || obj_nb < 0 || obj_nb > MAX_OBJS)
-		msg_exit("Bad character after size line %d\n", &env->keys_pressed);
+		msg_exit("Bad character after size line %d\n", &env->keys);
 	if (!(env->objs_arr = malloc(sizeof(t_obj) * (obj_nb + 1))))
 		error(MALLOC_ERR);
 	env->objs_arr[obj_nb] = (t_obj){NULL, NULL, 0, 0, (t_fcolor){0, 0, 0},
@@ -58,19 +58,19 @@ void		parse_objects(int fd, t_env *env, char *line, int obj_nb)
 	done = 0;
 	obj_nb = create_array(env, line);
 	env->objs_nb = obj_nb;
-	parse_open_bracket(fd, &env->keys_pressed);
-	while (get_next_line(fd, &line) > 0 && ++env->keys_pressed)
+	parse_open_bracket(fd, &env->keys);
+	while (get_next_line(fd, &line) > 0 && ++env->keys)
 	{
 		if (!ft_strcmp(line, "\tSphere") && --obj_nb >= 0)
-			env->objs_arr[obj_nb] = parse_sphere(fd, &env->keys_pressed);
+			env->objs_arr[obj_nb] = parse_sphere(fd, &env->keys);
 		else if (!ft_strcmp(line, "\tPlane") && --obj_nb >= 0)
-			env->objs_arr[obj_nb] = parse_plane(fd, &env->keys_pressed);
+			env->objs_arr[obj_nb] = parse_plane(fd, &env->keys);
 		else if (!ft_strcmp(line, "\tDisk") && --obj_nb >= 0)
-			env->objs_arr[obj_nb] = parse_disk(fd, &env->keys_pressed);
+			env->objs_arr[obj_nb] = parse_disk(fd, &env->keys);
 		else if (!ft_strcmp(line, "\tCylinder") && --obj_nb >= 0)
-			env->objs_arr[obj_nb] = parse_cylinder(fd, &env->keys_pressed);
+			env->objs_arr[obj_nb] = parse_cylinder(fd, &env->keys);
 		else if (!ft_strcmp(line, "\tCone") && --obj_nb >= 0)
-			env->objs_arr[obj_nb] = parse_cone(fd, &env->keys_pressed);
+			env->objs_arr[obj_nb] = parse_cone(fd, &env->keys);
 		else if ((!ft_strcmp(line, "}") && (done = 1)) || 1)
 			break ;
 		ft_memdel((void*)&line);

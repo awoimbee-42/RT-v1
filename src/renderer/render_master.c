@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render.c                                           :+:      :+:    :+:   */
+/*   render_master.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/28 19:24:28 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/28 20:12:35 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,16 @@ uint32_t		*linecpy(int scrn_w, int px_skip, uint32_t *img)
 static int		render_thread(void *vthread)
 {
 	t_thread		*thread;
-	uint32_t		*tmp_img;
+	uint32_t		*px;
 	int				v;
 
 	thread = (t_thread*)vthread;
 	v = thread->line_start;
-	tmp_img = &thread->env->sdl.img[v * thread->env->disp.res.x];
+	px = &thread->env->sdl.img[v * thread->env->disp.res.x];
 	while (v < thread->line_end && thread->env->px_skip)
 	{
-		tmp_img = linerndr(thread->env, thread->env->px_skip, tmp_img, v);
-		tmp_img = linecpy(thread->env->disp.res.x, thread->env->px_skip, tmp_img);
+		px = linerndr(thread->env, thread->env->px_skip, px, v);
+		px = linecpy(thread->env->disp.res.x, thread->env->px_skip, px);
 		v += thread->env->px_skip;
 	}
 	return (0);
@@ -89,6 +89,6 @@ int				render(t_env *env)
 		env->px_skip -= 2;
 	}
 	env->px_skip = NB_PX_SKIP;
-	ft_bzero(env->sdl.img, env->disp.res.y * env->disp.res.x * sizeof(uint32_t));
+	// ft_bzero(env->sdl.img, env->disp.res.y * env->disp.res.x * sizeof(uint32_t)); // nothing should not work without bzero !!
 	return (0);
 }

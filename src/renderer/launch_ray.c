@@ -6,13 +6,13 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 19:24:45 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/28 19:26:34 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/28 19:59:29 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-static t_fcolor	ray_intersect(const t_env *env, const t_ray *ray, const int bounce)
+static t_fcolor	ray_intsect(const t_env *env, const t_ray *ray, int bounce)
 {
 	t_id_dist		obj;
 	t_ray			hit_reflect;
@@ -55,7 +55,7 @@ uint32_t		launch_ray(const int x, const int y, const t_env *env)
 	};
 	apply_camera_rot(env, &screen_point);
 	flt3_normalize(&screen_point);
-	screen_point = ray_intersect(env, &(t_ray){env->camera.org, screen_point}, 1);
+	screen_point = ray_intsect(env, &(t_ray){env->camera.org, screen_point}, 1);
 	tone_map(&screen_point);
 	return (srgb(&screen_point));
 }

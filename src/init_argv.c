@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:12:01 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/28 19:41:50 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/28 19:59:55 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ void	init_threads(t_env *env)
 void	init_sdl(t_env *env)
 {
 	t_sdl		*sdl;
-	t_int2		px;
-	t_px_sqr	*pxp;
 
 	sdl = &env->sdl;
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER) < 0)
@@ -53,22 +51,6 @@ void	init_sdl(t_env *env)
 		|| !(sdl->big_pxs = malloc(env->disp.res.x / 5 * env->disp.res.y / 5
 					* sizeof(*sdl->big_pxs))))
 		error(MALLOC_ERR);
-	px = (t_int2){2, 2};
-	pxp = sdl->big_pxs;
-	while (px.y < env->disp.res.y - 3)
-	{
-		px.x = 2;
-		while (px.x < env->disp.res.x - 3)
-		{
-			*(pxp++) = (t_px_sqr){
-				&env->sdl.img[px.y * env->disp.res.x + px.x - 2],
-				&env->sdl.img[(px.y - 1) * env->disp.res.x + px.x - 2],
-				&env->sdl.img[(px.y + 1) * env->disp.res.x + px.x - 2]};
-			px.x += 5;
-		}
-		px.y += 5;
-	}
-	env->px_skip = 10;
 }
 
 void	init(t_env *env)
