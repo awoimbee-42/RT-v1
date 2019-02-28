@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:36:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/28 19:41:38 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/28 21:41:38 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ int		main(int argc, char **argv)
 
 	if (argc != 2)
 		usage();
-	if (!(env = malloc(sizeof(t_env))))
+	if (!(env = malloc(sizeof(t_env)
+				+ (SDL_GetCPUCount() + 2) * sizeof(t_thread))))
 		error(MALLOC_ERR);
 	parse_scene(env, argv[1]);
 	init(env);

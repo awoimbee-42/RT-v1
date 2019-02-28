@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/28 20:54:28 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/28 21:21:24 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,23 +70,23 @@ static int		render_thread(void *vthread)
 
 int				render(t_env *env)
 {
-	int			i;
+	uint32_t		i;
 
 	env->px_skip = NB_PX_SKIP;
 	while (env->px_skip > 0)
 	{
 		i = -1;
-		while (++i != THREAD_NB)
+		while (++i != env->threads_nb)
 			env->threads[i].ptr = SDL_CreateThread(&render_thread, "",
 				&env->threads[i]);
 		i = -1;
-		while (++i != THREAD_NB)
+		while (++i != env->threads_nb)
 			SDL_WaitThread(env->threads[i].ptr, NULL);
 		SDL_UpdateTexture(env->sdl.texture, NULL, env->sdl.img,
 			env->disp.w * sizeof(int));
 		SDL_RenderCopy(env->sdl.renderer, env->sdl.texture, NULL, NULL);
 		SDL_RenderPresent(env->sdl.renderer);
-		env->px_skip -= 2;
+		env->px_skip -= PX_SKIP_STEP;
 	}
 	env->px_skip = NB_PX_SKIP;
 	ft_bzero(env->sdl.img, env->disp.h * env->disp.w * sizeof(int32_t));

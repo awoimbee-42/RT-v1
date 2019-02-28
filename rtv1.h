@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/28 20:51:32 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/28 21:30:39 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@
 **		MUST NOT BE AN EVEN NUMBER
 */
 
-# define NB_PX_SKIP	11
-# define THREAD_NB	20
+# define NB_PX_SKIP		9
+# define PX_SKIP_STEP	4
 
 # define SDL_ERR	1
 # define MALLOC_ERR	2
@@ -149,17 +149,9 @@ typedef struct	s_disp
 **	#############################
 */
 
-typedef struct s_px_sqr
-{
-	uint32_t			*left;
-	uint32_t			*top_left;
-	uint32_t			*bot_left;
-}				t_px_sqr;
-
 typedef struct	s_sdl
 {
 	unsigned int		*img;
-	t_px_sqr			*big_pxs;
 	SDL_Renderer		*renderer;
 	SDL_Texture			*texture;
 	SDL_Window			*win;
@@ -256,9 +248,10 @@ typedef struct	s_env
 	t_fcolor			bckgrnd_col;
 	uint32_t			keys;
 	SDL_GameController	*controller;
-	SDL_Thread			*rndr;
-	t_thread			threads[THREAD_NB];
 	int					px_skip;
+	SDL_Thread			*rndr;
+	uint32_t			threads_nb;
+	t_thread			threads[];
 }				t_env;
 
 /*

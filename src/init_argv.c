@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:12:01 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/28 20:50:36 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/28 21:40:49 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,15 @@ void	usage(void)
 
 void	init_threads(t_env *env)
 {
-	int i;
+	uint32_t	i;
 
+	env->threads_nb = SDL_GetCPUCount() + 2;
 	i = -1;
-	while (++i < THREAD_NB)
+	while (++i < env->threads_nb)
 	{
 		env->threads[i].env = env;
-		env->threads[i].line_start = (i * env->disp.h) / THREAD_NB;
-		env->threads[i].line_end = (((i + 1) * env->disp.h) / THREAD_NB);
+		env->threads[i].line_start = (i * env->disp.h) / env->threads_nb;
+		env->threads[i].line_end = (((i + 1) * env->disp.h) / env->threads_nb);
 		env->threads[i].px_start =
 			&env->sdl.img[env->threads[i].line_start * env->disp.w];
 	}
@@ -47,9 +48,7 @@ void	init_sdl(t_env *env)
 	sdl->renderer = SDL_CreateRenderer(sdl->win, -1, SDL_RENDERER_PRESENTVSYNC);
 	sdl->texture = SDL_CreateTexture(sdl->renderer, SDL_PIXELFORMAT_ARGB8888,
 			SDL_TEXTUREACCESS_STREAMING, env->disp.w, env->disp.h);
-	if (!(sdl->img = malloc(env->disp.w * env->disp.h * sizeof(int)))
-		|| !(sdl->big_pxs = malloc(env->disp.w / 5 * env->disp.h / 5
-					* sizeof(*sdl->big_pxs))))
+	if (!(sdl->img = malloc(env->disp.w * env->disp.h * sizeof(uint32_t))))
 		error(MALLOC_ERR);
 }
 
