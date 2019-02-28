@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 12:38:31 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/28 20:02:37 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/28 20:46:50 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 
 static void	scene_defaults(t_env *env)
 {
-	env->disp.res = (t_int2){800, 600};
+	env->disp.w = 800;
+	env->disp.h = 600;
 	env->disp.aspect_ratio = 4. / 3.;
 	env->disp.tfov = tan(75 / 2 * M_PI / 180);
 	env->camera = (t_ray){(t_coords){0, 0, 0}, (t_vec3){0, 0, 1}};

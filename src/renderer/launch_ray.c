@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 19:24:45 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/28 19:59:29 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/28 20:50:57 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ uint32_t		launch_ray(const int x, const int y, const t_env *env)
 
 	screen_point = (t_vec3)
 	{
-		(2.0 * (x + 0.5) / (float)env->disp.res.x - 1.0)
+		(2.0 * (x + 0.5) / (float)env->disp.w - 1.0)
 			* env->disp.tfov * env->disp.aspect_ratio,
-		(1.0 - 2.0 * (y + 0.5) / (float)env->disp.res.y) * env->disp.tfov,
+		(1.0 - 2.0 * (y + 0.5) / (float)env->disp.h) * env->disp.tfov,
 		1.0
 	};
 	apply_camera_rot(env, &screen_point);

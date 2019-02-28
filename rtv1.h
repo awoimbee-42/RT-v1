@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/28 20:02:07 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/28 20:51:32 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,8 @@ typedef struct	s_ray
 
 typedef struct	s_disp
 {
-	struct s_int2		res;
+	uint32_t			w;
+	uint32_t			h;
 	float				aspect_ratio;
 	float				tfov;
 }				t_disp;
@@ -238,9 +239,9 @@ typedef struct	s_thread
 {
 	SDL_Thread			*ptr;
 	struct s_env		*env;
-	int					line_start;
-	int					line_end;
-	unsigned int		*px_start;
+	uint32_t			line_start;
+	uint32_t			line_end;
+	uint32_t			*px_start;
 }				t_thread;
 
 typedef struct	s_env

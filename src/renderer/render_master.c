@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/28 20:12:35 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/28 20:54:28 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 static uint32_t	*linerndr(t_env *env, int px_skip, uint32_t *img, int v)
 {
-	int32_t		u;
+	uint32_t		u;
 
 	if (px_skip)
 	{
 		u = 0;
-		while (u < env->disp.res.x)
+		while (u < env->disp.w)
 		{
 			if (!(*img & PX_RENDERED))
 			{
@@ -29,14 +29,14 @@ static uint32_t	*linerndr(t_env *env, int px_skip, uint32_t *img, int v)
 			img += px_skip;
 			u += px_skip;
 		}
-		img -= u - env->disp.res.x;
+		img -= u - env->disp.w;
 	}
 	return (img);
 }
 
 uint32_t		*linecpy(int scrn_w, int px_skip, uint32_t *img)
 {
-	int			tmp;
+	uint32_t		tmp;
 
 	while (--px_skip > 0)
 	{
@@ -54,15 +54,15 @@ static int		render_thread(void *vthread)
 {
 	t_thread		*thread;
 	uint32_t		*px;
-	int				v;
+	uint32_t		v;
 
 	thread = (t_thread*)vthread;
 	v = thread->line_start;
-	px = &thread->env->sdl.img[v * thread->env->disp.res.x];
+	px = thread->px_start;
 	while (v < thread->line_end && thread->env->px_skip)
 	{
 		px = linerndr(thread->env, thread->env->px_skip, px, v);
-		px = linecpy(thread->env->disp.res.x, thread->env->px_skip, px);
+		px = linecpy(thread->env->disp.w, thread->env->px_skip, px);
 		v += thread->env->px_skip;
 	}
 	return (0);
@@ -76,19 +76,19 @@ int				render(t_env *env)
 	while (env->px_skip > 0)
 	{
 		i = -1;
-		while (++i < THREAD_NB)
+		while (++i != THREAD_NB)
 			env->threads[i].ptr = SDL_CreateThread(&render_thread, "",
-													&env->threads[i]);
+				&env->threads[i]);
 		i = -1;
-		while (++i < THREAD_NB)
+		while (++i != THREAD_NB)
 			SDL_WaitThread(env->threads[i].ptr, NULL);
 		SDL_UpdateTexture(env->sdl.texture, NULL, env->sdl.img,
-			env->disp.res.x * sizeof(int));
+			env->disp.w * sizeof(int));
 		SDL_RenderCopy(env->sdl.renderer, env->sdl.texture, NULL, NULL);
 		SDL_RenderPresent(env->sdl.renderer);
 		env->px_skip -= 2;
 	}
 	env->px_skip = NB_PX_SKIP;
-	// ft_bzero(env->sdl.img, env->disp.res.y * env->disp.res.x * sizeof(uint32_t)); // nothing should not work without bzero !!
+	ft_bzero(env->sdl.img, env->disp.h * env->disp.w * sizeof(int32_t));
 	return (0);
 }
