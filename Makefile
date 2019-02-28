@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/02/27 20:57:49 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/02/28 19:43:38 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,21 +14,23 @@ NAME	=	rtv1
 
 CC = gcc
 
-CFLAGS	=	-Wall -Wextra -Ofast -march=native #-Werror
+CFLAGS	=	-Wall -Wextra -g3 #-Ofast -march=native #-Werror
 
 SRC_NAME =	main.c							\
 			init_argv.c						\
 			loop.c							\
-			render.c						\
 			t_obj/dist.c					\
 			t_obj/norm.c					\
-			camera_ope.c					\
-			light_ope.c						\
+			\
+			renderer/calc_light.c				\
+			renderer/render_master.c			\
+			renderer/launch_ray.c				\
 			\
 			operators/flt3_op0.c				\
 			operators/flt3_op1.c				\
 			operators/flt3_op2.c				\
-			operators/special_op.c				\
+			operators/light.c					\
+			operators/camera.c					\
 			\
 			parser/env_disp_cam.c				\
 			parser/lights.c						\
@@ -38,7 +40,7 @@ SRC_NAME =	main.c							\
 			parser/support_funs.c
 
 
-SRC_FOLDERS = operators t_obj parser
+SRC_FOLDERS = operators t_obj parser renderer
 ################################################################################
 
 OBJ_NAME = $(SRC_NAME:.c=.o)

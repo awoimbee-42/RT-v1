@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/21 00:40:33 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/28 02:03:20 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/28 19:41:26 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,8 @@ void		check_keys(t_env *env)
 	env->keys_pressed & BT_DOWN && !(env->px_skip = 0) ? env->camera.dir.x -= 0.1 : 0;
 	env->keys_pressed & BT_Q && !(env->px_skip = 0) ? env->camera.org.y -= 0.25 : 0;
 	env->keys_pressed & BT_E && !(env->px_skip = 0) ? env->camera.org.y += 0.25 : 0;
-	if (env->px_skip == MX_SKP)
+	if (!env->px_skip)
 	{
-		printf("wait\n");
 		SDL_WaitThread(env->rndr, NULL);
 		env->rndr = SDL_CreateThread((int (*)(void *))&render, "", env);
 	}
@@ -54,7 +53,7 @@ void		check_controller(t_env *env, SDL_GameController *cntrlr)
 	&& !(env->px_skip = 0) ? env->camera.org.y -= 0.25 : 0;
 	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_TRIGGERRIGHT) > 20000
 	&& !(env->px_skip = 0) ? env->camera.org.y += 0.25 : 0;
-	if (env->px_skip == MX_SKP)
+	if (!env->px_skip)
 	{
 		SDL_WaitThread(env->rndr, NULL);
 		env->rndr = SDL_CreateThread((int (*)(void *))&render, "", env);

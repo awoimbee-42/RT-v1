@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/28 01:59:10 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/28 19:41:00 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,14 @@
 # include "SDL2/SDL_thread.h"
 # include "SDL2/SDL_gamecontroller.h"
 
-# define MX_SKP		0
-# define NB_PX_SKIP	5
+# define PX_RENDERED	0x1000000U
+
+/*
+**	NB_PX_SKIP: the size of the `big pixels` when whe render
+**		MUST NOT BE AN EVEN NUMBER
+*/
+
+# define NB_PX_SKIP	11
 # define THREAD_NB	20
 
 # define SDL_ERR	1
@@ -261,6 +267,7 @@ typedef struct	s_env
 */
 
 int				render(t_env *env);
+uint32_t		launch_ray(const int x, const int y, const t_env *env);
 
 /*
 **	main.c
@@ -322,7 +329,7 @@ void			tone_map(t_fcolor *px);
 t_vec3			get_reflection(t_vec3 d, t_vec3 n);
 
 /*
-**	light_ope.c
+**	operators/light.c
 */
 t_id_dist		nearest_obj(const t_env *env, const t_ray *ray);
 float			get_specular(const t_vec3 *dir, const t_vec3 *light_dir,
@@ -331,7 +338,7 @@ t_fcolor		fast_diffuse(const t_env *env, t_ray *hit, t_obj *obj,
 	t_vec3 *norm);
 
 /*
-**	camera_ope.c
+**	operators/camera.c
 */
 void			apply_camera_rot(const t_env *env, t_vec3 *s);
 void			move_camera(t_env *env, int dir);

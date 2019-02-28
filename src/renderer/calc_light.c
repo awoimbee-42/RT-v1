@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   light_ope.c                                        :+:      :+:    :+:   */
+/*   calc_light.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 19:09:32 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/02/27 20:35:13 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/28 19:43:28 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ t_fcolor			fast_diffuse(const t_env *env, t_ray *hit,
 			ray.org = env->light_arr[i].intensity;
 			flt3_addf(flt3_add(&light, flt3_multf(
 						light_drop(&ray.org, light_dist),
-						fmaxf(flt3_dot(norm, &ray.dir) * obj->diffuse, 0.))),
+						fmaxf(flt3_dot(norm, &ray.dir), 0.2) * obj->diffuse)),
 				get_specular(&hit->dir, &ray.dir, obj->specular,
 					flt3_mod(&env->light_arr[i].intensity)));
 		}
