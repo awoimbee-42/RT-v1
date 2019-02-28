@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:36:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/06 21:26:42 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/28 01:40:41 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ int		main(int argc, char **argv)
 		error(MALLOC_ERR);
 	parse_scene(env, argv[1]);
 	init(env);
-	render(env);
 	loop(env, env->controller);
-	return (0);
 }
 
 void	error(int err_nb)
@@ -40,6 +38,8 @@ void	error(int err_nb)
 
 void	exit_cleanly(t_env *env)
 {
+	env->px_skip = MX_SKP;
+	SDL_WaitThread(env->rndr, NULL);
 	env->controller ? SDL_GameControllerClose(env->controller) : (void)0;
 	SDL_DestroyTexture(env->sdl.texture);
 	SDL_DestroyRenderer(env->sdl.renderer);

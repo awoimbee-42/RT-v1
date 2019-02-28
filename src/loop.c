@@ -6,64 +6,58 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/21 00:40:33 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/27 21:24:53 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/28 02:03:20 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-void		check_keys(t_env *env, SDL_Thread **rndr)
+void		check_keys(t_env *env)
 {
-	int_least8_t	redrw;
-
-	redrw = 0;
-	env->keys_pressed & BT_W && (env->px_skip = MX_SKP) ? move_camera(env, 0) : 0;
-	env->keys_pressed & BT_A && (env->px_skip = MX_SKP) ? move_camera(env, 2) : 0;
-	env->keys_pressed & BT_S && (env->px_skip = MX_SKP) ? move_camera(env, 1) : 0;
-	env->keys_pressed & BT_D && (env->px_skip = MX_SKP) ? move_camera(env, 3) : 0;
-	env->keys_pressed & BT_RIGHT && (env->px_skip = MX_SKP) ? env->camera.dir.y -= 0.1 : 0;
-	env->keys_pressed & BT_LEFT && (env->px_skip = MX_SKP) ? env->camera.dir.y += 0.1 : 0;
-	env->keys_pressed & BT_UP && (env->px_skip = MX_SKP) ? env->camera.dir.x += 0.1 : 0;
-	env->keys_pressed & BT_DOWN && (env->px_skip = MX_SKP) ? env->camera.dir.x -= 0.1 : 0;
-	env->keys_pressed & BT_Q && (env->px_skip = MX_SKP) ? env->camera.org.y -= 0.25 : 0;
-	env->keys_pressed & BT_E && (env->px_skip = MX_SKP) ? env->camera.org.y += 0.25 : 0;
+	env->keys_pressed & BT_W && !(env->px_skip = 0) ? move_camera(env, 0) : 0;
+	env->keys_pressed & BT_A && !(env->px_skip = 0) ? move_camera(env, 2) : 0;
+	env->keys_pressed & BT_S && !(env->px_skip = 0) ? move_camera(env, 1) : 0;
+	env->keys_pressed & BT_D && !(env->px_skip = 0) ? move_camera(env, 3) : 0;
+	env->keys_pressed & BT_RIGHT && !(env->px_skip = 0) ? env->camera.dir.y -= 0.1 : 0;
+	env->keys_pressed & BT_LEFT && !(env->px_skip = 0) ? env->camera.dir.y += 0.1 : 0;
+	env->keys_pressed & BT_UP && !(env->px_skip = 0) ? env->camera.dir.x += 0.1 : 0;
+	env->keys_pressed & BT_DOWN && !(env->px_skip = 0) ? env->camera.dir.x -= 0.1 : 0;
+	env->keys_pressed & BT_Q && !(env->px_skip = 0) ? env->camera.org.y -= 0.25 : 0;
+	env->keys_pressed & BT_E && !(env->px_skip = 0) ? env->camera.org.y += 0.25 : 0;
 	if (env->px_skip == MX_SKP)
 	{
-		SDL_WaitThread(*rndr, NULL);
-		*rndr = SDL_CreateThread((int (*)(void *))&render, "", env);
+		printf("wait\n");
+		SDL_WaitThread(env->rndr, NULL);
+		env->rndr = SDL_CreateThread((int (*)(void *))&render, "", env);
 	}
 }
 
-void		check_controller(t_env *env, SDL_GameController *cntrlr,
-	SDL_Thread **rndr)
+void		check_controller(t_env *env, SDL_GameController *cntrlr)
 {
-	int_least8_t	redrw;
-
-	redrw = 0;
 	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_LEFTY) < -20000
-	&& (env->px_skip = MX_SKP) ? move_camera(env, 0) : 0;
+	&& !(env->px_skip = 0) ? move_camera(env, 0) : 0;
 	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_LEFTY) > 20000
-	&& (env->px_skip = MX_SKP) ? move_camera(env, 1) : 0;
+	&& !(env->px_skip = 0) ? move_camera(env, 1) : 0;
 	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_LEFTX) < -20000
-	&& (env->px_skip = MX_SKP) ? move_camera(env, 2) : 0;
+	&& !(env->px_skip = 0) ? move_camera(env, 2) : 0;
 	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_LEFTX) > 20000
-	&& (env->px_skip = MX_SKP) ? move_camera(env, 3) : 0;
+	&& !(env->px_skip = 0) ? move_camera(env, 3) : 0;
 	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_RIGHTY) < -20000
-	&& (env->px_skip = MX_SKP) ? env->camera.dir.x += 0.1 : 0;
+	&& !(env->px_skip = 0) ? env->camera.dir.x += 0.1 : 0;
 	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_RIGHTY) > 20000
-	&& (env->px_skip = MX_SKP) ? env->camera.dir.x -= 0.1 : 0;
+	&& !(env->px_skip = 0) ? env->camera.dir.x -= 0.1 : 0;
 	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_RIGHTX) < -20000
-	&& (env->px_skip = MX_SKP) ? env->camera.dir.y += 0.1 : 0;
+	&& !(env->px_skip = 0) ? env->camera.dir.y += 0.1 : 0;
 	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_RIGHTX) > 20000
-	&& (env->px_skip = MX_SKP) ? env->camera.dir.y -= 0.1 : 0;
+	&& !(env->px_skip = 0) ? env->camera.dir.y -= 0.1 : 0;
 	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_TRIGGERLEFT) > 20000
-	&& (env->px_skip = MX_SKP) ? env->camera.org.y -= 0.25 : 0;
+	&& !(env->px_skip = 0) ? env->camera.org.y -= 0.25 : 0;
 	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_TRIGGERRIGHT) > 20000
-	&& (env->px_skip = MX_SKP) ? env->camera.org.y += 0.25 : 0;
+	&& !(env->px_skip = 0) ? env->camera.org.y += 0.25 : 0;
 	if (env->px_skip == MX_SKP)
 	{
-		SDL_WaitThread(*rndr, NULL);
-		*rndr = SDL_CreateThread((int (*)(void *))&render, "", env);
+		SDL_WaitThread(env->rndr, NULL);
+		env->rndr = SDL_CreateThread((int (*)(void *))&render, "", env);
 	}
 }
 
@@ -75,9 +69,8 @@ void		check_controller(t_env *env, SDL_GameController *cntrlr,
 void		loop(t_env *env, SDL_GameController *controller)
 {
 	SDL_Event	event;
-	SDL_Thread	*rndr;
 
-	rndr = SDL_CreateThread((int (*)(void *))&render, "", env);
+	env->rndr = SDL_CreateThread((int (*)(void *))&render, "", env);
 	while (1)
 	{
 		if (SDL_PollEvent(&event))
@@ -90,9 +83,9 @@ void		loop(t_env *env, SDL_GameController *controller)
 				key_released(event.key.keysym.sym, env);
 			continue;
 		}
-		check_keys(env, &rndr);
-		check_controller(env, controller, &rndr);
-		usleep(16000);
+		check_keys(env);
+		check_controller(env, controller);
+		usleep(33000);
 	}
 }
 

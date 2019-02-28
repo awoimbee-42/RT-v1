@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/27 21:19:53 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/02/28 02:00:47 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,16 @@ static int		render_line(void *vthread)
 	thread = (t_thread*)vthread;
 	v = thread->line_start;
 	tmp_img = &thread->env->sdl.img[v * thread->env->disp.res.x];
-	while (v < thread->line_end)
+	while (v < thread->line_end && thread->env->px_skip)
 	{
 		u = 0;
-		while (u < thread->env->disp.res.x)
+		while (u < thread->env->disp.res.x && thread->env->px_skip)
 		{
-			if (!*tmp_img)
-				*tmp_img = launch_ray(u, v, thread->env);
+			if (!(*tmp_img & 0x1U))
+			{
+				ft_mem32set(tmp_img, launch_ray(u, v, thread->env) & ~0x1U, thread->env->px_skip);
+				*tmp_img |= 0x1U;
+			}
 			tmp_img += thread->env->px_skip;
 			u += thread->env->px_skip;
 		}
@@ -93,7 +96,7 @@ int				render(t_env *env)
 
 
 	env->px_skip = NB_PX_SKIP;
-	while (env->px_skip > 0 && env->px_skip < MX_SKP - 2)
+	while (env->px_skip > 0)
 	{
 		i = -1;
 		while (++i < THREAD_NB)
@@ -102,10 +105,8 @@ int				render(t_env *env)
 		i = -1;
 		while (++i < THREAD_NB)
 			SDL_WaitThread(env->threads[i].ptr, NULL);
-		if (env->px_skip == MX_SKP)
-			break ;
 		SDL_UpdateTexture(env->sdl.texture, NULL, env->sdl.img,
-							env->disp.res.x * sizeof(int));
+			env->disp.res.x * sizeof(int));
 		SDL_RenderCopy(env->sdl.renderer, env->sdl.texture, NULL, NULL);
 		SDL_RenderPresent(env->sdl.renderer);
 		env->px_skip -= 2;
