@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/03/01 15:05:44 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/03/01 19:14:56 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,6 +209,13 @@ union			u_object
 		t_vec3			dir;
 		float			angle;
 	}			cone;
+	struct		s_triangle
+	{
+		t_vec3			vert1;
+		t_vec3			norm;
+		t_vec3			vert2;
+		t_vec3			vert3;
+	}			triangle;
 };
 
 typedef struct	s_obj

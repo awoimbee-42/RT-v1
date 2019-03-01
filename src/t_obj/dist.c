@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 22:02:07 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/03/01 18:18:06 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/03/01 19:12:17 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,4 +123,32 @@ float		dist_cone(const union u_object *obj, const t_ray *ray)
 		return (diff.y);
 	diff.x = (-par.y - sqrtf(dir_dot)) / (2 * par.x);
 	return (diff.x);
+}
+
+
+float		dist_triangle(const union u_object *obj, const t_ray *ray)
+{
+        RayTracer.HitInfo info = new RayTracer.HitInfo();
+
+        Vector3 d = ray.direction;
+        float denominator = flt3_dot(ray->dir, obj->triangle.norm);
+
+        if (Mathf.Abs(denominator) < Mathf.Epsilon) return info;      // direction and plane parallel, no intersection
+
+        float tHit = Vector3.Dot(v0 - ray.origin, normal) / denominator;
+        if (tHit < 0) return info;    // plane behind ray's origin
+
+        // we have a hit point with the triangle's plane
+        Vector3 w = ray.GetPoint(tHit) - v0;
+
+        float s = Vector3.Dot(w, vPerp) / denominatorST;
+        if (s < 0 || s > 1) return info;    // won't be inside triangle
+
+        float t = Vector3.Dot(w, uPerp) / -denominatorST;
+        if (t >= 0 && (s + t) <= 1)
+        {
+            info.time = tHit;
+            info.hitPoint = ray.GetPoint(tHit);
+            info.normal = normal;
+        }
 }
