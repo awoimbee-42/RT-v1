@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 22:02:07 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/03/01 03:24:38 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/03/01 17:38:23 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,19 @@ float		dist_sphere(const union u_object *restrict obj, const t_ray *restrict ray
 	float		a;
 	float		b;
 	float		c;
-	float		sdelta;
+	float		delta;
 
 	oc = ray->org;
 	flt3_sub(&oc, &obj->sphere.orig);
 	a = flt3_dot(&ray->dir, &ray->dir);
-	b = -(2.f * flt3_dot(&ray->dir, &oc));
+	b = 2.0 * flt3_dot(&ray->dir, &oc);
 	c = flt3_dot(&oc, &oc) - (obj->sphere.radius * obj->sphere.radius);
-	sdelta = sqrtf(b * b - 4 * a * c);
-	if (sdelta != sdelta)
+	delta = b * b - 4 * a * c;
+	if (delta < 0.0001)
 		return (-1);
-	if ((c = (b - sdelta) / (a * 2)) > 0.1)
+	if ((c = (-b - sqrtf(delta)) / (2 * a)) > 0.01)
 		return (c);
-	return ((b + sdelta) / (a * 2));
+	return ((-b + sqrtf(delta)) / (2 * a));
 }
 
 float		dist_plane(const union u_object *restrict obj, const t_ray *restrict ray)
