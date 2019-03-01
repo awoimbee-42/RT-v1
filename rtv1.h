@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/03/01 03:30:17 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/03/01 15:05:44 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,8 +278,9 @@ void			parse_scene(t_env *env, const char *filename);
 **	init_argv.c
 */
 void			usage(void);
-void			read_argv(t_env *env, char **argv, int argc);
+// void			read_argv(t_env *env, char **argv, int argc);
 void			init(t_env *env);
+void			resize(t_env *env);
 
 /*
 **	operators/flt3_opX.c

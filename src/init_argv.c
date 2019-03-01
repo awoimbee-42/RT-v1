@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:12:01 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/03/01 02:54:16 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/03/01 15:37:38 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,35 @@ void	init_sdl(t_env *env)
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER) < 0)
 		error(SDL_ERR);
 	if (!(sdl->win = SDL_CreateWindow("RT-V1", 0, 0,
-		env->disp.w, env->disp.h, SDL_WINDOW_SHOWN)))
+		env->disp.w, env->disp.h, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE)))
 		error(SDL_ERR);
+	SDL_SetWindowMinimumSize(env->sdl.win, 100, 100); // doesnt work ???
 	sdl->renderer = SDL_CreateRenderer(sdl->win, -1, SDL_RENDERER_PRESENTVSYNC);
 	sdl->texture = SDL_CreateTexture(sdl->renderer, SDL_PIXELFORMAT_ARGB8888,
 			SDL_TEXTUREACCESS_STREAMING, env->disp.w, env->disp.h);
 	if (!(sdl->img =
-			malloc(env->disp.w * (env->disp.h + 1) * sizeof(uint32_t))))
+			malloc(env->disp.w * (env->disp.h + NB_PX_SKIP) * sizeof(uint32_t)))) //because overflow in render_master.c...
 		error(MALLOC_ERR);
+}
+
+void	resize(t_env *env)
+{
+	t_sdl		*sdl;
+
+	sdl = &env->sdl;
+	env->px_skip = 0;
+	SDL_WaitThread(env->rndr, NULL);
+	SDL_GetRendererOutputSize(env->sdl.renderer, (int*)&env->disp.w, (int*)&env->disp.h);
+	env->disp.aspect_ratio = (float)env->disp.w / (float)env->disp.h;
+	SDL_DestroyTexture(env->sdl.texture);
+	free(env->sdl.img);
+	sdl->texture = SDL_CreateTexture(sdl->renderer, SDL_PIXELFORMAT_ARGB8888,
+			SDL_TEXTUREACCESS_STREAMING, env->disp.w, env->disp.h);
+	if (!(sdl->img =
+			malloc(env->disp.w * (env->disp.h + NB_PX_SKIP) * sizeof(uint32_t))))
+		error(MALLOC_ERR);
+	init_threads(env);
+	env->rndr = SDL_CreateThread((int (*)(void *))&render, "", env);
 }
 
 void	init(t_env *env)

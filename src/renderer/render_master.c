@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/03/01 03:11:04 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/03/01 15:26:25 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,12 @@ static uint32_t	*linerndr(t_env *env, int px_skip, uint32_t *restrict img, int v
 	return (img);
 }
 
-uint32_t		*linecpy(int scrn_w, int px_skip, uint32_t *img)
+static uint32_t	*linecpy(int scrn_w, int px_skip, uint32_t *restrict img)
 {
 	uint32_t		tmp;
 
+	if (scrn_w <= 0)
+		__builtin_unreachable();
 	while (--px_skip > 0)
 	{
 		tmp = scrn_w;
@@ -52,7 +54,7 @@ uint32_t		*linecpy(int scrn_w, int px_skip, uint32_t *img)
 
 /*
 **	Apparently linecpy overflows at the end...
-**	One solution is to malloc one more line at the beguining
+**	One solution is to malloc more lines at the begining
 **	Yes, it's bad.
 **	But it works.
 */
