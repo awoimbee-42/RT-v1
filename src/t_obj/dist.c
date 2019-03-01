@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 22:02:07 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/03/01 17:38:23 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/03/01 18:18:06 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ float		dist_sphere(const union u_object *restrict obj, const t_ray *restrict ray
 	c = flt3_dot(&oc, &oc) - (obj->sphere.radius * obj->sphere.radius);
 	delta = b * b - 4 * a * c;
 	if (delta < 0.0001)
-		return (-1);
+		return (NAN);
 	if ((c = (-b - sqrtf(delta)) / (2 * a)) > 0.01)
 		return (c);
 	return ((-b + sqrtf(delta)) / (2 * a));
@@ -48,7 +48,7 @@ float		dist_plane(const union u_object *restrict obj, const t_ray *restrict ray)
 		if (dist > 0)
 			return (dist);
 	}
-	return (0);
+	return (NAN);
 }
 
 float		dist_disk(const union u_object *obj, const t_ray *ray)
@@ -57,7 +57,7 @@ float		dist_disk(const union u_object *obj, const t_ray *ray)
 	t_vec3	v;
 	float	disk2;
 
-	if ((dist = dist_plane(obj, ray)) != -1)
+	if ((dist = dist_plane(obj, ray)) != NAN)
 	{
 		v = ray->dir;
 		flt3_multf(&v, dist);
@@ -67,7 +67,7 @@ float		dist_disk(const union u_object *obj, const t_ray *ray)
 		if (disk2 <= obj->disk.radius2)
 			return (dist);
 	}
-	return (0);
+	return (NAN);
 }
 
 float		dist_cylinder(const union u_object *obj, const t_ray *ray)
@@ -91,11 +91,11 @@ float		dist_cylinder(const union u_object *obj, const t_ray *ray)
 	par.z = flt3_dot(&x, &x) - d;
 	d = par.y * par.y - 4 * par.x * par.z;
 	if (d < 0)
-		return (-1);
-	diff.x = (-par.y - sqrt(d)) / (2 * par.x);
-	diff.y = (-par.y + sqrt(d)) / (2 * par.x);
+		return (NAN);
+	diff.x = (-par.y - sqrtf(d)) / (2 * par.x);
 	if (diff.x > 0.1)
 		return (diff.x);
+	diff.y = (-par.y + sqrtf(d)) / (2 * par.x);
 	return (diff.y);
 }
 
@@ -117,10 +117,10 @@ float		dist_cone(const union u_object *obj, const t_ray *ray)
 	par.z = org_dot * org_dot - flt3_dot(&diff, &diff) * cos2;
 	dir_dot = par.y * par.y - 4 * par.x * par.z;
 	if (dir_dot < 0)
-		return (-1);
-	diff.x = (-par.y - sqrtf(dir_dot)) / (2 * par.x);
+		return (NAN);
 	diff.y = (-par.y + sqrtf(dir_dot)) / (2 * par.x);
-	if (diff.y > 0.1)
+	if (diff.y > 0.001)
 		return (diff.y);
+	diff.x = (-par.y - sqrtf(dir_dot)) / (2 * par.x);
 	return (diff.x);
 }
