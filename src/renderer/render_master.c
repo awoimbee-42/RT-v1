@@ -6,13 +6,13 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/28 21:21:24 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/03/01 03:11:04 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-static uint32_t	*linerndr(t_env *env, int px_skip, uint32_t *img, int v)
+static uint32_t	*linerndr(t_env *env, int px_skip, uint32_t *restrict img, int v)
 {
 	uint32_t		u;
 
@@ -49,6 +49,13 @@ uint32_t		*linecpy(int scrn_w, int px_skip, uint32_t *img)
 	}
 	return (img);
 }
+
+/*
+**	Apparently linecpy overflows at the end...
+**	One solution is to malloc one more line at the beguining
+**	Yes, it's bad.
+**	But it works.
+*/
 
 static int		render_thread(void *vthread)
 {

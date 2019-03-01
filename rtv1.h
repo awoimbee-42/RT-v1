@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/28 21:30:39 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/03/01 03:30:17 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,10 +152,10 @@ typedef struct	s_disp
 typedef struct	s_sdl
 {
 	unsigned int		*img;
-	SDL_Renderer		*renderer;
-	SDL_Texture			*texture;
-	SDL_Window			*win;
-	SDL_Surface			*surface;
+	SDL_Renderer		*restrict renderer;
+	SDL_Texture			*restrict texture;
+	SDL_Window			*restrict win;
+	SDL_Surface			*restrict surface;
 }				t_sdl;
 
 /*
@@ -229,11 +229,11 @@ typedef struct	s_obj
 
 typedef struct	s_thread
 {
-	SDL_Thread			*ptr;
+	SDL_Thread			*restrict ptr;
 	struct s_env		*env;
 	uint32_t			line_start;
 	uint32_t			line_end;
-	uint32_t			*px_start;
+	uint32_t			*restrict px_start;
 }				t_thread;
 
 typedef struct	s_env
@@ -242,14 +242,14 @@ typedef struct	s_env
 	struct s_disp		disp;
 	struct s_ray		camera;
 	int					objs_nb;
-	struct s_obj		*objs_arr;
+	struct s_obj		*restrict objs_arr;
 	int					light_nb;
-	struct s_light		*light_arr;
+	struct s_light		*restrict light_arr;
 	t_fcolor			bckgrnd_col;
 	uint32_t			keys;
-	SDL_GameController	*controller;
+	SDL_GameController	*restrict controller;
 	int					px_skip;
-	SDL_Thread			*rndr;
+	SDL_Thread			*restrict rndr;
 	uint32_t			threads_nb;
 	t_thread			threads[];
 }				t_env;

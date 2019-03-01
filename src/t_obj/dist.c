@@ -6,13 +6,13 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 22:02:07 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/27 18:59:30 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/03/01 03:24:38 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-float		dist_sphere(const union u_object *obj, const t_ray *ray)
+float		dist_sphere(const union u_object *restrict obj, const t_ray *restrict ray)
 {
 	t_vec3		oc;
 	float		a;
@@ -33,7 +33,7 @@ float		dist_sphere(const union u_object *obj, const t_ray *ray)
 	return ((b + sdelta) / (a * 2));
 }
 
-float		dist_plane(const union u_object *obj, const t_ray *ray)
+float		dist_plane(const union u_object *restrict obj, const t_ray *restrict ray)
 {
 	float	denom;
 	float	dist;

@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/02/28 21:31:31 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/03/01 03:20:39 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME	=	rtv1
 
 CC = gcc
 
-CFLAGS	=	-Wall -Wextra -g3#-Ofast -march=native #-Werror
+CFLAGS	=	-Wall -Wextra -Ofast -march=native -ftree-vectorize -ftree-vectorizer-verbose=2 -fopt-info-vec-optimized -fstrict-aliasing#-Werror
 
 SRC_NAME =	main.c							\
 			init_argv.c						\

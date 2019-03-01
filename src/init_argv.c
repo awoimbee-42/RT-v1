@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:12:01 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/28 21:40:49 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/03/01 02:54:16 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ void	init_sdl(t_env *env)
 	sdl->renderer = SDL_CreateRenderer(sdl->win, -1, SDL_RENDERER_PRESENTVSYNC);
 	sdl->texture = SDL_CreateTexture(sdl->renderer, SDL_PIXELFORMAT_ARGB8888,
 			SDL_TEXTUREACCESS_STREAMING, env->disp.w, env->disp.h);
-	if (!(sdl->img = malloc(env->disp.w * env->disp.h * sizeof(uint32_t))))
+	if (!(sdl->img =
+			malloc(env->disp.w * (env->disp.h + 1) * sizeof(uint32_t))))
 		error(MALLOC_ERR);
 }
 
