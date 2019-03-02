@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/03/01 03:20:39 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/03/02 02:14:14 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,7 +53,7 @@ OBJ = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
 
 LDLIBS = -lft -lm -ldl -lSDL2 -lpthread
 
-LDFLAGS = -Llibft -Lsdl2/lib
+LDFLAGS = -Llibft -Lsdl2/lib -Wl,-rpath=`pwd`/sdl2/lib
 
 CFLAGS += -I./ -isystem./sdl2/include/ -I./libft
 

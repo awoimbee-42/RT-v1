@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/21 00:40:33 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/03/01 15:36:44 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/03/02 02:16:36 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void		loop(t_env *env, SDL_GameController *controller)
 				key_pressed(event.key.keysym.sym, env);
 			else if (event.type == SDL_KEYUP)
 				key_released(event.key.keysym.sym, env);
-			else if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_RESIZED)
+			else if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_RESIZED && event.window.data1 > 20 && event.window.data2 > 20)
 				resize(env);
 			continue;
 		}

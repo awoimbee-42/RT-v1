@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/03/01 15:26:25 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/03/02 02:16:43 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static uint32_t	*linecpy(int scrn_w, int px_skip, uint32_t *restrict img)
 {
 	uint32_t		tmp;
 
-	if (scrn_w <= 0)
+	if (scrn_w <= 20)
 		__builtin_unreachable();
 	while (--px_skip > 0)
 	{
