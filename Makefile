@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/03/02 02:20:59 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/03/02 03:56:05 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,8 @@ SRC_NAME =	main.c							\
 			parser/obj_array.c					\
 			parser/obj_individual.c				\
 			parser/scene.c						\
-			parser/support_funs.c
+			parser/support_funs.c				\
+			parser/load_obj.c
 
 
 SRC_FOLDERS = operators t_obj parser renderer
