@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 12:55:57 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/31 00:04:39 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/03/02 02:41:38 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,14 @@ void		parse_lights(int fd, t_env *env, char *line);
 
 int			tobj_parse(t_obj *obj, char *line, int *done,
 					unsigned int line_nb);
-t_obj		parse_sphere(int fd, unsigned int *line_nb);
-t_obj		parse_plane(int fd, unsigned int *line_nb);
-t_obj		parse_disk(int fd, unsigned int *line_nb);
-t_obj		parse_cylinder(int fd, unsigned int *line_nb);
-t_obj		parse_cone(int fd, unsigned int *line_nb);
+t_obj		parse_sphere(int fd, uint32_t *line_nb);
+t_obj		parse_plane(int fd, uint32_t *line_nb);
+t_obj		parse_disk(int fd, uint32_t *line_nb);
+t_obj		parse_cylinder(int fd, uint32_t *line_nb);
+t_obj		parse_cone(int fd, uint32_t *line_nb);
+t_obj		parse_triangle(int fd, uint32_t *line_nb);
 
-void		parse_open_bracket(int fd, unsigned int *line_nb);
+void		parse_open_bracket(int fd, uint32_t *line_nb);
 float		parse_f(char *str, unsigned int line_nb, float min);
 t_flt3		parse_f3(char *str, unsigned int line_nb, float min);
 

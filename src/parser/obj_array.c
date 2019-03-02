@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:28:36 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/28 20:02:37 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/03/02 02:40:42 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ void		parse_objects(int fd, t_env *env, char *line, int obj_nb)
 			env->objs_arr[obj_nb] = parse_cylinder(fd, &env->keys);
 		else if (!ft_strcmp(line, "\tCone") && --obj_nb >= 0)
 			env->objs_arr[obj_nb] = parse_cone(fd, &env->keys);
+		else if (!ft_strcmp(line, "\tTriangle") && --obj_nb >= 0)
+			env->objs_arr[obj_nb] = parse_triangle(fd, &env->keys);
 		else if ((!ft_strcmp(line, "}") && (done = 1)) || 1)
 			break ;
 		ft_memdel((void*)&line);

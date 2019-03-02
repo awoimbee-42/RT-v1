@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 22:02:07 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/03/01 19:12:17 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/03/02 03:30:27 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,30 +125,47 @@ float		dist_cone(const union u_object *obj, const t_ray *ray)
 	return (diff.x);
 }
 
-
-float		dist_triangle(const union u_object *obj, const t_ray *ray)
+float		dist_triangle(const union u_object *obj, const t_ray *ray) //straight outta wikipedia
 {
-        RayTracer.HitInfo info = new RayTracer.HitInfo();
+	t_vec3	edge1, edge2, h, s, q;
+	float a, f, u, v;
 
-        Vector3 d = ray.direction;
-        float denominator = flt3_dot(ray->dir, obj->triangle.norm);
-
-        if (Mathf.Abs(denominator) < Mathf.Epsilon) return info;      // direction and plane parallel, no intersection
-
-        float tHit = Vector3.Dot(v0 - ray.origin, normal) / denominator;
-        if (tHit < 0) return info;    // plane behind ray's origin
-
-        // we have a hit point with the triangle's plane
-        Vector3 w = ray.GetPoint(tHit) - v0;
-
-        float s = Vector3.Dot(w, vPerp) / denominatorST;
-        if (s < 0 || s > 1) return info;    // won't be inside triangle
-
-        float t = Vector3.Dot(w, uPerp) / -denominatorST;
-        if (t >= 0 && (s + t) <= 1)
-        {
-            info.time = tHit;
-            info.hitPoint = ray.GetPoint(tHit);
-            info.normal = normal;
-        }
+	edge1 = obj->triangle.vert1;
+	flt3_sub(&edge1, &obj->triangle.vert0);
+	edge2 = obj->triangle.vert2;
+	flt3_sub(&edge2, &obj->triangle.vert0);
+	h = ray->dir;
+	flt3_cross(&h, &edge2);
+	a = flt3_dot(&edge1, &h);
+	if (-1e-5 < a && a < 1e-5) //ray-triangle are parallel
+		return (NAN);
+	f = 1.f / a;
+	s = ray->org;
+	flt3_sub(&s, &obj->triangle.vert0);
+	u = f * flt3_dot(&s, &h);
+	if (u < 0.f || u > 1.f)
+		return (NAN);
+	q = s;
+	flt3_cross(&q, &edge1);
+	v = f * flt3_dot(&ray->dir, &q);
+	if (v < 0.0 || u + v > 1.0)
+        return (NAN);
+	f = f * flt3_dot(&edge2, &q);
+	return (f);
 }
+
+
+//     q = s.crossProduct(edge1);
+//     v = f * rayVector.dotProduct(q);
+//     if (v < 0.0 || u + v > 1.0)
+//         return false;
+//     // At this stage we can compute t to find out where the intersection point is on the line.
+//     float t = f * edge2.dotProduct(q);
+//     if (t > EPSILON) // ray intersection
+//     {
+//         outIntersectionPoint = rayOrigin + rayVector * t;
+//         return true;
+//     }
+//     else // This means that there is a line intersection but not a ray intersection.
+//         return false;
+// }
