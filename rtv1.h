@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/03/01 15:05:44 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/03/02 02:50:30 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,6 +209,12 @@ union			u_object
 		t_vec3			dir;
 		float			angle;
 	}			cone;
+	struct		s_triangle
+	{
+		t_vec3			vert0;
+		t_vec3			vert1;
+		t_vec3			vert2;
+	}			triangle;
 };
 
 typedef struct	s_obj
@@ -306,6 +312,7 @@ float			dist_plane(const union u_object *obj, const t_ray *ray);
 float			dist_disk(const union u_object *obj, const t_ray *ray);
 float			dist_cylinder(const union u_object *obj, const t_ray *ray);
 float			dist_cone(const union u_object *obj, const t_ray *ray);
+float			dist_triangle(const union u_object *obj, const t_ray *ray);
 
 /*
 **	t_obj/norm.c
@@ -314,6 +321,7 @@ t_vec3			norm_sphere(const union u_object *obj, const t_vec3 *hit);
 t_vec3			norm_plane(const union u_object *obj, const t_vec3 *hit);
 t_vec3			norm_cylinder(const union u_object *obj, const t_vec3 *hit);
 t_vec3			norm_cone(const union u_object *obj, const t_vec3 *hit);
+t_vec3			norm_triangle(const union u_object *obj, const t_vec3 *hit);
 
 /*
 **	operators/special_op.c

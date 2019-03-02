@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 18:33:26 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/31 01:38:20 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/03/02 02:55:32 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,4 +153,33 @@ t_obj		parse_disk(int fd, unsigned int *line_nb)
 	if (done != 0xFFFFFFF)
 		msg_exit("Bad format in disk, around line %d\n", line_nb);
 	return (disk);
+}
+
+t_obj		parse_triangle(int fd, unsigned int *line_nb)
+{
+	char	*line;
+	int		done;
+	t_obj	tri;
+
+	done = 0;
+	tri.distfun = &dist_triangle;
+	tri.normfun = &norm_triangle;
+	while (get_next_line(fd, &line) > 0 && ++*line_nb)
+	{
+		if (!ft_strncmp(line, "\t\t.vertex0", 10) && (done |= 0xF000))
+			tri.this.triangle.vert0 = parse_f3(line + 10, *line_nb, -1e36f);
+		else if (!ft_strncmp(line, "\t\t.vertex1", 10) && (done |= 0xF0000))
+			tri.this.triangle.vert1 = parse_f3(line + 10, *line_nb, -1e36f);
+		else if (!ft_strncmp(line, "\t\t.vertex2", 10) && (done |= 0xF00000))
+			tri.this.triangle.vert2 = parse_f3(line + 10, *line_nb, -1e36f);
+		else if (!tobj_parse(&tri, line, &done, *line_nb) && !is_comment(line))
+			break ;
+		if (ft_strstr(line, ";") && (done |= 0xF000000))
+			break ;
+		ft_memdel((void**)&line);
+	}
+	ft_memdel((void**)&line);
+	if (done != 0xFFFFFFF)
+		msg_exit("Bad format in triangle, around line %d\n", line_nb);
+	return (tri);
 }
