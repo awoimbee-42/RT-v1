@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 19:09:32 by cpoirier          #+#    #+#             */
-/*   Updated: 2019/02/28 19:57:39 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/03/01 17:35:18 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_id_dist			nearest_obj(const t_env *env, const t_ray *ray)
 	{
 		tmp.dist = env->objs_arr[tmp.id]
 			.distfun(&env->objs_arr[tmp.id].this, ray);
-		if (tmp.dist < nearest.dist && tmp.dist > 0.001)
+		if (tmp.dist < nearest.dist && tmp.dist > 0.00001)
 		{
 			nearest.id = tmp.id;
 			nearest.dist = tmp.dist;

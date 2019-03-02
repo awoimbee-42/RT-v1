@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 19:24:45 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/02/28 20:50:57 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/03/01 17:35:07 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,12 @@ static t_fcolor	ray_intsect(const t_env *env, const t_ray *ray, int bounce)
 		return (env->bckgrnd_col);
 	if (!bounce)
 		return (env->objs_arr[obj.id].color);
+	obj.dist = obj.dist - obj.dist * 0.001;
 	hit_reflect.org = ray->dir;
 	flt3_add(flt3_multf(&hit_reflect.org, obj.dist), &ray->org);
 	norm = env->objs_arr[obj.id]
-			.normfun(&env->objs_arr[obj.id].this, &hit_reflect.org);
-	flt3_normalize(&norm);
+		.normfun(&env->objs_arr[obj.id].this, &hit_reflect.org);
+	// flt3_normalize(&norm);
 	hit_reflect.dir = get_reflection(ray->dir, norm);
 	hit_reflect.dir = fast_diffuse(env, &hit_reflect,
 								&env->objs_arr[obj.id], &norm);
