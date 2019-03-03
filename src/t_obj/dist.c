@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 22:02:07 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/03/02 03:30:27 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/03/04 00:41:56 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ float		dist_cylinder(const union u_object *obj, const t_ray *ray)
 	return (diff.y);
 }
 
-float		dist_cone(const union u_object *obj, const t_ray *ray)
+float		dist_cone(const union u_object *obj, const t_ray *ray) // https://stackoverflow.com/a/12826333
 {
 	t_vec3		diff;
 	t_vec3		par;
@@ -119,7 +119,7 @@ float		dist_cone(const union u_object *obj, const t_ray *ray)
 	if (dir_dot < 0)
 		return (NAN);
 	diff.y = (-par.y + sqrtf(dir_dot)) / (2 * par.x);
-	if (diff.y > 0.001)
+	if (diff.y > 0)
 		return (diff.y);
 	diff.x = (-par.y - sqrtf(dir_dot)) / (2 * par.x);
 	return (diff.x);
@@ -153,19 +153,3 @@ float		dist_triangle(const union u_object *obj, const t_ray *ray) //straight out
 	f = f * flt3_dot(&edge2, &q);
 	return (f);
 }
-
-
-//     q = s.crossProduct(edge1);
-//     v = f * rayVector.dotProduct(q);
-//     if (v < 0.0 || u + v > 1.0)
-//         return false;
-//     // At this stage we can compute t to find out where the intersection point is on the line.
-//     float t = f * edge2.dotProduct(q);
-//     if (t > EPSILON) // ray intersection
-//     {
-//         outIntersectionPoint = rayOrigin + rayVector * t;
-//         return true;
-//     }
-//     else // This means that there is a line intersection but not a ray intersection.
-//         return false;
-// }
