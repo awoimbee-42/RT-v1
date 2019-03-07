@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/03/02 02:50:30 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/03/07 01:29:51 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,26 @@ typedef struct	s_light
 **	##########################################
 */
 
+typedef struct	s_objgrp
+{
+
+}				t_objgrp;
+
+typedef struct	s_model
+{
+	int					g_nb;
+	t_objgrp			*groups;
+	t_vec3				*v;		//vertices
+	t_vec3				*vt;	//texture coordinates
+}				t_model;
+
+typedef struct	s_triangle
+{
+	uint32_t		v[3];
+	uint32_t		vt[3];
+}				t_triangle;
+
+
 typedef float(*t_distfun)(const union u_object*, const t_ray*);
 typedef t_vec3(*t_normfun)(const union u_object*, const t_vec3*);
 
@@ -209,12 +229,13 @@ union			u_object
 		t_vec3			dir;
 		float			angle;
 	}			cone;
-	struct		s_triangle
+	struct		s_tri
 	{
 		t_vec3			vert0;
 		t_vec3			vert1;
 		t_vec3			vert2;
 	}			triangle;
+	t_model		model;
 };
 
 typedef struct	s_obj
