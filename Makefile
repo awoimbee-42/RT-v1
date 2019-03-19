@@ -12,8 +12,6 @@
 
 NAME	=	rtv1
 
-CC = gcc
-
 CFLAGS	=	-Wall -Wextra -Ofast -march=native -ftree-vectorize -fstrict-aliasing#-Werror
 
 SRC_NAME =	main.c							\
@@ -40,87 +38,108 @@ SRC_NAME =	main.c							\
 			parser/support_funs.c				\
 			parser/load_obj.c
 
-
 SRC_FOLDERS = operators t_obj parser renderer
+DEPS_FOLDER =	dependencies
+BUILD_FOLDER =	build
+
 ################################################################################
+###############                  CONSTANTS                       ###############
+################################################################################
+CC = gcc
+LDLIBS = -lft -lm -lSDL2 -lpthread
+LDFLAGS = -L./libs/libft -L$(DEPS_FOLDER)/lib #-Wl,-rpath=`pwd`/sdl2/lib
+CFLAGS += -MMD -I./ -isystem$(BUILD_FOLDER)/include/ -I./libs/libft
 
-OBJ_NAME = $(SRC_NAME:.c=.o)
+SDL_OPTIONS =	-q									\
+				--prefix=$(DEPS_PATH)				\
+				--exec-prefix=$(DEPS_PATH)			\
+				--bindir=$(BUILD_PATH)/bin			\
+				--includedir=$(BUILD_PATH)/include	\
+				--datarootdir=$(BUILD_PATH)/share
 
-SRC_PATH =	src
-OBJ_PATH =	obj
+ifeq ($(OS),Linux)
+		NUMPROC := $(shell grep -c ^processor /proc/cpuinfo)
+else ifeq ($(OS),Darwin)
+		NUMPROC := $(shell sysctl hw.ncpu | awk '{print $$2}')
+endif
 
-SRC = $(addprefix $(SRC_PATH)/,$(SRC_NAME))
-OBJ = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
+REPO_PATH = $(patsubst %/,%,$(dir $(realpath $(firstword $(MAKEFILE_LIST)))))
+DEPS_PATH = $(REPO_PATH)/$(DEPS_FOLDER)
+BUILD_PATH = $(REPO_PATH)/$(BUILD_FOLDER)
+SRC_FOLDER =	src
+OBJ_FOLDER = $(BUILD_FOLDER)/obj
+DIRS = $(BUILD_FOLDER) $(DEPS_PATH) $(OBJ_FOLDER) $(addprefix $(OBJ_FOLDER)/,$(SRC_FOLDERS))
+LSDL2 = $(DEPS_PATH)/lib/libSDL2.a
+LFT = libs/libft/libft.a
 
-LDLIBS = -lft -lm -ldl -lSDL2 -lpthread
+SRC = $(addprefix $(SRC_FOLDER)/,$(SRC_NAME))
+OBJ = $(addprefix $(OBJ_FOLDER)/,$(SRC_NAME:.c=.o))
 
-LDFLAGS = -Llibft -Lsdl2/lib -Wl,-rpath=`pwd`/sdl2/lib
+$(info $(OBJ_FOLDER))
 
-CFLAGS += -I./ -isystem./sdl2/include/ -I./libft
-
-SDL_OPTIONS =	-q						\
-				--prefix=$$sdl2path		\
-				--exec-prefix=$$sdl2path
-
+################################################################################
+#################                  RULES                       #################
 ################################################################################
 
 all : $(NAME)
 
-sdl2/lib/libSDL2.a :
+############## LIBS ############
+$(BUILD_FOLDER)/include/SDL2 : $(LSDL2)
+$(LSDL2) : | $(BUILD_FOLDER)
 	@printf "$(YLW)Making SDL2...$(EOC)\n"
-	@cd sdl2;															\
-		export CC="gcc -march=native"									\
-		sdl2path=`pwd`;													\
-		printf "$(INV)Creating build env...$(EOC)\n";					\
-		mkdir -p build;													\
-		cd build;														\
-		../sources/configure $(SDL_OPTIONS);							\
-		printf "$(INV)Building...$(EOC)\n";								\
-		make -s -j 10;													\
-		printf "$(INV)Installing in ./SDL2...$(EOC)\n";					\
+	@mkdir -p $(BUILD_PATH)/sdl2
+	@printf "$(INV)Creating build env...$(EOC)\n"				&&\
+		cd $(BUILD_PATH)/sdl2 									&&\
+		$(REPO_PATH)/libs/sdl2/configure $(SDL_OPTIONS)			&&\
+		printf "$(INV)Building...$(EOC)\n"						&&\
+		make -sj 10												&&\
+		printf "$(INV)Installing in $(DEPS_FOLDER)...$(EOC)\n"	&&\
 		make -s install
-
-libft/libft.a :
+	@printf "$(EOC)\n"
+$(LFT) :
 	@printf "$(YLW)Making libft...$(EOC)\n"
-	@make -s -j -C libft/
+	@make -s -j -C libs/libft/
+################################
 
-$(NAME) : libft/libft.a sdl2/lib/libSDL2.a $(OBJ) rtv1.h
+$(NAME) : $(LFT) $(LSDL2) $(OBJ)
 	@printf "$(GRN)Linking $(NAME)...$(EOC)\n"
 	$(CC) $(CFLAGS) $(OBJ) -o $@ $(LDFLAGS) $(LDLIBS)
 
-$(OBJ_PATH) : sdl2/lib/libSDL2.a
-	@mkdir -p $(OBJ_PATH) 2> /dev/null
-	@mkdir -p $(addprefix $(OBJ_PATH)/,$(SRC_FOLDERS)) 2> /dev/null
-	@printf "$(GRN)Building with \"$(CFLAGS)\":$(EOC)\n"
+# $(OBJ_FOLDER)/%.o :
+# 	echo pute
 
-$(OBJ_PATH)/%.o : $(SRC_PATH)/%.c | $(OBJ_PATH)
+$(OBJ_FOLDER)/%.o : $(SRC_FOLDER)/%.c | $(DIRS)
 	@printf "\t$(CC) (...) $@\n"
 	@$(CC) $(CFLAGS) -o $@ -c $<
 
-libclean :
-	@printf "$(YLW)Cleaning SDL2...$(EOC)\n"
-	@rm -rf sdl2/build
+$(DIRS) :
+	@mkdir -p $@
+
+# Add rules written in .d files (by gcc -MMD)
+# The '-' makes it doesn't care if the file exists or not
+-include $(OBJ:.o=.d)
+
+obj_clean :
+	@printf "$(RED)Cleaning $(OBJ_FOLDER)$(EOC)\n"
+	@rm -rf $(OBJ_FOLDER)
+
+clean :
+	@printf "$(RED)Cleaning $(BUILD_FOLDER)$(EOC)\n"
+	@rm -rf $(BUILD_FOLDER)
 	@printf "$(YLW)Cleaning libft...$(EOC)\n"
-	@make -s fclean -C libft
+	@make -s fclean -C libs/libft
 
-objclean :
-	@rm -rf $(OBJ_PATH)
-	@printf "$(RED)$(OBJ_PATH) removed$(EOC)\n"
-
-outclean :
+fclean : clean
+	@printf "$(YLW)Cleaning libs dependencies...$(EOC)\n"
+	@rm -rf $(DEPS_FOLDER)/lib
+	@printf "$(RED)Cleaning $(NAME)$(EOC)\n"
 	@rm -f $(NAME)
-	@printf "$(RED)$(NAME) removed$(EOC)\n"
 
-clean	:	libclean	objclean
-fclean	:	clean		outclean
-	@rm -rf sdl2/lib sdl2/share sdl2/bin sdl2/include
-re		:	fclean
-	make -sj all
-sfclean	:	objclean	outclean
-sre		:	sfclean
-	make -sj $(NAME)
+sclean	:	obj_clean
+re		:	fclean		all
+sre		:	obj_clean		all
 
-.PHONY: all libclean objclean outclean clean fclean re sfclean sre
+.PHONY: all obj_clean clean fclean re sre
 
 RED = \033[1;31m
 GRN = \033[1;32m

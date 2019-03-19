@@ -37,7 +37,7 @@ t_flt3	*flt3_normalize(t_flt3 *a)
 	return (a);
 }
 
-t_flt3	*flt3_cross(t_flt3 *a, const t_flt3 *b)
+t_flt3	*flt3_cross(t_flt3 *restrict a, const t_flt3 *restrict b)
 {
 	float	a1;
 	float	a2;

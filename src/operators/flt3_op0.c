@@ -12,7 +12,7 @@
 
 #include "rtv1.h"
 
-t_flt3		*flt3_add(t_flt3 *a, const t_flt3 *b)
+t_flt3		*flt3_add(t_flt3 *restrict a, const t_flt3 *restrict b)
 {
 	a->x += b->x;
 	a->y += b->y;
@@ -20,7 +20,7 @@ t_flt3		*flt3_add(t_flt3 *a, const t_flt3 *b)
 	return (a);
 }
 
-t_flt3		*flt3_sub(t_flt3 *a, const t_flt3 *b)
+t_flt3		*flt3_sub(t_flt3 *restrict a, const t_flt3 *restrict b)
 {
 	a->x -= b->x;
 	a->y -= b->y;
@@ -28,7 +28,7 @@ t_flt3		*flt3_sub(t_flt3 *a, const t_flt3 *b)
 	return (a);
 }
 
-t_flt3		*flt3_mult(t_flt3 *a, const t_flt3 *b)
+t_flt3		*flt3_mult(t_flt3 *restrict a, const t_flt3 *restrict b)
 {
 	a->x *= b->x;
 	a->y *= b->y;
@@ -36,7 +36,7 @@ t_flt3		*flt3_mult(t_flt3 *a, const t_flt3 *b)
 	return (a);
 }
 
-t_flt3		*flt3_div(t_flt3 *a, const t_flt3 *b)
+t_flt3		*flt3_div(t_flt3 *restrict a, const t_flt3 *restrict b)
 {
 	a->x /= b->x;
 	a->y /= b->y;

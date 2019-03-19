@@ -77,10 +77,13 @@ static int		render_thread(void *vthread)
 	return (0);
 }
 
+#include <time.h>
 int				render(t_env *env)
 {
 	uint32_t		i;
+	clock_t			t;
 
+	t = clock();
 	env->px_skip = NB_PX_SKIP;
 	while (env->px_skip > 0)
 	{
@@ -96,6 +99,11 @@ int				render(t_env *env)
 		SDL_RenderCopy(env->sdl.renderer, env->sdl.texture, NULL, NULL);
 		SDL_RenderPresent(env->sdl.renderer);
 		env->px_skip -= PX_SKIP_STEP;
+	}
+	if (env->px_skip != -PX_SKIP_STEP)
+	{
+		t = clock() - t;
+		ft_printf("%d rays in %fms\n", (env->disp.h * env->disp.w) * (1 + 1), (float)t/CLOCKS_PER_SEC * 1000); // the second 1 is depth
 	}
 	env->px_skip = NB_PX_SKIP;
 	ft_bzero(env->sdl.img, env->disp.h * env->disp.w * sizeof(int32_t));
