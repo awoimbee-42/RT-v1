@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/03/02 03:56:05 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/03/19 23:22:00 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,8 +74,6 @@ LFT = libs/libft/libft.a
 
 SRC = $(addprefix $(SRC_FOLDER)/,$(SRC_NAME))
 OBJ = $(addprefix $(OBJ_FOLDER)/,$(SRC_NAME:.c=.o))
-
-$(info $(OBJ_FOLDER))
 
 ################################################################################
 #################                  RULES                       #################

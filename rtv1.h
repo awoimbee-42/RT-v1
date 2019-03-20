@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/03/07 01:29:51 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/03/20 02:55:43 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -327,18 +327,19 @@ void			resize(t_env *env);
 /*
 **	operators/flt3_opX.c
 */
-t_flt3			*flt3_add(t_flt3 *a, const t_flt3 *b);
-t_flt3			*flt3_sub(t_flt3 *a, const t_flt3 *b);
-t_flt3			*flt3_mult(t_flt3 *a, const t_flt3 *b);
-t_flt3			*flt3_multf(t_flt3 *a, const float b);
-t_flt3			*flt3_div(t_flt3 *a, const t_flt3 *b);
-t_flt3			*flt3_divf(t_flt3 *a, const float b);
-float			flt3_dot(const t_flt3 *a, const t_flt3 *b);
-float			flt3_mod(const t_flt3 *a);
-float			flt3_mod2(const t_flt3 *a);
-t_flt3			*flt3_normalize(t_flt3 *a);
-t_flt3			*flt3_cross(t_flt3 *a, const t_flt3 *b);
-t_flt3			*flt3_addf(t_flt3 *a, const float b);
+#define INLINE   // __attribute__((always_inline))
+t_flt3			*flt3_add(t_flt3 *a, const t_flt3 *b) INLINE;
+t_flt3			*flt3_sub(t_flt3 *a, const t_flt3 *b) INLINE;
+t_flt3			*flt3_mult(t_flt3 *a, const t_flt3 *b) INLINE;
+t_flt3			*flt3_multf(t_flt3 *a, const float b) INLINE;
+t_flt3			*flt3_div(t_flt3 *a, const t_flt3 *b) INLINE;
+t_flt3			*flt3_divf(t_flt3 *a, const float b) INLINE;
+float			flt3_dot(const t_flt3 *a, const t_flt3 *b) INLINE;
+float			flt3_mod(const t_flt3 *a) INLINE;
+float			flt3_mod2(const t_flt3 *a) INLINE;
+t_flt3			*flt3_normalize(t_flt3 *a) INLINE;
+t_flt3			*flt3_cross(t_flt3 *a, const t_flt3 *b) INLINE;
+t_flt3			*flt3_addf(t_flt3 *a, const float b) INLINE;
 
 /*
 **	t_obj/dist.c

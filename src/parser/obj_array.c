@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:28:36 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/03/02 02:40:42 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/03/20 02:02:28 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,21 +34,35 @@ int			tobj_parse(t_obj *obj, char *line, int *done,
 	return (1);
 }
 
-static int	create_array(t_env *env, char *line)
+static int	create_obj_arr(int fd, t_env *env, char *line)
 {
-	int		obj_nb;
+	int		done;
+	uint	linenb;
 
-	line = skip_whitespaces(line + 7);
-	if (*line != '[' || !ft_isdigit(*++line))
-		msg_exit("Bad format line %d\n", &env->keys);
-	obj_nb = ft_atoi_mv(&line);
-	if (ft_strncmp(line, "] :", 3) != 0 || obj_nb < 0 || obj_nb > MAX_OBJS)
-		msg_exit("Bad character after size line %d\n", &env->keys);
-	if (!(env->objs_arr = malloc(sizeof(t_obj) * (obj_nb + 1))))
+	linenb = env->keys;
+	done = 0;
+	env->objs_nb = 0;
+	while (get_next_line(fd, &line) > 0 && ++linenb)
+	{
+		if (!ft_strcmp(line, "\tSphere") || !ft_strcmp(line, "\tPlane")
+			|| !ft_strcmp(line, "\tDisk") || !ft_strcmp(line, "\tCylinder")
+			|| !ft_strcmp(line, "\tCone") || !ft_strcmp(line, "\tTriangle"))
+			env->objs_nb += 1;
+		else if (!ft_strcmp(line, "}") && (done = 1))
+			break ;
+		ft_memdel((void*)&line);
+	}
+	ft_memdel((void*)&line);
+	!done ? msg_exit("Objects : bad characters line: %d", &linenb) : (void)0;
+	if (!(env->objs_arr = malloc(sizeof(t_obj) * (env->objs_nb + 1))))
 		error(MALLOC_ERR);
-	env->objs_arr[obj_nb] = (t_obj){NULL, NULL, 0, 0, (t_fcolor){0, 0, 0},
-								{(struct s_sphere){(t_vec3){0, 0, 0}, 0}}};
-	return (obj_nb);
+	lseek(fd, 0, SEEK_SET);
+	while(get_next_line(fd, &line) && ft_strncmp(line, "objects", 7))
+		free(line);
+	free(line);
+	get_next_line(fd, &line);
+	ft_memdel((void**)&line);
+	return (env->objs_nb);
 }
 
 void		parse_objects(int fd, t_env *env, char *line, int obj_nb)
@@ -56,9 +70,10 @@ void		parse_objects(int fd, t_env *env, char *line, int obj_nb)
 	int		done;
 
 	done = 0;
-	obj_nb = create_array(env, line);
-	env->objs_nb = obj_nb;
 	parse_open_bracket(fd, &env->keys);
+	obj_nb = create_obj_arr(fd, env, line);
+	ft_printf("%d\n", obj_nb);
+	env->objs_nb = obj_nb;
 	while (get_next_line(fd, &line) > 0 && ++env->keys)
 	{
 		if (!ft_strcmp(line, "\tSphere") && --obj_nb >= 0)
@@ -78,6 +93,6 @@ void		parse_objects(int fd, t_env *env, char *line, int obj_nb)
 		ft_memdel((void*)&line);
 	}
 	ft_memdel((void*)&line);
-	obj_nb != 0 ? msg_exit("Wrong number of objects in def\n", 0) : (void)0;
+	obj_nb != 0 ? msg_exit("%d objects more/less in def\n", &obj_nb) : (void)0;
 	!done ? msg_exit("U didn't close bracket for objects!", 0) : (void)0;
 }

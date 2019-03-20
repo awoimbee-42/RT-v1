@@ -6,11 +6,13 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 19:24:45 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/03/01 17:35:07 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/03/20 02:32:38 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
+
+#define flt3_add _mm_add_ps
 
 static t_fcolor	ray_intsect(const t_env *env, const t_ray *ray, int bounce)
 {
@@ -25,7 +27,8 @@ static t_fcolor	ray_intsect(const t_env *env, const t_ray *ray, int bounce)
 		return (env->objs_arr[obj.id].color);
 	obj.dist = obj.dist - obj.dist * 0.001;
 	hit_reflect.org = ray->dir;
-	flt3_add(flt3_multf(&hit_reflect.org, obj.dist), &ray->org);
+	hit_reflect.org.sse = _mm_add_ps(_mm_mul_ps(hit_reflect.org.sse, _mm_set1_ps(obj.dist)), ray->org.sse);
+	// flt3_add(flt3_multf(&hit_reflect.org, obj.dist), &ray->org);
 	norm = env->objs_arr[obj.id]
 		.normfun(&env->objs_arr[obj.id].this, &hit_reflect.org);
 	// flt3_normalize(&norm);
