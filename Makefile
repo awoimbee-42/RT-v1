@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/03/19 23:22:00 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/04/11 16:20:02 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,10 +57,23 @@ SDL_OPTIONS =	-q									\
 				--includedir=$(BUILD_PATH)/include	\
 				--datarootdir=$(BUILD_PATH)/share
 
-ifeq ($(OS),Linux)
-		NUMPROC := $(shell grep -c ^processor /proc/cpuinfo)
-else ifeq ($(OS),Darwin)
-		NUMPROC := $(shell sysctl hw.ncpu | awk '{print $$2}')
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+	NUMPROC := $(shell grep -c ^processor /proc/cpuinfo)
+	ifeq ($(PROFILE),gen)
+		CFLAGS += -fprofile-generate #using perf is heaps better (fautoprofile something something)
+	else ifeq ($(PROFILE),use)
+		CFLAGS += -fprofile-use
+	endif
+else ifeq ($(UNAME_S),Darwin)
+	NUMPROC := $(shell sysctl hw.ncpu | awk '{print $$2}')
+	PROCESS_PROFDATA := xcrun llvm-profdata merge -sparse default.profraw -o default.profdata
+	RM_PROFDATA := rm ./default.profraw ./default.profdata
+	ifeq ($(PROFILE),gen)
+		CFLAGS += -fprofile-instr-generate
+	else ifeq ($(PROFILE),use)
+		CFLAGS += -fprofile-instr-use
+	endif
 endif
 
 REPO_PATH = $(patsubst %/,%,$(dir $(realpath $(firstword $(MAKEFILE_LIST)))))
@@ -103,8 +116,16 @@ $(NAME) : $(LFT) $(LSDL2) $(OBJ)
 	@printf "$(GRN)Linking $(NAME)...$(EOC)\n"
 	$(CC) $(CFLAGS) $(OBJ) -o $@ $(LDFLAGS) $(LDLIBS)
 
-# $(OBJ_FOLDER)/%.o :
-# 	echo pute
+opti : obj_clean
+	@printf "Compiling instrumented version...\n"
+	@make $(NAME) PROFILE=gen > /dev/null
+	@printf "Profiling...\n"
+	@./rtv1 ./scenes/scene.rt
+	@$(PROCESS_PROFDATA)
+	@printf "Cleaning...\n"
+	@make obj_clean
+	make $(NAME) PROFILE=use
+	$(RM_PROFDATA)
 
 $(OBJ_FOLDER)/%.o : $(SRC_FOLDER)/%.c | $(DIRS)
 	@printf "\t$(CC) (...) $@\n"

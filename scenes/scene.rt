@@ -35,6 +35,13 @@ objects[7] :
 		.color = {1, 0.8, 0.8}
 		.specular = 0.3
 		.diffuse = 0.7;
+	Cone
+		.origin = {4, 2, 9}
+		.dir = {-1, 1, 0}
+		.angle = 0.3						# 0.01 <= angle <= 1.3
+		.color = {1, 1, 0.02}					#Can be more than 1 : permits florescent colors ALSO : 0 means ZERO, 0 != 0.0000000001 !!!!!!!
+		.specular = 0.1
+		.diffuse = 1;
 	Sphere
 		.origin = {6.5, 1.5, 1.5}	#comments !
 		.radius = 0.3
@@ -75,7 +82,7 @@ objects[7] :
 		.diffuse = 0.2;
 }
 
-lights[2] :
+lights[3] :
 {
 	Light
 		.position = {10, -1.2, 5}
@@ -83,4 +90,7 @@ lights[2] :
 	Light
 		.position = {-10, 10, -10}
 		.intensity = {1000, 1000, 1000};
+	Light
+		.position = {8, 5, -5}
+		.intensity = {100, 100, 100};
 }
