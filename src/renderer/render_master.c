@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/03/20 02:03:33 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/06/23 21:40:09 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,6 @@ int				render(t_env *env)
 		i = -1;
 		while (++i != env->threads_nb)
 			SDL_WaitThread(env->threads[i].ptr, NULL);
-		SDL_UpdateTexture(env->sdl.texture, NULL, env->sdl.img,
-			env->disp.w * sizeof(int));
-		SDL_RenderCopy(env->sdl.renderer, env->sdl.texture, NULL, NULL);
-		SDL_RenderPresent(env->sdl.renderer);
 		env->px_skip -= PX_SKIP_STEP;
 	}
 	if (env->px_skip != -PX_SKIP_STEP)
@@ -106,6 +102,5 @@ int				render(t_env *env)
 		ft_printf("%d rays in %fms\n", (env->disp.h * env->disp.w) * (1 + env->light_nb), (float)t/CLOCKS_PER_SEC * 1000); // the second 1 is depth
 	}
 	env->px_skip = NB_PX_SKIP;
-	ft_bzero(env->sdl.img, env->disp.h * env->disp.w * sizeof(int32_t));
 	return (0);
 }

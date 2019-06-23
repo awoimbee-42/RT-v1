@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:12:01 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/03/01 18:28:08 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/06/23 21:47:45 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@ void	init_threads(t_env *env)
 	}
 }
 
+/*
+**	SDL_SetWindowMinimumSize Doesn't work on all systems !
+*/
+
 void	init_sdl(t_env *env)
 {
 	t_sdl		*sdl;
@@ -42,15 +46,17 @@ void	init_sdl(t_env *env)
 	sdl = &env->sdl;
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER) < 0)
 		error(SDL_ERR);
-	if (!(sdl->win = SDL_CreateWindow("RT-V1", 0, 0,
-		env->disp.w, env->disp.h, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE)))
+	if (!(sdl->win = SDL_CreateWindow("RT-V1", 0, 0, env->disp.w, env->disp.h,
+				SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE))
+		|| !(sdl->renderer = SDL_CreateRenderer(sdl->win, -1,
+				SDL_RENDERER_PRESENTVSYNC))
+		|| !(sdl->texture = SDL_CreateTexture(sdl->renderer,
+				SDL_PIXELFORMAT_ARGB8888,
+				SDL_TEXTUREACCESS_STREAMING, env->disp.w, env->disp.h)))
 		error(SDL_ERR);
-	SDL_SetWindowMinimumSize(env->sdl.win, 100, 100); // doesnt work ???
-	sdl->renderer = SDL_CreateRenderer(sdl->win, -1, SDL_RENDERER_PRESENTVSYNC);
-	sdl->texture = SDL_CreateTexture(sdl->renderer, SDL_PIXELFORMAT_ARGB8888,
-			SDL_TEXTUREACCESS_STREAMING, env->disp.w, env->disp.h);
+	SDL_SetWindowMinimumSize(env->sdl.win, 100, 100);
 	if (!(sdl->img =
-			malloc(env->disp.w * (env->disp.h + NB_PX_SKIP) * sizeof(uint32_t)))) //because overflow in render_master.c...
+			malloc(env->disp.w * (env->disp.h + NB_PX_SKIP) * sizeof(uint32_t))))
 		error(MALLOC_ERR);
 }
 

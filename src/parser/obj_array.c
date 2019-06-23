@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 15:28:36 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/03/20 02:02:28 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/06/23 21:48:24 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ void		parse_objects(int fd, t_env *env, char *line, int obj_nb)
 	done = 0;
 	parse_open_bracket(fd, &env->keys);
 	obj_nb = create_obj_arr(fd, env, line);
-	ft_printf("%d\n", obj_nb);
 	env->objs_nb = obj_nb;
 	while (get_next_line(fd, &line) > 0 && ++env->keys)
 	{

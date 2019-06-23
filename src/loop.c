@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/21 00:40:33 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/03/02 02:16:36 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/06/23 21:38:42 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,11 @@ void		loop(t_env *env, SDL_GameController *controller)
 		}
 		check_keys(env);
 		check_controller(env, controller);
+
+		SDL_UpdateTexture(env->sdl.texture, NULL, env->sdl.img,
+			env->disp.w * sizeof(int));
+		SDL_RenderCopy(env->sdl.renderer, env->sdl.texture, NULL, NULL);
+		SDL_RenderPresent(env->sdl.renderer);
 		usleep(33000);
 	}
 }
