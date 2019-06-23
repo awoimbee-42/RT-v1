@@ -6,10 +6,11 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/06/23 21:40:09 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/06/24 00:40:39 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <time.h>
 #include "rtv1.h"
 
 static uint32_t	*linerndr(t_env *env, int px_skip, uint32_t *restrict img, int v)
@@ -77,7 +78,6 @@ static int		render_thread(void *vthread)
 	return (0);
 }
 
-#include <time.h>
 int				render(t_env *env)
 {
 	uint32_t		i;
@@ -102,5 +102,8 @@ int				render(t_env *env)
 		ft_printf("%d rays in %fms\n", (env->disp.h * env->disp.w) * (1 + env->light_nb), (float)t/CLOCKS_PER_SEC * 1000); // the second 1 is depth
 	}
 	env->px_skip = NB_PX_SKIP;
+	i = env->disp.w * env->disp.h;
+	while (i-- != 0)
+		env->sdl.img[i] &= 0x00FFFFFF;
 	return (0);
 }
