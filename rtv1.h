@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/03/20 02:55:43 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/07/05 15:04:26 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,33 +94,18 @@ typedef struct	s_id_dist
 **	###################################
 */
 
-typedef union u_flt4
+typedef struct	s_flt3
 {
-	struct
-	{
-		float		x;
-		float		y;
-		float		z;
-		float		w;
-	};
-	__m128				sse;
-}				t_flt4;
+	float				x;
+	float				y;
+	float				z;
+}				t_flt3;
 
-typedef t_flt4	t_flt3;
-typedef t_flt4	t_flt2;
-
-// typedef struct	s_flt3
-// {
-// 	float				x;
-// 	float				y;
-// 	float				z;
-// }				t_flt3;
-
-// typedef struct	s_flt2
-// {
-// 	float				x;
-// 	float				y;
-// }				t_flt2;
+typedef struct	s_flt2
+{
+	float				x;
+	float				y;
+}				t_flt2;
 
 typedef struct	s_int2
 {
@@ -291,6 +276,7 @@ typedef struct	s_env
 	uint32_t			keys;
 	SDL_GameController	*restrict controller;
 	int					px_skip;
+	int					supersampling_rate;
 	SDL_Thread			*restrict rndr;
 	uint32_t			threads_nb;
 	t_thread			threads[];

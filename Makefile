@@ -12,7 +12,7 @@
 
 NAME	=	rtv1
 
-CFLAGS	=	-Wall -Wextra -Ofast -march=native -ftree-vectorize -fstrict-aliasing#-Werror
+CFLAGS	=	-Wall -Wextra -Ofast -march=native -ftree-vectorize -fstrict-aliasing  #-fopt-info-vec-optimized -Werror
 
 SRC_NAME =	main.c							\
 			init_argv.c						\

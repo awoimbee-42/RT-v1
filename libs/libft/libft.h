@@ -6,28 +6,17 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/23 20:34:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/03/20 01:33:13 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/07/05 15:10:43 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 # include <string.h>
-# include <stdint.h>
-# include <inttypes.h>
-
-# define GNL_BUFF_SIZE 300
-# define GNL_FLUSH (char**)INTPTR_MAX
-
-typedef struct	s_list
-{
-	void			*content;
-	size_t			content_size;
-	struct s_list	*next;
-}				t_list;
+# include "intrisics.h"
 
 /*
-**	LIBMEM
+**	#################### LIBMEM ####################
 */
 void			*ft_memset (void *s, int c, size_t len);
 void			ft_bzero(void *s, size_t n);
@@ -38,13 +27,14 @@ void			*ft_memchr(const void *s, int c, size_t n);
 int				ft_memcmp(const void *s1, const void *s2, size_t n);
 void			*ft_memalloc(size_t size);
 void			ft_memdel(void **ap);
+void			ft_memfree(void *ap);
 void			*ft_mempcpy(void *dst, const void *src, size_t n);
 void			ft_mem64set(uint64_t *mem, uint64_t data, size_t memlen);
 void			ft_mem32set(uint32_t *mem, uint32_t data, size_t memlen);
 void			ft_mem16set(uint16_t *mem, uint16_t data, size_t memlen);
 
 /*
-**	LIBSTR
+**	#################### LIBSTR ####################
 */
 size_t			ft_strlen(const char *s);
 char			*ft_strdup(const char *s1);
@@ -77,9 +67,10 @@ char			*ft_strrev(char *str);
 int				ft_strcat_join(char **s1, char const *s2);
 char			*ft_stpcpy(char *dest, const char *src);
 int				ft_strncat_join(char **s1, char const *s2, size_t size);
+char			*ft_strndup(const char *s1, size_t maxlen);
 
 /*
-**	LIBNB
+**	##################### LIBNB ####################
 */
 void			ft_swap_int(int *a, int *b);
 int				ft_atoi(const char *str);
@@ -87,12 +78,16 @@ char			*ft_itoa(int n);
 int				ft_atoi_base(char *str, char *base);
 char			*ft_itoa_base(int value, int base);
 int				ft_abs(int i);
+long			ft_labs(long i);
 double			ft_atof(const char *nptr);
 double			ft_atof_mv(char **nptr);
 int				ft_atoi_mv(char **nptr);
+int				ft_maxint(int a, int b);
+long			ft_maxlong(long a, long b);
+uint			ft_maxuint(uint a, uint b);
 
 /*
-**	LIBCHAR
+**	#################### LIBCHAR ###################
 */
 int				ft_isalpha(int c);
 int				ft_isdigit(int c);
@@ -103,7 +98,7 @@ int				ft_toupper(int c);
 int				ft_tolower(int c);
 
 /*
-**	LIBFD
+**	##################### LIBFD ####################
 */
 void			ft_putchar(char c);
 void			ft_putstr(char const *s);
@@ -116,26 +111,110 @@ void			ft_putnbr_fd(int n, int fd);
 int				get_next_line(const int fd, char **line);
 
 /*
-**	LIBLST
-*/
-t_list			*ft_lstnew(void const *content, size_t content_size);
-void			ft_lstdelone(t_list **alst, void (*del)(void*, size_t));
-void			ft_lstdel(t_list **alst, void (*del)(void *, size_t));
-void			ft_lstadd(t_list **alst, t_list *new);
-void			ft_lstiter(t_list *lst, void (*f)(t_list *elem));
-t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
-t_list			*ft_lst_push_back(t_list **lst, void *content,
-													size_t content_size);
-t_list			*ft_list_at(t_list *begin_list, unsigned int nbr);
-int				ft_lst_free_link(t_list **lst, t_list *link);
-
-/*
-**	FT_PRINTF
+**	################### FT_PRINTF ##################
 */
 int				ft_printf(const char *restrict format, ...);
 int				ft_fprintf(int fd, const char *restrict format, ...);
 int				ft_sprintf(char *str, const char *restrict format, ...);
+int				ft_asprintf(char **strp, const char *fmt, ...);
+char			*ft_cprintf(const char *fmt, ...);
 
+/*
+**	##################### T_LST ####################
+*/
+t_list			*ft_lstnew(void const *content, size_t content_size);
+void			ft_lstdelone(t_list **alst, void (*del)(t_listed*, size_t));
+void			ft_lstdel(t_list **alst, void (*del)(t_listed*, size_t));
+void			ft_lstadd(t_list **alst, t_list *new);
+void			ft_lstiter(t_list *lst, void (*f)(t_list *elem));
+t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
+t_list			*ft_lst_push_back(t_list **lst, t_listed *data, size_t d_size);
+t_list			*ft_list_at(t_list *begin_list, unsigned int nbr);
+int				ft_lst_free_link(t_list **lst, t_list *link);
+
+/*
+**	##################### T_QUEUE ##################
+*/
+int				que_realloc(t_queue *que);
+int				que_push(t_queue *que, t_queued data);
+t_queued		que_pop(t_queue *que);
+t_queue			*que_new(size_t len);
+void			que_destroy(t_queue *que);
+void			que_disp(const t_queue *que);
+int				que_isempty(const t_queue *que);
+t_queue			*que_flush(t_queue *q);
+
+/*
+**	##################### T_VEC4 ##################
+*/
+
+/*
+**	t_vec4			vec4_newf(const float f);
+**	t_vec4			vec4_newv(const float x, const float y, const float z,
+**		const float w);
+**	t_vec4			vec4_newa(const float f[4]);
+**	t_vec4			vec4_newa3(const float f[3], float w);
+**	t_vec4			vec4_newzero(void);
+**	t_vec4			vec4_newnan(void);
+**	t_vec4			vec4_add(const t_vec4 a, const t_vec4 b);
+**	t_vec4			vec4_addf(const t_vec4 a, const float b);
+**	t_vec4			vec4_sub(const t_vec4 a, const t_vec4 b);
+**	t_vec4			vec4_subf(const t_vec4 a, const float b);
+**	t_vec4			vec4_fsub(const float a, const t_vec4 b);
+**	t_vec4			vec4_mul(const t_vec4 a, const t_vec4 b);
+**	t_vec4			vec4_mulf(const t_vec4 a, const float b);
+**	t_vec4			vec4_div(const t_vec4 a, const t_vec4 b);
+**	t_vec4			vec4_divf(const t_vec4 a, const float b);
+**	t_vec4			vec4_abs(const t_vec4 a);
+**	t_vec4			vec4_sqrt(const t_vec4 a);
+**	t_vec4			vec4_square(const t_vec4 a);
+**	float			vec4_dot(const t_vec4 a, const t_vec4 b);
+**	float			vec4_mod(const t_vec4 a);
+**	float			vec4_mod2(const t_vec4 a);
+**	t_vec4			vec4_cross(const t_vec4 a, const t_vec4 b);
+**	t_vec4			vec4_matmul(const t_vec4 mat[4], const t_vec4 vec);
+**	void			vec4_newmat_aa(t_vec4 mat[4], const float f[4][4]);
+**	void			vec4_newmat_a(t_vec4 mat[4], const float f[16]);
+*/
+
+/*
+**	T_VECTOR
+*/
+t_vector		*vector_init(t_vector *vec, const size_t reserved_len);
+t_vector		*vector_push(t_vector *vec, t_vected d);
+t_vector		*vector_realloc(t_vector *vec);
+void			vector_mapvoid(t_vector *v, void (*f)(t_vected*));
+t_vector		*vector_del_at(t_vector *v, size_t at);
+
+/*
+**	T_GARBAGE (sortof garbage collector)
+*/
+void			intrin__gb_fail(t_garbage *gb);
+void			intrin_gb_extend(t_garbage *gb);
+t_garbage		gb_init(void);
+void			gb_freeall(t_garbage *gb);
+void			gb_free(t_garbage *gb, void *ptr);
+void			gb_remove(t_garbage *gb, void *freed);
+void			*gb_malloc(t_garbage *gb, size_t size);
+void			*gb_add(t_garbage *gb, void *malloced);
+void			gb_defrag(t_garbage *gb);
+void			*gb_memalloc(t_garbage *gb, size_t size);
+void			*gb_realloc(t_garbage *gb, void *ptr, size_t new_size);
+t_garbage		*gb_init_existing(t_garbage *gb);
+
+/*
+**	T_MAP
+*/
+void			intrin_insert_fixup(t_rbtmap **root, t_rbtmap *z);
+void			intrin_rbtree_lft_rot(t_rbtmap **root, t_rbtmap *x);
+void			intrin_rbtree_rgt_rot(t_rbtmap **root, t_rbtmap *y);
+void			map_insert(t_rbtmap **root, t_map_key key, t_map_data *data);
+void			map_iter(t_rbtmap *root, void(*f)(t_map_key, t_map_data*));
+void			map_freeall(t_rbtmap **root);
+
+/*
+**	##################### other ####################
+*/
 void			msg_exit(const char *msg, const void *data);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/09 22:48:12 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/03/02 02:50:05 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/07/05 13:58:58 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ t_vec3		norm_triangle(const union u_object *obj, const t_vec3 *hit)
 {
 	t_vec3		norm;
 
+	(void)hit;
 	norm = obj->triangle.vert0;
 	flt3_cross(&norm, &obj->triangle.vert1);
 	return (norm);

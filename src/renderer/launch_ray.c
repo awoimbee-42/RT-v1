@@ -6,13 +6,11 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 19:24:45 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/03/20 02:32:38 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/07/05 14:49:49 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
-
-#define flt3_add _mm_add_ps
 
 static t_fcolor	ray_intsect(const t_env *env, const t_ray *ray, int bounce)
 {
@@ -27,16 +25,14 @@ static t_fcolor	ray_intsect(const t_env *env, const t_ray *ray, int bounce)
 		return (env->objs_arr[obj.id].color);
 	obj.dist = obj.dist - obj.dist * 0.001;
 	hit_reflect.org = ray->dir;
-	hit_reflect.org.sse = _mm_add_ps(_mm_mul_ps(hit_reflect.org.sse, _mm_set1_ps(obj.dist)), ray->org.sse);
-	// flt3_add(flt3_multf(&hit_reflect.org, obj.dist), &ray->org);
+	flt3_add(flt3_multf(&hit_reflect.org, obj.dist), &ray->org);
 	norm = env->objs_arr[obj.id]
 		.normfun(&env->objs_arr[obj.id].this, &hit_reflect.org);
-	// flt3_normalize(&norm);
 	hit_reflect.dir = get_reflection(ray->dir, norm);
 	hit_reflect.dir = fast_diffuse(env, &hit_reflect,
-								&env->objs_arr[obj.id], &norm);
+			&env->objs_arr[obj.id], &norm);
 	flt3_mult(&hit_reflect.dir,
-						&env->objs_arr[obj.id].color);
+		&env->objs_arr[obj.id].color);
 	return (hit_reflect.dir);
 }
 
@@ -52,9 +48,9 @@ uint32_t		launch_ray(const int x, const int y, const t_env *env)
 
 	screen_point = (t_vec3)
 	{
-		(2.0 * (x + 0.5) / (float)env->disp.w - 1.0)
+		(2.0 * (x + 0.5) / (float)(env->disp.w * env->supersampling_rate) - 1.0)
 			* env->disp.tfov * env->disp.aspect_ratio,
-		(1.0 - 2.0 * (y + 0.5) / (float)env->disp.h) * env->disp.tfov,
+		(1.0 - 2.0 * (y + 0.5) / (float)(env->disp.h * env->supersampling_rate)) * env->disp.tfov,
 		1.0
 	};
 	apply_camera_rot(env, &screen_point);

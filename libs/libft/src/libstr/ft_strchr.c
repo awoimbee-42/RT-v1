@@ -6,16 +6,21 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/26 12:47:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2018/11/06 15:16:21 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/06/03 17:18:16 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/*
+**	This function basically works like strlen,
+**	So I could bing the same optimizations that I did to ft_strlen to it
+*/
+
 char	*ft_strchr(const char *s, int c)
 {
 	if (c == '\0')
-		return (ft_strlen(s) + (char *)s);
+		return ((char*)&s[ft_strlen(s)]);
 	while (*s)
 	{
 		if (*s == (char)c)

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 13:36:47 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/03/20 01:31:50 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/04/11 14:59:23 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ static int		read_buff(t_list *link, char **line)
 	size_t		i;
 	void		*str;
 
+	if (*(char*)(link->content + 4) == 0 && link->content_size == GNL_BUFF_SIZE)
+		return (-1);
 	if (*(char*)(link->content + 4) == 0)
 		return (0);
 	if ((str = ft_memchr(link->content + 4, '\n', link->content_size)) != NULL)
@@ -111,11 +113,10 @@ int				get_next_line(const int fd, char **line)
 	int				i;
 	ssize_t			cread;
 
-
 	if (!line || (link = check_lst(&lst, fd)) == NULL)
 		return (-1);
 	if (line == GNL_FLUSH)
-		return(ft_lst_free_link(&lst, link));
+		return (ft_lst_free_link(&lst, link));
 	*line = NULL;
 	if ((i = read_buff(link, line)) != 0)
 		return (i);

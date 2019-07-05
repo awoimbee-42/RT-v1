@@ -6,20 +6,17 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/28 01:38:58 by awoimbee          #+#    #+#             */
-/*   Updated: 2018/11/06 15:06:07 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/04/10 13:30:49 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <unistd.h>
 
 void	ft_putendl(char const *s)
 {
 	if (!s)
 		return ;
-	while (*s)
-	{
-		ft_putchar(*s);
-		++s;
-	}
-	ft_putchar('\n');
+	write(STDOUT_FILENO, s, ft_strlen(s));
+	write(STDOUT_FILENO, "\n", 1);
 }
