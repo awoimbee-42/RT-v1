@@ -15,7 +15,7 @@ RICARD >>> PASTIS
          `-------------------+
 
 env
-	.background_light = {0.4, 0.4, 0.4};
+	.background_light = {0.01, 0.01, 0.01};
 
 display
 	.width = 800
@@ -134,11 +134,11 @@ lights[3] :
 {
 	Light
 		.position = {-12, 7, -10}
-		.intensity = {1000, 1000, 1000};
+		.intensity = {100, 100, 100};
 	Light
 		.position = {12, 7, -10}
-		.intensity = {1000, 1000, 1000};
+		.intensity = {100, 100, 100};
 	Light
 		.position = {0, 7, -10}
-		.intensity = {1000, 1000, 1000};
+		.intensity = {100, 100, 100};
 }

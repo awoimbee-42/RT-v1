@@ -39,9 +39,14 @@ uint32_t		srgb(const t_fcolor *color)
 		+ (0U << 24));
 }
 
+/*
+**	The power of 1/2.2 thing is gamma correction
+**	Possible optimization: do sqrt(x) instead of pow(x, 1/2.2) (less accurate)
+*/
+
 void			tone_map(t_fcolor *px)
 {
-	px->x = px->x / (px->x + 1);
-	px->y = px->y / (px->y + 1);
-	px->z = px->z / (px->z + 1);
+	px->x = pow(px->x / (px->x + 1), 1. / 2.2);
+	px->y = pow(px->y / (px->y + 1), 1. / 2.2);
+	px->z = pow(px->z / (px->z + 1), 1. / 2.2);
 }

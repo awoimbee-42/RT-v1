@@ -109,7 +109,7 @@ $(LSDL2) : | $(BUILD_FOLDER)
 	@printf "$(EOC)\n"
 $(LFT) :
 	@printf "$(YLW)Making libft...$(EOC)\n"
-	@make -s -j -C libs/libft/
+	@make -s -j$(NUMPROC) -C libs/libft/
 ################################
 
 $(NAME) : $(LFT) $(LSDL2) $(OBJ)
