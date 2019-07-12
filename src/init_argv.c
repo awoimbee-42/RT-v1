@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:12:01 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/07/05 15:07:14 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/07/11 16:19:12 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	init_threads(t_env *env)
 {
 	uint32_t	i;
 
-	env->threads_nb = SDL_GetCPUCount() + 2;
+	env->threads_nb = SDL_GetCPUCount();
 	i = -1;
 	while (++i < env->threads_nb)
 	{
@@ -56,7 +56,7 @@ void	init_sdl(t_env *env)
 		error(SDL_ERR);
 	SDL_SetWindowMinimumSize(env->sdl.win, 100, 100);
 	if (!(sdl->img =
-			malloc(env->disp.w * (env->disp.h + NB_PX_SKIP) * sizeof(uint32_t))))
+			malloc(env->disp.w * (env->disp.h + NB_PX_SKIP + 500) * sizeof(uint32_t))))
 		error(MALLOC_ERR);
 }
 
@@ -65,7 +65,7 @@ void	resize(t_env *env)
 	t_sdl		*sdl;
 
 	sdl = &env->sdl;
-	env->px_skip = 0;
+	env->stop = 1;
 	SDL_WaitThread(env->rndr, NULL);
 	SDL_GetRendererOutputSize(env->sdl.renderer, (int*)&env->disp.w, (int*)&env->disp.h);
 	env->disp.aspect_ratio = (float)env->disp.w / (float)env->disp.h;

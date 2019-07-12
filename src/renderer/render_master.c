@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/07/05 15:07:08 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/07/11 16:18:32 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,19 @@ static uint32_t	*linerndr(t_env *env, int px_skip, uint32_t *restrict img, int v
 {
 	uint32_t		u;
 
-	if (px_skip)
+	u = 0;
+	while (u < env->disp.w && !env->stop)
 	{
-		u = 0;
-		while (u < env->disp.w)
+		if (!(*img & PX_RENDERED))
 		{
-			if (!(*img & PX_RENDERED))
-			{
-				ft_mem32set(img, launch_ray(u, v, env), px_skip);
-				*img |= PX_RENDERED;
-			}
-			img += px_skip;
-			u += px_skip;
+			ft_mem32set(img, launch_ray(u, v, env), px_skip);
+			*img |= PX_RENDERED;
 		}
-		img -= u - env->disp.w;
+		img += px_skip;
+		u += px_skip;
 	}
+	img -= u - env->disp.w;
+
 	return (img);
 }
 
@@ -67,13 +65,21 @@ static int		render_thread(void *vthread)
 	uint32_t		v;
 
 	thread = (t_thread*)vthread;
-	v = thread->line_start;
-	px = thread->px_start;
-	while (v < thread->line_end && thread->env->px_skip)
+	thread->px_skip = NB_PX_SKIP;
+	while (thread->px_skip > 0 && !thread->env->stop)
 	{
-		px = linerndr(thread->env, thread->env->px_skip, px, v);
-		px = linecpy(thread->env->disp.w, thread->env->px_skip, px);
-		v += thread->env->px_skip;
+		v = thread->line_start;
+		px = thread->px_start;
+		px = linerndr(thread->env, thread->px_skip, px, v);
+		v += thread->px_skip;
+		while (v < thread->line_end && !thread->env->stop)
+		{
+			px = linecpy(thread->env->disp.w, thread->px_skip, px);
+			px = linerndr(thread->env, thread->px_skip, px, v);
+			v += thread->px_skip;
+
+		}
+		thread->px_skip -= PX_SKIP_STEP;
 	}
 	return (0);
 }
@@ -90,7 +96,7 @@ void			supersample(t_env *env)
 	px = env->sdl.img;
 	end = &px[env->disp.w * env->disp.h];
 	env->supersampling_rate = 2;
-	while (env->px_skip != 0 && env->supersampling_rate != 20)
+	while (!env->stop && env->supersampling_rate != 20)
 	{
 		ft_bzero(rgb_sum, 3 * sizeof(uint32_t));
 		for (int i = 0; i < env->supersampling_rate; ++i)
@@ -132,26 +138,20 @@ int				render(t_env *env)
 	clock_t			t;
 
 	t = clock();
-	env->px_skip = NB_PX_SKIP;
-	while (env->px_skip > 0)
-	{
-		i = -1;
-		while (++i != env->threads_nb)
-			env->threads[i].ptr = SDL_CreateThread(&render_thread, "",
+	i = -1;
+	while (++i != env->threads_nb)
+		env->threads[i].ptr = SDL_CreateThread(&render_thread, "",
 				&env->threads[i]);
-		i = -1;
-		while (++i != env->threads_nb)
-			SDL_WaitThread(env->threads[i].ptr, NULL);
-		env->px_skip -= PX_SKIP_STEP;
-	}
-	if (env->px_skip != -PX_SKIP_STEP)
+	i = -1;
+	while (++i != env->threads_nb)
+		SDL_WaitThread(env->threads[i].ptr, NULL);
+	if (!env->stop)
 	{
 		t = clock() - t;
 		ft_printf("Time to render: %fms\n",
 			(float)t/CLOCKS_PER_SEC * 1000);
 		supersample(env);
 	}
-	env->px_skip = NB_PX_SKIP;
 	i = env->disp.w * env->disp.h;
 	while (i-- != 0)
 		env->sdl.img[i] &= 0x00FFFFFF;

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/21 00:40:33 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/07/05 15:04:15 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/07/11 16:07:27 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,22 @@
 
 void		check_keys(t_env *env)
 {
-	env->keys & BT_W && !(env->px_skip = 0) ? move_camera(env, 0) : 0;
-	env->keys & BT_A && !(env->px_skip = 0) ? move_camera(env, 2) : 0;
-	env->keys & BT_S && !(env->px_skip = 0) ? move_camera(env, 1) : 0;
-	env->keys & BT_D && !(env->px_skip = 0) ? move_camera(env, 3) : 0;
-	env->keys & BT_RIGHT && !(env->px_skip = 0) ? env->camera.dir.y -= 0.1 : 0;
-	env->keys & BT_LEFT && !(env->px_skip = 0) ? env->camera.dir.y += 0.1 : 0;
-	env->keys & BT_UP && !(env->px_skip = 0) ? env->camera.dir.x += 0.1 : 0;
-	env->keys & BT_DOWN && !(env->px_skip = 0) ? env->camera.dir.x -= 0.1 : 0;
-	env->keys & BT_Q && !(env->px_skip = 0) ? env->camera.org.y -= 0.25 : 0;
-	env->keys & BT_E && !(env->px_skip = 0) ? env->camera.org.y += 0.25 : 0;
-	if (!env->px_skip)
+	if (env->keys)
+		env->stop = 1;
+	env->keys & BT_W ? move_camera(env, 0) : 0;
+	env->keys & BT_A ? move_camera(env, 2) : 0;
+	env->keys & BT_S ? move_camera(env, 1) : 0;
+	env->keys & BT_D ? move_camera(env, 3) : 0;
+	env->keys & BT_RIGHT ? env->camera.dir.y -= 0.1 : 0;
+	env->keys & BT_LEFT ? env->camera.dir.y += 0.1 : 0;
+	env->keys & BT_UP ? env->camera.dir.x += 0.1 : 0;
+	env->keys & BT_DOWN ? env->camera.dir.x -= 0.1 : 0;
+	env->keys & BT_Q ? env->camera.org.y -= 0.25 : 0;
+	env->keys & BT_E ? env->camera.org.y += 0.25 : 0;
+	if (env->stop)
 	{
 		SDL_WaitThread(env->rndr, NULL);
+		env->stop = 0;
 		env->rndr = SDL_CreateThread((int (*)(void *))&render, "", env);
 	}
 }
@@ -34,28 +37,29 @@ void		check_keys(t_env *env)
 void		check_controller(t_env *env, SDL_GameController *cntrlr)
 {
 	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_LEFTY) < -20000
-	&& !(env->px_skip = 0) ? move_camera(env, 0) : 0;
+	&& (env->stop = 1) ? move_camera(env, 0) : 0;
 	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_LEFTY) > 20000
-	&& !(env->px_skip = 0) ? move_camera(env, 1) : 0;
+	&& (env->stop = 1) ? move_camera(env, 1) : 0;
 	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_LEFTX) < -20000
-	&& !(env->px_skip = 0) ? move_camera(env, 2) : 0;
+	&& (env->stop = 1) ? move_camera(env, 2) : 0;
 	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_LEFTX) > 20000
-	&& !(env->px_skip = 0) ? move_camera(env, 3) : 0;
+	&& (env->stop = 1) ? move_camera(env, 3) : 0;
 	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_RIGHTY) < -20000
-	&& !(env->px_skip = 0) ? env->camera.dir.x += 0.1 : 0;
+	&& (env->stop = 1) ? env->camera.dir.x += 0.1 : 0;
 	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_RIGHTY) > 20000
-	&& !(env->px_skip = 0) ? env->camera.dir.x -= 0.1 : 0;
+	&& (env->stop = 1) ? env->camera.dir.x -= 0.1 : 0;
 	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_RIGHTX) < -20000
-	&& !(env->px_skip = 0) ? env->camera.dir.y += 0.1 : 0;
+	&& (env->stop = 1) ? env->camera.dir.y += 0.1 : 0;
 	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_RIGHTX) > 20000
-	&& !(env->px_skip = 0) ? env->camera.dir.y -= 0.1 : 0;
+	&& (env->stop = 1) ? env->camera.dir.y -= 0.1 : 0;
 	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_TRIGGERLEFT) > 20000
-	&& !(env->px_skip = 0) ? env->camera.org.y -= 0.25 : 0;
+	&& (env->stop = 1) ? env->camera.org.y -= 0.25 : 0;
 	SDL_GameControllerGetAxis(cntrlr, SDL_CONTROLLER_AXIS_TRIGGERRIGHT) > 20000
-	&& !(env->px_skip = 0) ? env->camera.org.y += 0.25 : 0;
-	if (!env->px_skip)
+	&& (env->stop = 1) ? env->camera.org.y += 0.25 : 0;
+	if (env->stop)
 	{
 		SDL_WaitThread(env->rndr, NULL);
+		env->stop = 0;
 		env->rndr = SDL_CreateThread((int (*)(void *))&render, "", env);
 	}
 }

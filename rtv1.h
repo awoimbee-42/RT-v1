@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/07/05 15:04:26 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/07/12 17:16:38 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@
 
 # define NB_PX_SKIP		9
 # define PX_SKIP_STEP	4
+# if NB_PX_SKIP % PX_SKIP_STEP != 1 && PX_SKIP_STEP != 1
+#  error "NB_PX_SKIP % PX_SKIP_STEP shall be equal to 1"
+# endif
 
 # define SDL_ERR	1
 # define MALLOC_ERR	2
@@ -258,6 +261,7 @@ typedef struct	s_thread
 {
 	SDL_Thread			*restrict ptr;
 	struct s_env		*env;
+	int					px_skip;
 	uint32_t			line_start;
 	uint32_t			line_end;
 	uint32_t			*restrict px_start;
@@ -275,7 +279,7 @@ typedef struct	s_env
 	t_fcolor			bckgrnd_col;
 	uint32_t			keys;
 	SDL_GameController	*restrict controller;
-	int					px_skip;
+	int					stop;
 	int					supersampling_rate;
 	SDL_Thread			*restrict rndr;
 	uint32_t			threads_nb;
@@ -313,19 +317,6 @@ void			resize(t_env *env);
 /*
 **	operators/flt3_opX.c
 */
-#define INLINE   // __attribute__((always_inline))
-t_flt3			*flt3_add(t_flt3 *a, const t_flt3 *b) INLINE;
-t_flt3			*flt3_sub(t_flt3 *a, const t_flt3 *b) INLINE;
-t_flt3			*flt3_mult(t_flt3 *a, const t_flt3 *b) INLINE;
-t_flt3			*flt3_multf(t_flt3 *a, const float b) INLINE;
-t_flt3			*flt3_div(t_flt3 *a, const t_flt3 *b) INLINE;
-t_flt3			*flt3_divf(t_flt3 *a, const float b) INLINE;
-float			flt3_dot(const t_flt3 *a, const t_flt3 *b) INLINE;
-float			flt3_mod(const t_flt3 *a) INLINE;
-float			flt3_mod2(const t_flt3 *a) INLINE;
-t_flt3			*flt3_normalize(t_flt3 *a) INLINE;
-t_flt3			*flt3_cross(t_flt3 *a, const t_flt3 *b) INLINE;
-t_flt3			*flt3_addf(t_flt3 *a, const float b) INLINE;
 
 /*
 **	t_obj/dist.c
@@ -349,10 +340,6 @@ t_vec3			norm_triangle(const union u_object *obj, const t_vec3 *hit);
 /*
 **	operators/special_op.c
 */
-unsigned int	srgb(const t_fcolor *color);
-t_fcolor		*light_drop(t_fcolor *light, const float dist);
-void			tone_map(t_fcolor *px);
-t_vec3			get_reflection(t_vec3 d, t_vec3 n);
 
 /*
 **	operators/light.c
@@ -375,5 +362,141 @@ void			move_camera(t_env *env, int dir);
 void			loop(t_env *env, SDL_GameController *controller);
 void			key_pressed(SDL_Keycode key, t_env *env);
 void			key_released(SDL_Keycode key, t_env *env);
+
+inline t_flt3		*flt3_divf(t_flt3 *restrict a, const float b)
+{
+	a->x /= b;
+	a->y /= b;
+	a->z /= b;
+	return (a);
+}
+
+inline t_flt3		*flt3_addf(t_flt3 *restrict a, const float b)
+{
+	a->x += b;
+	a->y += b;
+	a->z += b;
+	return (a);
+}
+
+inline t_flt3		*flt3_multf(t_flt3 *restrict a, const float b)
+{
+	a->x *= b;
+	a->y *= b;
+	a->z *= b;
+	return (a);
+}
+
+static inline t_flt3		*flt3_add(t_flt3 *restrict a, const t_flt3 *restrict b)
+{
+	a->x += b->x;
+	a->y += b->y;
+	a->z += b->z;
+	return (a);
+}
+
+inline t_flt3		*flt3_sub(t_flt3 *restrict a, const t_flt3 *restrict b)
+{
+	a->x -= b->x;
+	a->y -= b->y;
+	a->z -= b->z;
+	return (a);
+}
+
+inline t_flt3		*flt3_mult(t_flt3 *restrict a, const t_flt3 *restrict b)
+{
+	a->x *= b->x;
+	a->y *= b->y;
+	a->z *= b->z;
+	return (a);
+}
+
+inline t_flt3		*flt3_div(t_flt3 *restrict a, const t_flt3 *restrict b)
+{
+	a->x /= b->x;
+	a->y /= b->y;
+	a->z /= b->z;
+	return (a);
+}
+
+inline float	flt3_dot(const t_flt3 *a, const t_flt3 *b)
+{
+	return (a->x * b->x + a->y * b->y + a->z * b->z);
+}
+
+inline float	flt3_mod(const t_flt3 *a)
+{
+	return (sqrtf(flt3_dot(a, a)));
+}
+
+inline float	flt3_mod2(const t_flt3 *a)
+{
+	return (a->x * a->x + a->y * a->y + a->z * a->z);
+}
+
+/*
+**	WILL return a NaN vector when you pass a null vector
+*/
+
+inline t_flt3	*flt3_normalize(t_flt3 *a)
+{
+	flt3_divf(a, sqrt(a->x * a->x + a->y * a->y + a->z * a->z));
+	return (a);
+}
+
+inline t_flt3	*flt3_cross(t_flt3 *restrict a, const t_flt3 *restrict b)
+{
+	float	a1;
+	float	a2;
+
+	a1 = a->x;
+	a2 = a->y;
+	a->x = a->y * b->z - a->z * b->y;
+	a->y = a->z * b->x - a1 * b->z;
+	a->z = a1 * b->y - a2 * b->x;
+	return (a);
+}
+
+inline t_vec3			get_reflection(t_vec3 d, t_vec3 n)
+{
+	flt3_multf(&n, 2. * flt3_dot(&d, &n));
+	flt3_sub(&d, &n);
+	return (d);
+}
+
+inline t_fcolor		*light_drop(t_fcolor *light, const float dist)
+{
+	float		dist2;
+
+	dist2 = dist * dist;
+	light->x /= dist2;
+	light->y /= dist2;
+	light->z /= dist2;
+	return (light);
+}
+
+inline uint32_t		srgb(const t_fcolor *color)
+{
+	return (
+		((unsigned int)(color->z * 255) & 0xFFU)
+		+ ((((unsigned int)(color->y * 255)) << 8) & 0xFF00)
+		+ ((((unsigned int)(color->x * 255)) << 16) & 0xFF0000)
+		+ (0U << 24));
+}
+
+/*
+**	The power of 1/2.2 thing is gamma correction
+**	Possible optimization: do sqrt(x) instead of pow(x, 1/2.2) (less accurate)
+*/
+
+inline void			tone_map(t_fcolor *px)
+{
+	px->x = pow(px->x / (px->x + 1), 1. / 2.2);
+	px->y = pow(px->y / (px->y + 1), 1. / 2.2);
+	px->z = pow(px->z / (px->z + 1), 1. / 2.2);
+}
+
+
+
 
 #endif
