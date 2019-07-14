@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/07/12 17:16:38 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/07/14 15:29:49 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 */
 
 # define NB_PX_SKIP		9
-# define PX_SKIP_STEP	4
+# define PX_SKIP_STEP	8
 # if NB_PX_SKIP % PX_SKIP_STEP != 1 && PX_SKIP_STEP != 1
 #  error "NB_PX_SKIP % PX_SKIP_STEP shall be equal to 1"
 # endif
@@ -293,7 +293,8 @@ typedef struct	s_env
 */
 
 int				render(t_env *env);
-uint32_t		launch_ray(const int x, const int y, const t_env *env);
+void			supersample(t_env *env);
+uint32_t		launch_ray(const int x, const int y, const t_env *env, float sampling);
 
 /*
 **	main.c

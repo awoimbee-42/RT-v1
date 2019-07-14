@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 19:24:45 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/07/05 14:49:49 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/07/14 15:29:34 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,15 @@ static t_fcolor	ray_intsect(const t_env *env, const t_ray *ray, int bounce)
 **		hits == the ray direction
 */
 
-uint32_t		launch_ray(const int x, const int y, const t_env *env)
+uint32_t		launch_ray(const int x, const int y, const t_env *env, float sampling)
 {
 	t_vec3			screen_point;
 
 	screen_point = (t_vec3)
 	{
-		(2.0 * (x + 0.5) / (float)(env->disp.w * env->supersampling_rate) - 1.0)
+		(2.0 * (x + 0.5) / (env->disp.w * sampling) - 1.0)
 			* env->disp.tfov * env->disp.aspect_ratio,
-		(1.0 - 2.0 * (y + 0.5) / (float)(env->disp.h * env->supersampling_rate)) * env->disp.tfov,
+		(1.0 - 2.0 * (y + 0.5) / (env->disp.h * sampling)) * env->disp.tfov,
 		1.0
 	};
 	apply_camera_rot(env, &screen_point);

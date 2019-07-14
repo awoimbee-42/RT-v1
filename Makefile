@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/07/11 16:15:25 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/07/14 15:23:39 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ SRC_NAME =	main.c							\
 			renderer/calc_light.c				\
 			renderer/render_master.c			\
 			renderer/launch_ray.c				\
+			renderer/supersample.c				\
 			\
 			operators/flt3_op0.c				\
 			operators/flt3_op1.c				\
