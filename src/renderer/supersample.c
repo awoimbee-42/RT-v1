@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/14 15:08:08 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/07/14 15:46:32 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/08/21 23:59:35 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,37 +26,24 @@ static int		supersample_thread(void *vthread)
 	px = &thread->env->sdl.img[thread->line_start * thread->env->disp.w];
 	end = &thread->env->sdl.img[thread->line_end * thread->env->disp.w];
 	super_px[0] = 0;
-	super_px[1] = thread->line_start * thread->px_skip;
+	super_px[1] = thread->line_start;
 	while (!thread->env->stop && thread->px_skip != 10)
 	{
-		ft_bzero(rgb_sum, 3 * sizeof(uint32_t));
-		for (int i = 0; i < thread->px_skip; ++i)
-		{
-			for (int j = 0; j < thread->px_skip; ++j) {
-				*px = launch_ray(super_px[0], super_px[1] + j, thread->env, thread->px_skip);
-				rgb_sum[0] += ((uint8_t*)px)[0];
-				rgb_sum[1] += ((uint8_t*)px)[1];
-				rgb_sum[2] += ((uint8_t*)px)[2];
-			}
-			++super_px[0];
-		}
-		rgb_sum[0] /= thread->px_skip * thread->px_skip;
-		rgb_sum[1] /= thread->px_skip * thread->px_skip;
-		rgb_sum[2] /= thread->px_skip * thread->px_skip;
-		*px = rgb_sum[0] + (rgb_sum[1] << 8) + (rgb_sum[2] << 16);
+		*px = launch_ray_supersample(super_px[0], super_px[1], thread->env, thread->px_skip);
 		++px;
+		++super_px[0];
 
-		if (super_px[0] == thread->env->disp.w * thread->px_skip)
+		if (super_px[0] == thread->env->disp.w)
 		{
 			super_px[0] = 0;
-			super_px[1] += thread->px_skip;
+			super_px[1] += 1;
 		}
 		if (px == end)
 		{
 			px = &thread->env->sdl.img[thread->line_start * thread->env->disp.w];
 			++thread->px_skip;
 			super_px[0] = 0;
-			super_px[1] = thread->line_start * thread->px_skip;
+			super_px[1] = thread->line_start;
 		}
 	}
 	return (0);

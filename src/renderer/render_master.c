@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/07/14 15:43:36 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/08/21 23:29:26 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static uint32_t	*linerndr(t_env *env, int px_skip, uint32_t *restrict img, int v
 	{
 		if (!(*img & PX_RENDERED))
 		{
-			ft_mem32set(img, launch_ray(u, v, env, 1), px_skip);
+			ft_mem32set(img, launch_ray(u, v, env), px_skip);
 			*img |= PX_RENDERED;
 		}
 		img += px_skip;

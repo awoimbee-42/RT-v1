@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:37:06 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/07/14 15:29:49 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/08/21 23:47:40 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -294,7 +294,8 @@ typedef struct	s_env
 
 int				render(t_env *env);
 void			supersample(t_env *env);
-uint32_t		launch_ray(const int x, const int y, const t_env *env, float sampling);
+uint32_t		launch_ray(const int x, const int y, const t_env *env);
+uint32_t		launch_ray_supersample(const int x, const int y, const t_env *env, int sampling);
 
 /*
 **	main.c
