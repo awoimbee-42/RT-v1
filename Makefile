@@ -6,13 +6,13 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/26 22:06:19 by marvin            #+#    #+#              #
-#    Updated: 2019/08/22 00:13:32 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/08/24 00:43:53 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	rtv1
 
-CFLAGS	=	-g3 -O1#-Wall -Wextra -Ofast -march=native -ftree-vectorize -fstrict-aliasing  #-fopt-info-vec-optimized -Werror
+CFLAGS	=	-Wall -Wextra -Ofast -march=native -ftree-vectorize -fstrict-aliasing #-fopt-info-vec-optimized -Werror
 
 SRC_NAME =	main.c							\
 			init_argv.c						\
@@ -25,10 +25,6 @@ SRC_NAME =	main.c							\
 			renderer/launch_ray.c				\
 			renderer/supersample.c				\
 			\
-			operators/flt3_op0.c				\
-			operators/flt3_op1.c				\
-			operators/flt3_op2.c				\
-			operators/light.c					\
 			operators/camera.c					\
 			\
 			parser/env_disp_cam.c				\
@@ -49,7 +45,7 @@ BUILD_FOLDER =	build
 CC = gcc
 LDLIBS = -lft -lm -lSDL2 -lpthread
 LDFLAGS = -L./libs/libft -L$(DEPS_FOLDER)/lib #-Wl,-rpath=`pwd`/sdl2/lib
-CFLAGS += -MMD -I./ -isystem$(BUILD_FOLDER)/include/ -I./libs/libft
+CFLAGS += -MMD -I./ -I./src/operators -I./src -isystem$(BUILD_FOLDER)/include/ -I./libs/libft
 
 SDL_OPTIONS =	-q									\
 				--prefix=$(DEPS_PATH)				\

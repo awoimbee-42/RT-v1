@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 10:36:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/07/11 15:21:02 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/08/24 00:41:57 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,21 @@ void	error(int err_nb)
 		ft_fprintf(2, "Unknown error number: %d\n", err_nb);
 	exit(EXIT_FAILURE);
 }
+
+/*
+**	All the crashes in here are caused by
+**	/usr/lib/libnvidia-glcore.so.430.40
+**
+**	#0  0x00007ffff7b96c90 in free () from /usr/lib/libc.so.6
+**	#1  0x00007ffff55d1a34 in ?? () from /usr/lib/libnvidia-glcore.so.430.40
+**	#2  0x00007ffff5209bed in ?? () from /usr/lib/libnvidia-glcore.so.430.40
+**	#3  0x00007ffff56c1d72 in ?? () from /usr/lib/libnvidia-glcore.so.430.40
+**	#4  0x00007ffff53226bf in ?? () from /usr/lib/libnvidia-glcore.so.430.40
+**	#5  0x00007ffff52e4623 in ?? () from /usr/lib/libnvidia-glcore.so.430.40
+**	#6  0x00007ffff7d3ce39 in ?? () from /usr/lib/libSDL2-2.0.so.0
+**	#7  0x00007ffff7d3925d in ?? () from /usr/lib/libSDL2-2.0.so.0
+**	#8  0x00005555555565a3 in exit_cleanly (env=0x555555566260) at src/main.c:49
+*/
 
 void	exit_cleanly(t_env *env)
 {

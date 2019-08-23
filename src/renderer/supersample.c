@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/14 15:08:08 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/08/21 23:59:35 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/08/24 00:22:36 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,32 +18,31 @@ static int		supersample_thread(void *vthread)
 	t_thread		*thread;
 	uint32_t		*px;
 	uint32_t		*end;
-	uint32_t		rgb_sum[3];
-	uint32_t		super_px[2];
+	uint32_t		xy[2];
 
 	thread = (t_thread*)vthread;
 	thread->px_skip = 2;
 	px = &thread->env->sdl.img[thread->line_start * thread->env->disp.w];
 	end = &thread->env->sdl.img[thread->line_end * thread->env->disp.w];
-	super_px[0] = 0;
-	super_px[1] = thread->line_start;
+	xy[0] = 0;
+	xy[1] = thread->line_start;
 	while (!thread->env->stop && thread->px_skip != 10)
 	{
-		*px = launch_ray_supersample(super_px[0], super_px[1], thread->env, thread->px_skip);
+		*px = launch_ray_supersample(xy[0], xy[1], thread->env, thread->px_skip);
 		++px;
-		++super_px[0];
+		++xy[0];
 
-		if (super_px[0] == thread->env->disp.w)
+		if (xy[0] == thread->env->disp.w)
 		{
-			super_px[0] = 0;
-			super_px[1] += 1;
+			xy[0] = 0;
+			xy[1] += 1;
 		}
 		if (px == end)
 		{
 			px = &thread->env->sdl.img[thread->line_start * thread->env->disp.w];
 			++thread->px_skip;
-			super_px[0] = 0;
-			super_px[1] = thread->line_start;
+			xy[0] = 0;
+			xy[1] = thread->line_start;
 		}
 	}
 	return (0);

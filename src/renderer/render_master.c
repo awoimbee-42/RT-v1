@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:15:44 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/08/21 23:29:26 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/08/24 00:41:43 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ static uint32_t	*linerndr(t_env *env, int px_skip, uint32_t *restrict img, int v
 		img += px_skip;
 		u += px_skip;
 	}
-	img -= u - env->disp.w;
-
+	if (u > env->disp.w) // if u < disp.w, u - env->disp.w underflows !
+		img -= u - env->disp.w;
 	return (img);
 }
 
@@ -51,13 +51,6 @@ static uint32_t	*linecpy(int scrn_w, int px_skip, uint32_t *restrict img)
 	return (img);
 }
 
-/*
-**	Apparently linecpy overflows at the end...
-**	One solution is to malloc more lines at the begining
-**	Yes, it's bad.
-**	But it works.
-*/
-
 static int		render_thread(void *vthread)
 {
 	t_thread		*thread;
@@ -70,12 +63,15 @@ static int		render_thread(void *vthread)
 	{
 		v = thread->line_start;
 		px = thread->px_start;
-		while (v < thread->line_end && !thread->env->stop)
-		{
+		for (; v < thread->line_end && !thread->env->stop; ++v) // temporary fix ?
 			px = linerndr(thread->env, thread->px_skip, px, v);
-			px = linecpy(thread->env->disp.w, thread->px_skip, px);
-			v += thread->px_skip;
-		}
+		// race conditions and weird bugs
+		// while (v < thread->line_end && !thread->env->stop)
+		// {
+		// 		px = linerndr(thread->env, thread->px_skip, px, v);
+		// 		px = linecpy(thread->env->disp.w, thread->px_skip, px); 
+		// 	v += thread->px_skip;
+		// }
 		thread->px_skip -= PX_SKIP_STEP;
 	}
 	return (0);

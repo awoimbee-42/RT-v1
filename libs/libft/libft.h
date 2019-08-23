@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/23 20:34:49 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/07/05 15:10:43 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/08/24 00:23:00 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ double			ft_atof_mv(char **nptr);
 int				ft_atoi_mv(char **nptr);
 int				ft_maxint(int a, int b);
 long			ft_maxlong(long a, long b);
-uint			ft_maxuint(uint a, uint b);
+unsigned int	ft_maxuint(unsigned int a, unsigned int b);
 
 /*
 **	#################### LIBCHAR ###################
