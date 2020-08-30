@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   launch_ray.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arthur <arthur@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 19:24:45 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/08/21 23:50:10 by awoimbee         ###   ########.fr       */
+/*   Updated: 2020/08/30 23:15:45 by arthur           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,18 +78,17 @@ uint32_t		launch_ray_supersample(const int x, const int y, const t_env *env, int
 	float			px_step;
 
 	px_col = (t_fcolor){0, 0, 0};
-	px_step = 1. / (sampling + 1);
-	px_coord = (t_flt2){x + px_step, y + px_step};
-	px_step = 1. / (sampling + 1);
+	px_step = 1. / (sampling);
+	px_coord = (t_flt2){x * sampling , y * sampling};
 	for (int _i = 0; _i < sampling; ++_i, px_coord.x += px_step)
 	{
 		for (int _j = 0; _j < sampling; ++_j, px_coord.y += px_step)
 		{
 			screen_point = (t_vec3)
 			{
-				(2.0 * px_coord.x / ((float)env->disp.w) - 1.0)
+				(2.0 * (px_coord.x + 0.5) / (env->disp.w * sampling) - 1.0)
 					* env->disp.tfov * env->disp.aspect_ratio,
-				(1.0 - 2.0 * px_coord.y / ((float)env->disp.h)) * env->disp.tfov,
+				(1.0 - 2.0 * (px_coord.y + 0.5) / (env->disp.h * sampling)) * env->disp.tfov,
 				1.0
 			};
 			apply_camera_rot(env, &screen_point);
