@@ -36,8 +36,9 @@ int			tobj_parse(t_obj *obj, char *line, int *done,
 
 static int	create_obj_arr(int fd, t_env *env, char *line)
 {
-	int		done;
-	uint	linenb;
+	int			done;
+	unsigned int	linenb;
+	char		*tmp;
 
 	linenb = env->keys;
 	done = 0;
@@ -48,6 +49,11 @@ static int	create_obj_arr(int fd, t_env *env, char *line)
 			|| !ft_strcmp(line, "\tDisk") || !ft_strcmp(line, "\tCylinder")
 			|| !ft_strcmp(line, "\tCone") || !ft_strcmp(line, "\tTriangle"))
 			env->objs_nb += 1;
+		else if (!ft_strncmp(line, "\tOBJ ", 5))
+		{
+			tmp = line + 5;
+			env->objs_nb += ft_atoi(tmp);
+		}
 		else if (!ft_strcmp(line, "}") && (done = 1))
 			break ;
 		ft_memdel((void*)&line);
@@ -68,6 +74,7 @@ static int	create_obj_arr(int fd, t_env *env, char *line)
 void		parse_objects(int fd, t_env *env, char *line, int obj_nb)
 {
 	int		done;
+	int		expected_count;
 
 	done = 0;
 	parse_open_bracket(fd, &env->keys);
@@ -87,6 +94,14 @@ void		parse_objects(int fd, t_env *env, char *line, int obj_nb)
 			env->objs_arr[obj_nb] = parse_cone(fd, &env->keys);
 		else if (!ft_strcmp(line, "\tTriangle") && --obj_nb >= 0)
 			env->objs_arr[obj_nb] = parse_triangle(fd, &env->keys);
+		else if (!ft_strncmp(line, "\tOBJ ", 5))
+		{
+			expected_count = ft_atoi(line + 5);
+			if (expected_count > obj_nb)
+				ft_msg_exit("OBJ: expected count exceeds remaining slots\n", NULL);
+			obj_nb -= expected_count;
+			parse_obj_file(fd, &env->keys, &env->objs_arr[obj_nb], expected_count);
+		}
 		else if ((!ft_strcmp(line, "}") && (done = 1)) || 1)
 			break ;
 		ft_memdel((void*)&line);

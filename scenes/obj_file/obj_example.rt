@@ -1,0 +1,40 @@
+RICARD >>> PASTIS
+
+env
+	.background_light = {0., 0, 0};
+
+display
+	.width = 800
+	.height = 800
+	.fov = 75;
+
+camera
+	.pos = {0., 3., -40.}
+	.dir = {0., 0, 0};
+
+objects[2] :
+{
+	Plane
+		.origin = {0, -5, 0}
+		.normal = {0, 1, 0}
+		.color = {0.9, 0.02, 0.9}
+		.specular = 0.1
+		.diffuse = 0.5;
+	OBJ 10518
+		.file = ./scenes/obj_file/body_highpoly.obj
+		.position = {0, 0, 0}
+		.scale = 0.3
+		.color = {0.9, 0.6, 0.4}
+		.specular = 0.3
+		.diffuse = 0.7;
+}
+
+lights[2] :
+{
+	Light
+		.position = {0, 40, -100}
+		.intensity = {500, 500, 500};
+	Light
+		.position = {0, 40, 100}
+		.intensity = {500, 500, 500};
+}

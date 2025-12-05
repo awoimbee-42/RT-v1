@@ -33,13 +33,13 @@ static uint32_t	*linerndr(t_env *env, int px_skip, uint32_t *restrict img, int v
 	return (img);
 }
 
-static uint32_t	*linecpy(int scrn_w, int px_skip, uint32_t *restrict img)
+static uint32_t	*linecpy(int *stop, int scrn_w, int px_skip, uint32_t *restrict img)
 {
 	uint32_t		tmp;
 
 	if (scrn_w <= 20)
 		__builtin_unreachable();
-	while (--px_skip > 0)
+	while (--px_skip > 0 && !*stop)
 	{
 		tmp = scrn_w;
 		while (tmp--)
@@ -55,23 +55,22 @@ static int		render_thread(void *vthread)
 {
 	t_thread		*thread;
 	uint32_t		*px;
-	uint32_t		v;
+	uint32_t		line;
+	uint32_t		lines_to_copy;
 
 	thread = (t_thread*)vthread;
 	thread->px_skip = NB_PX_SKIP;
 	while (thread->px_skip > 0 && !thread->env->stop)
 	{
-		v = thread->line_start;
+		line = thread->line_start;
 		px = thread->px_start;
-		for (; v < thread->line_end && !thread->env->stop; ++v) // temporary fix ?
-			px = linerndr(thread->env, thread->px_skip, px, v);
-		// race conditions and weird bugs
-		// while (v < thread->line_end && !thread->env->stop)
-		// {
-		// 		px = linerndr(thread->env, thread->px_skip, px, v);
-		// 		px = linecpy(thread->env->disp.w, thread->px_skip, px); 
-		// 	v += thread->px_skip;
-		// }
+		while (line < thread->line_end && !thread->env->stop)
+		{
+			px = linerndr(thread->env, thread->px_skip, px, line);
+			lines_to_copy = ft_minuint(thread->px_skip, thread->line_end - line);
+			px = linecpy(&thread->env->stop, thread->env->disp.w, lines_to_copy, px);
+			line += thread->px_skip;
+		}
 		thread->px_skip -= PX_SKIP_STEP;
 	}
 	return (0);

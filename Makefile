@@ -33,7 +33,7 @@ SRC_NAME =	main.c							\
 			parser/obj_individual.c				\
 			parser/scene.c						\
 			parser/support_funs.c				\
-			parser/load_obj.c
+			parser/load_obj_file.c
 
 SRC_FOLDERS = operators t_obj parser renderer
 DEPS_FOLDER =	dependencies
@@ -44,7 +44,7 @@ BUILD_FOLDER =	build
 ################################################################################
 CC = gcc
 LDLIBS = -lft -lm -lSDL2 -lpthread
-LDFLAGS = -L./libs/libft -L$(DEPS_FOLDER)/lib #-Wl,-rpath=`pwd`/sdl2/lib
+LDFLAGS = -L./libs/libft -L$(DEPS_FOLDER)/lib -L$(DEPS_FOLDER)/lib64 #-Wl,-rpath=`pwd`/sdl2/lib
 CFLAGS += -MMD -I./ -I./src/operators -I./src -isystem$(BUILD_FOLDER)/include/ -I./libs/libft
 
 SDL_OPTIONS =	-q									\
@@ -79,7 +79,7 @@ BUILD_PATH = $(REPO_PATH)/$(BUILD_FOLDER)
 SRC_FOLDER =	src
 OBJ_FOLDER = $(BUILD_FOLDER)/obj
 DIRS = $(BUILD_FOLDER) $(DEPS_PATH) $(OBJ_FOLDER) $(addprefix $(OBJ_FOLDER)/,$(SRC_FOLDERS))
-LSDL2 = $(DEPS_PATH)/lib/libSDL2.a
+LSDL2 = $(DEPS_PATH)/lib*/libSDL2.a $(BUILD_PATH)/include/SDL2/SDL.h
 LFT = libs/libft/libft.a
 
 SRC = $(addprefix $(SRC_FOLDER)/,$(SRC_NAME))
@@ -92,7 +92,6 @@ OBJ = $(addprefix $(OBJ_FOLDER)/,$(SRC_NAME:.c=.o))
 all : $(NAME)
 
 ############## LIBS ############
-$(BUILD_FOLDER)/include/SDL2 : $(LSDL2)
 $(LSDL2) : | $(BUILD_FOLDER)
 	@printf "$(YLW)Making SDL2...$(EOC)\n"
 	@mkdir -p $(BUILD_PATH)/sdl2

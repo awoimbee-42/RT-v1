@@ -46,6 +46,8 @@ t_obj		parse_disk(int fd, uint32_t *line_nb);
 t_obj		parse_cylinder(int fd, uint32_t *line_nb);
 t_obj		parse_cone(int fd, uint32_t *line_nb);
 t_obj		parse_triangle(int fd, uint32_t *line_nb);
+void		parse_obj_file(int fd, unsigned int *line_nb, t_obj *obj_arr,
+				int expected_count);
 
 void		parse_open_bracket(int fd, uint32_t *line_nb);
 float		parse_f(char *str, unsigned int line_nb, float min);
