@@ -37,7 +37,7 @@ t_obj		parse_cone(int fd, uint32_t *line_nb)
 		ft_memdel((void**)&line);
 	}
 	ft_memdel((void**)&line);
-	d != 0xFFFFFFF ? msg_exit("Bad format in Cone near line %d\n", line_nb) : 0;
+	d != 0xFFFFFFF ? ft_msg_exit("Bad format in Cone near line %d\n", line_nb) : 0;
 	flt3_normalize(&cone.this.cone.dir);
 	return (cone);
 }
@@ -67,7 +67,7 @@ t_obj		parse_cylinder(int fd, unsigned int *line_nb)
 	}
 	ft_memdel((void**)&line);
 	if (d != 0xFFFFFFF)
-		msg_exit("Bad format in Cylinder, around line %d\n", line_nb);
+		ft_msg_exit("Bad format in Cylinder, around line %d\n", line_nb);
 	return (cyl);
 }
 
@@ -94,7 +94,7 @@ t_obj		parse_sphere(int fd, unsigned int *line_nb)
 	}
 	ft_memdel((void**)&line);
 	if (d != 0xFFFFFF)
-		msg_exit("Bad format in Sphere, around line %d\n", line_nb);
+		ft_msg_exit("Bad format in Sphere, around line %d\n", line_nb);
 	return (sphere);
 }
 
@@ -122,7 +122,7 @@ t_obj		parse_plane(int fd, unsigned int *line_nb)
 	}
 	ft_memdel((void**)&line);
 	if (done != 0xFFFFFF)
-		msg_exit("Bad format in plane, around line %d\n", line_nb);
+		ft_msg_exit("Bad format in plane, around line %d\n", line_nb);
 	return (plane);
 }
 
@@ -151,7 +151,7 @@ t_obj		parse_disk(int fd, unsigned int *line_nb)
 	}
 	ft_memdel((void**)&line);
 	if (done != 0xFFFFFFF)
-		msg_exit("Bad format in disk, around line %d\n", line_nb);
+		ft_msg_exit("Bad format in disk, around line %d\n", line_nb);
 	return (disk);
 }
 
@@ -180,6 +180,6 @@ t_obj		parse_triangle(int fd, unsigned int *line_nb)
 	}
 	ft_memdel((void**)&line);
 	if (done != 0xFFFFFFF)
-		msg_exit("Bad format in triangle, around line %d\n", line_nb);
+		ft_msg_exit("Bad format in triangle, around line %d\n", line_nb);
 	return (tri);
 }

@@ -34,10 +34,10 @@ static int	init_parser(int *done, t_env *env, const char *filename)
 	scene_defaults(env);
 	*done = 0;
 	if ((fd = open(filename, O_RDONLY)) == -1)
-		msg_exit("could not open file \"%s\"", filename);
+		ft_msg_exit("could not open file \"%s\"", filename);
 	if (read(fd, buff, FILE_HEADER_LEN) != FILE_HEADER_LEN
 		|| ft_strncmp(buff, FILE_HEADER, FILE_HEADER_LEN))
-		msg_exit("Incorrect file type. (file header not found)", NULL);
+		ft_msg_exit("Incorrect file type. (file header not found)", NULL);
 	return (fd);
 }
 

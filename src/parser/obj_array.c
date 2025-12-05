@@ -53,7 +53,7 @@ static int	create_obj_arr(int fd, t_env *env, char *line)
 		ft_memdel((void*)&line);
 	}
 	ft_memdel((void*)&line);
-	!done ? msg_exit("Objects : bad characters line: %d", &linenb) : (void)0;
+	!done ? ft_msg_exit("Objects : bad characters line: %d", &linenb) : (void)0;
 	if (!(env->objs_arr = malloc(sizeof(t_obj) * (env->objs_nb + 1))))
 		error(MALLOC_ERR);
 	lseek(fd, 0, SEEK_SET);
@@ -92,6 +92,6 @@ void		parse_objects(int fd, t_env *env, char *line, int obj_nb)
 		ft_memdel((void*)&line);
 	}
 	ft_memdel((void*)&line);
-	obj_nb != 0 ? msg_exit("%d objects more/less in def\n", &obj_nb) : (void)0;
-	!done ? msg_exit("U didn't close bracket for objects!", 0) : (void)0;
+	obj_nb != 0 ? ft_msg_exit("%d objects more/less in def\n", &obj_nb) : (void)0;
+	!done ? ft_msg_exit("U didn't close bracket for objects!", 0) : (void)0;
 }

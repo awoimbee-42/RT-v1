@@ -22,7 +22,7 @@ void	load_obj(const t_flt3 *pos)
 	t_objgrp	modl;
 
 	if (!(fd = open("model.obj", O_RDONLY)))
-		msg_exit("EIOOOOPWHGBVVCJDS:LFHFUPREGOWEF(could NOT OpEn FiLeE)", NULL);
+		ft_msg_exit("EIOOOOPWHGBVVCJDS:LFHFUPREGOWEF(could NOT OpEn FiLeE)", NULL);
 	file_o_id = 1;
 	o_nb = 0;
 	while (get_next_line(fd, &line))

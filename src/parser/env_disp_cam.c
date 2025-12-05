@@ -33,7 +33,7 @@ void	parse_env(int fd, t_env *env)
 	}
 	ft_memdel((void**)&line);
 	if (!done)
-		msg_exit("Bad format in env, around line %d\n", &env->keys);
+		ft_msg_exit("Bad format in env, around line %d\n", &env->keys);
 }
 
 void	parse_disp(int fd, t_env *env)
@@ -60,7 +60,7 @@ void	parse_disp(int fd, t_env *env)
 		ft_memdel((void**)&line);
 	}
 	ft_memdel((void**)&line);
-	(done != 0xFFFF) ? msg_exit("Error line %d\n", &env->keys) : 0;
+	(done != 0xFFFF) ? ft_msg_exit("Error line %d\n", &env->keys) : 0;
 	env->disp.aspect_ratio = (float)env->disp.w / env->disp.h;
 	env->disp.tfov = tan(env->disp.tfov / 2 * M_PI / 180);
 }
@@ -86,5 +86,5 @@ void	parse_camera(int fd, t_env *env)
 	}
 	ft_memdel((void**)&line);
 	if (done != 0xFFF || flt3_mod(&env->camera.dir) > 20)
-		msg_exit("Bad format in camera, around line %d\n", &env->keys);
+		ft_msg_exit("Bad format in camera, around line %d\n", &env->keys);
 }

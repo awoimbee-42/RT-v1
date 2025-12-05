@@ -42,16 +42,16 @@ t_flt3		parse_f3(char *str, unsigned int line_nb, float min)
 	if (*str != '='
 		|| *(str = skip_whitespaces(str + 1)) != '{'
 		|| *(str = skip_whitespaces(str + 1)) == 0)
-		msg_exit("error around '=' sign line %d!\n", &line_nb);
+		ft_msg_exit("error around '=' sign line %d!\n", &line_nb);
 	res.x = ft_atof_mv(&str);
 	if (res.x < min || *(str = skip_whitespaces(str)) != ',' || !*++str)
-		msg_exit("',' not found or bad value line %d\n", &line_nb);
+		ft_msg_exit("',' not found or bad value line %d\n", &line_nb);
 	res.y = ft_atof_mv(&str);
 	if (res.y < min || *(str = skip_whitespaces(str)) != ',' || !*++str)
-		msg_exit("',' not found or bad value line %d\n", &line_nb);
+		ft_msg_exit("',' not found or bad value line %d\n", &line_nb);
 	res.z = ft_atof_mv(&str);
 	if (res.z < min || *(str = skip_whitespaces(str)) != '}')
-		msg_exit("'}' not found or bad value line %d\n", &line_nb);
+		ft_msg_exit("'}' not found or bad value line %d\n", &line_nb);
 	return (res);
 }
 
@@ -60,13 +60,13 @@ float		parse_f(char *str, unsigned int line_nb, float min)
 	float	res;
 
 	if (*(str = skip_whitespaces(str)) != '=')
-		msg_exit("'=' sign not found line %d!\n", &line_nb);
+		ft_msg_exit("'=' sign not found line %d!\n", &line_nb);
 	++str;
 	res = ft_atof_mv(&str);
 	if (res < min)
-		msg_exit("What exactly are you trying to do here ? line %d", &line_nb);
+		ft_msg_exit("What exactly are you trying to do here ? line %d", &line_nb);
 	if (!is_comment(str = skip_whitespaces(str)) && *str != ';')
-		msg_exit("Garbage at end of line %d\n", &line_nb);
+		ft_msg_exit("Garbage at end of line %d\n", &line_nb);
 	return (res);
 }
 
@@ -76,6 +76,6 @@ void		parse_open_bracket(int fd, unsigned int *line_nb)
 
 	++*line_nb;
 	if (get_next_line(fd, &line) <= 0 || ft_strcmp(line, "{") != 0)
-		msg_exit("Bad openning bracket line %d\n", line_nb);
+		ft_msg_exit("Bad openning bracket line %d\n", line_nb);
 	ft_memdel((void**)&line);
 }

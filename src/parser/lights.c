@@ -35,7 +35,7 @@ static t_light	parse_light(int fd, unsigned int *line_nb)
 	}
 	ft_memdel((void**)&line);
 	if (done != 0xFFF)
-		msg_exit("Bad format in Light, around line %d\n", line_nb);
+		ft_msg_exit("Bad format in Light, around line %d\n", line_nb);
 	return (light);
 }
 
@@ -46,11 +46,11 @@ static int		create_array(t_env *env, char *line)
 	while (*line != '\0' && *line != '[')
 		++line;
 	if (!*line || !*++line)
-		msg_exit("Bad format line %d\n", &env->keys);
+		ft_msg_exit("Bad format line %d\n", &env->keys);
 	lights_nb = ft_atoi_mv(&line);
 	if (ft_strncmp(line, "] :", 3) != 0 || lights_nb < 0
 		|| lights_nb > MAX_LIGHTS)
-		msg_exit("Bad character after size line %d\n", &env->keys);
+		ft_msg_exit("Bad character after size line %d\n", &env->keys);
 	if (!(env->light_arr = malloc(sizeof(t_light) * (lights_nb + 1))))
 		error(MALLOC_ERR);
 	env->light_arr[lights_nb] = (t_light){(t_coords){0, 0, 0},
@@ -77,7 +77,7 @@ void			parse_lights(int fd, t_env *env, char *line)
 	}
 	ft_memdel((void*)&line);
 	if (lights_nb != 0)
-		msg_exit("Wrong number of lights in definition\n", 0);
+		ft_msg_exit("Wrong number of lights in definition\n", 0);
 	if (!done)
-		msg_exit("YOU ABSOLUTE MADLAD\nClose the bracket for the lights !", 0);
+		ft_msg_exit("YOU ABSOLUTE MADLAD\nClose the bracket for the lights !", 0);
 }
